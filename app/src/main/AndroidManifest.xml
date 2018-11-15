@@ -19,7 +19,12 @@
         <activity
             android:name=".Rules"
             android:label="@string/a2d2_rules_title"
-            android:parentActivityName=".MainActivity"></activity>
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".RequestRide"
+            android:label="Pickup Request Options"
+            android:parentActivityName=".MainActivity"
+            ></activity>
     </application>
 
 </manifest>

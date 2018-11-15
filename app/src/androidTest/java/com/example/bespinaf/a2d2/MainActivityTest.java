@@ -26,7 +26,7 @@ import static org.junit.Assert.*;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 @RunWith(AndroidJUnit4.class)
-public class ExampleInstrumentedTest {
+public class MainActivityTest {
 
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
@@ -49,13 +49,13 @@ public class ExampleInstrumentedTest {
         activity = mainActivity.getActivity();
     }
 
-    @Test
+    /*@Test
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
         assertEquals("com.example.bespinaf.a2d2", appContext.getPackageName());
-    }
+    }*/
 
     @Test
     public void hasButton(){
