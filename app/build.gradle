@@ -4,7 +4,11 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.bespinaf.a2d2"
-        minSdkVersion 15
+        if (gradle.startParameter.taskNames.contains(":app:assembleDebug")) {
+            minSdkVersion 18
+        }else{
+            minSdkVersion 14
+        }
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -27,4 +31,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test:rules:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-intents:3.0.2'
+    androidTestImplementation 'com.android.support.test.uiautomator:uiautomator-v18:2.1.1'
 }
