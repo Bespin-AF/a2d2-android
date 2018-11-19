@@ -3,6 +3,8 @@ package com.example.bespinaf.a2d2;
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Context;
+import android.support.test.espresso.Espresso;
+import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.uiautomator.UiDevice;
 import android.support.test.uiautomator.UiObject;
@@ -16,6 +18,11 @@ import org.junit.Test;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.InstrumentationRegistry.getTargetContext;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -72,14 +79,14 @@ public class testUserDeniesPermissions {
             }
         });
 
-        final UiObject buttonAllowLocationPermission = device.findObject(
+        final UiObject buttonDenyLocationPermission = device.findObject(
                 new UiSelector()
                         .clickable(true)
                         .checkable(false)
                         .index(DENY_PERMISSION)
         );
 
-        assertTrue(buttonAllowLocationPermission.exists());
+        assertTrue(buttonDenyLocationPermission.exists());
 
         //If the button doesn't exist I'm not sure how it would've gotten past the above point. However, the click is run in the ui thread so some weird scoping stuff is happening
 
@@ -87,16 +94,15 @@ public class testUserDeniesPermissions {
             @Override
             public void run(){
                 try {
-                    buttonAllowLocationPermission.click();
+                    buttonDenyLocationPermission.click();
                 } catch (UiObjectNotFoundException e){
                     //What do I do here?
                 }
             }
         });
 
-        String errorMessage = getTargetContext().getResources().getString(R.string.error_LocationPermissionDenied);
-        final UiObject toastLocationPermissionsRequired = device.findObject(new UiSelector().text(errorMessage));
-
-        assertTrue(toastLocationPermissionsRequired.exists());
+        Espresso.onView(ViewMatchers.withText(R.string.error_LocationPermissionDenied))
+                .inRoot(withDecorView(not(is(activity.getWindow().getDecorView()))))
+                .check(matches(isDisplayed()));
     }
 }
