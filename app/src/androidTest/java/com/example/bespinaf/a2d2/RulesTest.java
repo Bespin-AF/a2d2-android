@@ -5,6 +5,7 @@ import android.app.Instrumentation;
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import android.support.test.espresso.intent.Intents;
 import android.support.test.espresso.intent.matcher.IntentMatchers;
 import android.support.test.runner.AndroidJUnit4;
@@ -54,6 +55,14 @@ public class RulesTest {
     @Test
     public void hasActivity(){
         assertNotNull(activity);
+    }
+
+    @Test
+    public void hasRulesText(){
+        Context appContext = activity.getApplicationContext();
+        String rulesText = appContext.getResources().getString(R.string.a2d2_rules_text);
+        final UiObject rulesTextView = device.findObject(new UiSelector().text(rulesText));
+        assertTrue(rulesTextView.exists());
     }
 
     @Test
