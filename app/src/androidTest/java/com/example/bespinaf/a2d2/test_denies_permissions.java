@@ -25,12 +25,12 @@ import static org.junit.Assert.assertTrue;
 
 public class test_denies_permissions {
     @Rule
-    public ActivityTestRule<Rules> ruleActivity = new ActivityTestRule<>(Rules.class);
+    private ActivityTestRule<Rules> mRuleActivity = new ActivityTestRule<>(Rules.class);
 
-    public Rules activity;
-    public UiDevice device;
-    public Instrumentation mInstrumentation;
-    public Instrumentation.ActivityMonitor mRulesMonitor;
+    private Rules mActivity;
+    private UiDevice mDevice;
+    private Instrumentation mInstrumentation;
+    private Instrumentation.ActivityMonitor mRulesMonitor;
 
     //Indexes are language agnostic
     private static final int DENY_PERMISSION = 0;
@@ -40,35 +40,35 @@ public class test_denies_permissions {
     public void setUp(){
         mInstrumentation = getInstrumentation();
         mRulesMonitor = mInstrumentation.addMonitor(RequestRide.class.getName(),null,false);
-        activity = ruleActivity.getActivity();
-        device = UiDevice.getInstance(getInstrumentation());
+        mActivity = mRuleActivity.getActivity();
+        mDevice = UiDevice.getInstance(getInstrumentation());
     }
 
-    @Test // Checking that the activity has loaded
+    @Test // Checking that the mActivity has loaded
     public void hasActivity(){
-        assertNotNull(activity);
+        assertNotNull(mActivity);
     }
 
     @Test // Makes sure that the Agree button is on the screen
     public void hasButton(){
-        Button testButtonAgree = activity.findViewById(R.id.button_rules_agree);
+        Button testButtonAgree = mActivity.findViewById(R.id.button_rules_agree);
         assertNotNull(testButtonAgree);
     }
 
     @Test //Tests the user can see an error pop-up when they deny permissions
     public void canUserAgree() {
         //Clicks the agree button
-        final Button testButtonAgree = activity.findViewById(R.id.button_rules_agree);
+        final Button testButtonAgree = mActivity.findViewById(R.id.button_rules_agree);
         assertNotNull(testButtonAgree);
 
-        activity.runOnUiThread(new Runnable(){
+        mActivity.runOnUiThread(new Runnable(){
             @Override
             public void run(){
                 testButtonAgree.performClick();
             }
         });
         //makes sure that there is a button with an index of "DENY_PERMISSION"
-        final UiObject buttonDenyLocationPermission = device.findObject(
+        final UiObject buttonDenyLocationPermission = mDevice.findObject(
                 new UiSelector()
                         .clickable(true)
                         .checkable(false)
@@ -78,7 +78,7 @@ public class test_denies_permissions {
         assertTrue(buttonDenyLocationPermission.exists());
 
         //In case the button does not exist [shouldn't trigger]
-        activity.runOnUiThread(new Runnable(){
+        mActivity.runOnUiThread(new Runnable(){
             @Override
             public void run(){
                 try {
@@ -90,7 +90,7 @@ public class test_denies_permissions {
         });
         //Makes sure the the error Toast message appears
         Espresso.onView(ViewMatchers.withText(R.string.error_LocationPermissionDenied))
-                .inRoot(withDecorView(not(is(activity.getWindow().getDecorView()))))
+                .inRoot(withDecorView(not(is(mActivity.getWindow().getDecorView()))))
                 .check(matches(isDisplayed()));
     }
 }

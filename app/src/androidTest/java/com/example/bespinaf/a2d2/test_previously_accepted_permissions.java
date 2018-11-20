@@ -23,46 +23,51 @@ import static org.junit.Assert.assertTrue;
 public class test_previously_accepted_permissions
 {
     @Rule
-    public ActivityTestRule<Rules> ruleActivity = new ActivityTestRule<>(Rules.class);
+    private ActivityTestRule<Rules> mRuleActivity = new ActivityTestRule<>(Rules.class);
 
-    public Rules activity;
-    public UiDevice device;
-    public Instrumentation mInstrumentation;
-    public Instrumentation.ActivityMonitor mRulesMonitor;
+    private Rules mActivity;
+    private UiDevice mDevice;
+    private Instrumentation mInstrumentation;
+    private Instrumentation.ActivityMonitor mRulesMonitor;
 
     @Rule //Assuming that permissions are granted; turns on the permissions if they are turned off
     public GrantPermissionRule mRuntimePermissionsRule = GrantPermissionRule.grant(Manifest.permission.ACCESS_FINE_LOCATION);
 
+    /**
+     *  Creates monitor for RequestRide page and creates Rule Activity
+     */
     @Before
     public void setUp(){
         mInstrumentation = getInstrumentation();
         mRulesMonitor = mInstrumentation.addMonitor(RequestRide.class.getName(),null,false);
-        activity = ruleActivity.getActivity();
-        device = UiDevice.getInstance(getInstrumentation());
+        mActivity = mRuleActivity.getActivity();
+        mDevice = UiDevice.getInstance(getInstrumentation());
     }
 
-    @Test //Checking that the activity has loaded
-    public void hasActivity(){
-        assertNotNull(activity);
+    @Test
+    public void hasActivityLaunched(){
+        assertNotNull(mActivity);
     }
 
-    @Test //Checks that the rules page is displaying text
-    public void hasRulesText() {
-        Context appContext = activity.getApplicationContext();
-        String rulesText = appContext.getResources().getString(R.string.a2d2_rules_text);
-        final UiObject rulesTextView = device.findObject(new UiSelector().text(rulesText));
-        assertTrue(rulesTextView.exists());
+    @Test
+    public void doesAgreeButtonExist(){
+        Button testButtonAgree = mActivity.findViewById(R.id.button_rules_agree);
+        Assert.assertNotNull(testButtonAgree);
     }
 
-    @Test //Go to the request ride page
-    public void hasPermissions(){
-        final Button testButtonAgree = activity.findViewById(R.id.button_rules_agree);
-        assertNotNull(testButtonAgree);
+    /*
+     *  Go to the request ride page
+     */
+    @Test
+    public void userClicksAgree_RedirectsToRequestPickup(){
+        //Validates the agree button exists
+        final Button mButtonAgree = mActivity.findViewById(R.id.button_rules_agree);
+        assertNotNull(mButtonAgree);
 
-        activity.runOnUiThread(new Runnable(){
+        mActivity.runOnUiThread(new Runnable(){
             @Override
             public void run(){
-                testButtonAgree.performClick();
+                mButtonAgree.performClick();
             }
         });
 

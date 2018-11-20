@@ -21,52 +21,51 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Instrumented test, which will execute on an Android device.
+ * Instrumented test, which will execute on an Android mDevice.
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 @RunWith(AndroidJUnit4.class)
 public class test_navigate_to_rules {
     @Rule
-    public ActivityTestRule<MainActivity> mainActivity = new ActivityTestRule<>(MainActivity.class);
+    private ActivityTestRule<MainActivity> mMainActivity = new ActivityTestRule<>(MainActivity.class);
 
-    public MainActivity activity;
-    public UiDevice device;
-    public Instrumentation mInstrumentation;
-    public Instrumentation.ActivityMonitor mRulesMonitor;
+    private MainActivity mActivity;
+    private UiDevice mDevice;
+    private Instrumentation mInstrumentation;
+    private Instrumentation.ActivityMonitor mRulesMonitor;
 
+    /**
+     *  Creates monitor for Rules page and creates Main Activity
+     */
     @Before
     public void setUp(){
-        activity = mainActivity.getActivity();
+        mActivity = mMainActivity.getActivity();
         mInstrumentation = getInstrumentation();
-        device = UiDevice.getInstance(mInstrumentation);
+        mDevice = UiDevice.getInstance(mInstrumentation);
         mRulesMonitor = mInstrumentation.addMonitor(Rules.class.getName(),null,false);
     }
 
-    //Test for if button is there
     @Test
-    public void hasActivity(){
-        assertNotNull(activity);
+    public void hasActivityLaunched(){
+        assertNotNull(mActivity);
     }
 
-    //Button id is R.id.button_navigate_to_rules ; fails to compile if provided however since it doesn't exist
     @Test
-    public void hasButton(){
-        Button btnNavigateToRules = activity.findViewById(R.id.button);
-        assertNotNull(btnNavigateToRules);
+    public void doesNavigationButtonExist(){
+        Button mButtonNavigateToRules = mActivity.findViewById(R.id.button_navigate_to_rules);
+        assertNotNull(mButtonNavigateToRules);
     }
 
-    //Button id is R.id.button_navigate_to_rules ; fails to compile if provided however since it doesn't exist
     @Test
-    public void canNavigate(){
-        final Button btnNavigateToRules = activity.findViewById(R.id.button);
-        assertNotNull(btnNavigateToRules);
+    public void canUserNavigateToRules(){
+        final Button mButtonNavigateToRules = mActivity.findViewById(R.id.button_navigate_to_rules);
+        assertNotNull(mButtonNavigateToRules);
 
-        activity.runOnUiThread(new Runnable(){
+        mActivity.runOnUiThread(new Runnable(){
             @Override
             public void run(){
-                btnNavigateToRules.performClick();
-                System.out.println("Button click successful.");
+                mButtonNavigateToRules.performClick();
             }
         });
 
@@ -74,14 +73,20 @@ public class test_navigate_to_rules {
         assertNotNull(mRulesActivity);
     }
 
-    @Test //checks that the Rules text is displayed
-    public void hasRulesText() {
-        canNavigate();
+    @Test
+    public void doesRulesPageContainRulesText(){
+        //Tests navigation and ensures that the rules page appears
+        canUserNavigateToRules();
 
-        Context appContext = activity.getApplicationContext();
-        String rulesText = appContext.getResources().getString(R.string.a2d2_rules_text);
-        final UiObject rulesTextView = device.findObject(new UiSelector().text(rulesText));
-        assertTrue(rulesTextView.exists());
+        //Gets app context in order to retrieve rules text
+        Context mApplicationContext = mActivity.getApplicationContext();
+        String mRulesText = mApplicationContext
+                .getResources()
+                .getString(R.string.a2d2_rules_text);
+        final UiObject mRulesTextView = mDevice
+                .findObject(new UiSelector().text(mRulesText));
+
+        assertTrue(mRulesTextView.exists());
     }
 
     @After
