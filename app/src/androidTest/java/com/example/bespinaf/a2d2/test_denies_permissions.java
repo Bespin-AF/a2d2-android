@@ -1,6 +1,5 @@
 package com.example.bespinaf.a2d2;
 
-import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Context;
 import android.support.test.espresso.Espresso;
@@ -17,14 +16,12 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
-import static android.support.test.InstrumentationRegistry.getTargetContext;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 public class testUserDeniesPermissions {
@@ -48,12 +45,12 @@ public class testUserDeniesPermissions {
         device = UiDevice.getInstance(getInstrumentation());
     }
 
-    @Test
+    @Test // Checking that the activity has loaded
     public void hasActivity(){
         assertNotNull(activity);
     }
 
-    @Test
+    @Test //checks that the Rules text is displayed
     public void hasRulesText(){
         Context appContext = activity.getApplicationContext();
         String rulesText = appContext.getResources().getString(R.string.a2d2_rules_text);
@@ -61,14 +58,15 @@ public class testUserDeniesPermissions {
         assertTrue(rulesTextView.exists());
     }
 
-    @Test
+    @Test // Makes sure that the Agree button is on the screen
     public void hasButton(){
         Button testButtonAgree = activity.findViewById(R.id.button_rules_agree);
         assertNotNull(testButtonAgree);
     }
 
-    @Test
+    @Test //Tests the user can see an error pop-up when they deny permissions
     public void canUserAgree() {
+        //Clicks the agree button
         final Button testButtonAgree = activity.findViewById(R.id.button_rules_agree);
         assertNotNull(testButtonAgree);
 
@@ -78,7 +76,7 @@ public class testUserDeniesPermissions {
                 testButtonAgree.performClick();
             }
         });
-
+        //makes sure that there is a button with an index of "DENY_PERMISSION"
         final UiObject buttonDenyLocationPermission = device.findObject(
                 new UiSelector()
                         .clickable(true)
@@ -88,19 +86,18 @@ public class testUserDeniesPermissions {
 
         assertTrue(buttonDenyLocationPermission.exists());
 
-        //If the button doesn't exist I'm not sure how it would've gotten past the above point. However, the click is run in the ui thread so some weird scoping stuff is happening
-
+        //In case the button does not exist [shouldn't trigger]
         activity.runOnUiThread(new Runnable(){
             @Override
             public void run(){
                 try {
                     buttonDenyLocationPermission.click();
                 } catch (UiObjectNotFoundException e){
-                    //What do I do here?
+
                 }
             }
         });
-
+        //Makes sure the the error Toast message appears
         Espresso.onView(ViewMatchers.withText(R.string.error_LocationPermissionDenied))
                 .inRoot(withDecorView(not(is(activity.getWindow().getDecorView()))))
                 .check(matches(isDisplayed()));
