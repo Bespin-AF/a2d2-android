@@ -1,7 +1,6 @@
 package com.example.bespinaf.a2d2;
 
 import android.app.Instrumentation;
-import android.content.Context;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
@@ -24,7 +23,7 @@ import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-public class testUserDeniesPermissions {
+public class test_denies_permissions {
     @Rule
     public ActivityTestRule<Rules> ruleActivity = new ActivityTestRule<>(Rules.class);
 
@@ -48,14 +47,6 @@ public class testUserDeniesPermissions {
     @Test // Checking that the activity has loaded
     public void hasActivity(){
         assertNotNull(activity);
-    }
-
-    @Test //checks that the Rules text is displayed
-    public void hasRulesText(){
-        Context appContext = activity.getApplicationContext();
-        String rulesText = appContext.getResources().getString(R.string.a2d2_rules_text);
-        final UiObject rulesTextView = device.findObject(new UiSelector().text(rulesText));
-        assertTrue(rulesTextView.exists());
     }
 
     @Test // Makes sure that the Agree button is on the screen

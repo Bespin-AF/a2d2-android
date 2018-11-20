@@ -2,7 +2,6 @@ package com.example.bespinaf.a2d2;
 
 import android.app.Activity;
 import android.app.Instrumentation;
-import android.content.Context;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.uiautomator.UiDevice;
 import android.support.test.uiautomator.UiObject;
@@ -18,7 +17,7 @@ import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-public class RulesTest {
+public class test_grants_permissions {
 
     @Rule
     public ActivityTestRule<Rules> ruleActivity = new ActivityTestRule<>(Rules.class);
@@ -43,14 +42,6 @@ public class RulesTest {
     @Test // Checking that the activity has loaded
     public void hasActivity(){
         assertNotNull(activity);
-    }
-
-    @Test //checks that the Rules text is displayed
-    public void hasRulesText(){
-        Context appContext = activity.getApplicationContext();
-        String rulesText = appContext.getResources().getString(R.string.a2d2_rules_text);
-        final UiObject rulesTextView = device.findObject(new UiSelector().text(rulesText));
-        assertTrue(rulesTextView.exists());
     }
 
     @Test // Makes sure that the Agree button is on the screen
@@ -95,8 +86,5 @@ public class RulesTest {
         //Checks that the Request ride page appears
         Activity mRequestRide = mInstrumentation.waitForMonitorWithTimeout(mRulesMonitor, 1000);
         assertNotNull(mRequestRide);
-
     }
-
-
 }

@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openRules(View view)
-    {
+    {//Open the rules page
         Intent intent = new Intent(this, Rules.class);
         startActivity(intent);
     }

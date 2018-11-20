@@ -3,14 +3,11 @@ package com.example.bespinaf.a2d2;
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Context;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.espresso.Espresso;
-import android.support.test.espresso.intent.Intents;
-import android.support.test.espresso.intent.matcher.IntentMatchers;
-import android.support.test.runner.AndroidJUnit4;
 import android.support.test.rule.ActivityTestRule;
-import android.support.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
-import android.support.test.runner.lifecycle.Stage;
+import android.support.test.runner.AndroidJUnit4;
+import android.support.test.uiautomator.UiDevice;
+import android.support.test.uiautomator.UiObject;
+import android.support.test.uiautomator.UiSelector;
 import android.widget.Button;
 
 import org.junit.After;
@@ -19,12 +16,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-import java.util.Collection;
-
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -32,11 +26,12 @@ import static org.junit.Assert.*;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 @RunWith(AndroidJUnit4.class)
-public class MainActivityTest {
+public class test_navigate_to_rules {
     @Rule
     public ActivityTestRule<MainActivity> mainActivity = new ActivityTestRule<>(MainActivity.class);
 
     public MainActivity activity;
+    public UiDevice device;
     public Instrumentation mInstrumentation;
     public Instrumentation.ActivityMonitor mRulesMonitor;
 
@@ -44,6 +39,7 @@ public class MainActivityTest {
     public void setUp(){
         activity = mainActivity.getActivity();
         mInstrumentation = getInstrumentation();
+        device = UiDevice.getInstance(mInstrumentation);
         mRulesMonitor = mInstrumentation.addMonitor(Rules.class.getName(),null,false);
     }
 
@@ -56,14 +52,14 @@ public class MainActivityTest {
     //Button id is R.id.button_navigate_to_rules ; fails to compile if provided however since it doesn't exist
     @Test
     public void hasButton(){
-        Button btnNavigateToRules = activity.findViewById(0);
+        Button btnNavigateToRules = activity.findViewById(R.id.button);
         assertNotNull(btnNavigateToRules);
     }
 
     //Button id is R.id.button_navigate_to_rules ; fails to compile if provided however since it doesn't exist
     @Test
     public void canNavigate(){
-        final Button btnNavigateToRules = activity.findViewById(0);
+        final Button btnNavigateToRules = activity.findViewById(R.id.button);
         assertNotNull(btnNavigateToRules);
 
         activity.runOnUiThread(new Runnable(){
@@ -76,6 +72,16 @@ public class MainActivityTest {
 
         Activity mRulesActivity = mInstrumentation.waitForMonitorWithTimeout(mRulesMonitor, 1000);
         assertNotNull(mRulesActivity);
+    }
+
+    @Test //checks that the Rules text is displayed
+    public void hasRulesText() {
+        canNavigate();
+
+        Context appContext = activity.getApplicationContext();
+        String rulesText = appContext.getResources().getString(R.string.a2d2_rules_text);
+        final UiObject rulesTextView = device.findObject(new UiSelector().text(rulesText));
+        assertTrue(rulesTextView.exists());
     }
 
     @After
