@@ -36,35 +36,43 @@ public class test_denies_permissions {
     private static final int DENY_PERMISSION = 0;
     private static final int GRANT_PERMISSION = 1;
 
+    /**
+     *  Creates monitor for RequestRide page and creates Rules Activity
+     */
     @Before
     public void setUp(){
         mInstrumentation = getInstrumentation();
-        mRulesMonitor = mInstrumentation.addMonitor(RequestRide.class.getName(),null,false);
+        mRulesMonitor = mInstrumentation
+                .addMonitor(RequestRide.class.getName(),null,false);
         mActivity = mRuleActivity.getActivity();
         mDevice = UiDevice.getInstance(getInstrumentation());
     }
 
-    @Test // Checking that the mActivity has loaded
-    public void hasActivity(){
+    @Test
+    public void hasActivityLoaded(){
         assertNotNull(mActivity);
     }
 
-    @Test // Makes sure that the Agree button is on the screen
-    public void hasButton(){
-        Button testButtonAgree = mActivity.findViewById(R.id.button_rules_agree);
-        assertNotNull(testButtonAgree);
+    @Test
+    public void doesButtonAppear(){
+        Button buttonAgreeToRules = mActivity.findViewById(R.id.button_rules_agree);
+        assertNotNull(buttonAgreeToRules);
     }
 
-    @Test //Tests the user can see an error pop-up when they deny permissions
-    public void canUserAgree() {
-        //Clicks the agree button
-        final Button testButtonAgree = mActivity.findViewById(R.id.button_rules_agree);
-        assertNotNull(testButtonAgree);
+    /**
+     * Clicks the agree button, denies location permission in the ensuing prompt and verifies that
+     * the Toast indicating that permission must be enabled appears
+     */
+    @Test
+    public void userDeniesLocationPermission_ErrorToastAppears() {
+        //Ensures the agree button exists and clicks on it to prompt for location permission
+        final Button buttonAgreeToRules = mActivity.findViewById(R.id.button_rules_agree);
+        assertNotNull(buttonAgreeToRules);
 
         mActivity.runOnUiThread(new Runnable(){
             @Override
             public void run(){
-                testButtonAgree.performClick();
+                buttonAgreeToRules.performClick();
             }
         });
         //makes sure that there is a button with an index of "DENY_PERMISSION"
@@ -77,14 +85,13 @@ public class test_denies_permissions {
 
         assertTrue(buttonDenyLocationPermission.exists());
 
-        //In case the button does not exist [shouldn't trigger]
         mActivity.runOnUiThread(new Runnable(){
             @Override
             public void run(){
                 try {
                     buttonDenyLocationPermission.click();
                 } catch (UiObjectNotFoundException e){
-
+                    //Deny permission button not found
                 }
             }
         });

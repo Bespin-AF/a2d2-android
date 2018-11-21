@@ -25,34 +25,36 @@ public class Rules extends AppCompatActivity implements ActivityCompat.OnRequest
         setContentView(R.layout.activity_rules);
     }
     @TargetApi(Build.VERSION_CODES.M)
-    public void btnRulesAgree_Clicked(View sender)
-    {//If permissions are not granted prompts the user to turn them on with a default pop-up
-        if(!Permissions.isLocationPermissionGranted(this)){
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},0);
-        }
-        else
-        {//If the user has permissions turned on, go to the request ride page
+    public void btnRulesAgree_Clicked(View sender) {
+        //If permissions are not granted prompts the user to turn them on with a default pop-up
+        if(!Permissions.isLocationPermissionGranted(this)) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    0);
+        } else {
+            //If the user has permissions turned on, go to the request ride page
             Intent intent = new Intent(this, RequestRide.class);
             startActivity(intent);
         }
     }
 
-    @Override //Called on when the requestPermissions method is called, handles the response
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
-    {
-        if (grantResults.length == 0 || grantResults[0] == PackageManager.PERMISSION_DENIED)
-        {//if user denies permissions display a prompt explaining why they cannot proceed
-            if(requestCode == MY_PERMISSIONS_REQUEST_LOCATION)
-            {
+    /**
+     * Called on when the requestPermissions method is called, handles the response
+     * @param requestCode Callback identifier for the initial permissions request
+     * @param permissions The requested permissions, never null
+     * @param grantResults Grant result: PERMISSION_GRANTED | PERMISSION_DENIED
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (grantResults.length == 0 || grantResults[0] == PackageManager.PERMISSION_DENIED) {
+            //if user denies permissions display a prompt explaining why they cannot proceed
+            if(requestCode == MY_PERMISSIONS_REQUEST_LOCATION) {
                 Toast.makeText(this, R.string.error_LocationPermissionDenied, Toast.LENGTH_LONG).show();
-            }
-            else
-            {
+            } else {
                 Toast.makeText(this, R.string.error_DefaultError, Toast.LENGTH_LONG).show();
             }
-        }
-        else
-        {//If the user grnats permissions open the request ride page
+        } else {
+            //If the user grnats permissions open the request ride page
             Intent intent = new Intent(this, RequestRide.class);
             startActivity(intent);
         }

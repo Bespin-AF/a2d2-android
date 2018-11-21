@@ -16,6 +16,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import butterknife.BindView;
+
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -51,8 +53,8 @@ public class test_previously_accepted_permissions
 
     @Test
     public void doesAgreeButtonExist(){
-        Button testButtonAgree = mActivity.findViewById(R.id.button_rules_agree);
-        Assert.assertNotNull(testButtonAgree);
+        Button mButtonAgree = mActivity.findViewById(R.id.button_rules_agree);
+        Assert.assertNotNull(mButtonAgree);
     }
 
     /*
