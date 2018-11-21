@@ -10,6 +10,8 @@
     <string name="dialog_allow">ALLOW</string>
     <string name="dialog_deny">DENY</string>
     <string name="location_dialog_text">Use Location?\n\nThis app wants to change</string>
-    <string name="error_LocationPermissionDenied">Location permission is required</string>
+    <string name="error_LocationPermissionDenied">Location not enabled!\n\n
+    You have not allowed the A2D2 app to access your GPS location. Without this permission, the app cannot function.
+        Please go to your phone settings and enable the GPS permission.</string>
     <string name="error_DefaultError">An error has occurred</string>
 </resources>

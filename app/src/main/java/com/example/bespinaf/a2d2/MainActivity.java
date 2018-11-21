@@ -13,8 +13,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
-    public void openRules(View view)
-    {
+    /**
+     * //Open the rules page
+     * @param view the Request Ride Navigation Button
+     */
+    public void openRules(View view) {
         Intent intent = new Intent(this, Rules.class);
         startActivity(intent);
     }

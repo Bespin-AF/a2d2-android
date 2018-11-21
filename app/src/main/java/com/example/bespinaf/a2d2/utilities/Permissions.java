@@ -11,11 +11,9 @@ import android.support.v4.content.ContextCompat;
 
 import com.example.bespinaf.a2d2.R;
 
-public class Permissions
-{
-    public static boolean isLocationPermissionGranted(Context context)
-    {
-        return(ContextCompat.checkSelfPermission(context,
-                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED);
+public class Permissions {
+    public static boolean isLocationPermissionGranted(Context context) {
+        return ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED;
     }
 }
