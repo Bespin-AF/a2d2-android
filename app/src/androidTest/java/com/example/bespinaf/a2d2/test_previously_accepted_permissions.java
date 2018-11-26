@@ -3,12 +3,9 @@ package com.example.bespinaf.a2d2;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Instrumentation;
-import android.content.Context;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.rule.GrantPermissionRule;
 import android.support.test.uiautomator.UiDevice;
-import android.support.test.uiautomator.UiObject;
-import android.support.test.uiautomator.UiSelector;
 import android.widget.Button;
 
 import org.junit.Assert;
@@ -16,16 +13,13 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import butterknife.BindView;
-
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static junit.framework.TestCase.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 public class test_previously_accepted_permissions
 {
     @Rule
-    private ActivityTestRule<Rules> mRuleActivity = new ActivityTestRule<>(Rules.class);
+    public ActivityTestRule<Rules> mRuleActivity = new ActivityTestRule<>(Rules.class);
 
     private Rules mActivity;
     private UiDevice mDevice;

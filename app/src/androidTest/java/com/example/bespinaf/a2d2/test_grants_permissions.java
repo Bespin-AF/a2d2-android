@@ -20,7 +20,7 @@ import static org.junit.Assert.assertTrue;
 public class test_grants_permissions {
 
     @Rule
-    private ActivityTestRule<Rules> mRuleActivity = new ActivityTestRule<>(Rules.class);
+    public ActivityTestRule<Rules> mRuleActivity = new ActivityTestRule<>(Rules.class);
 
     private Rules mActivity;
     private UiDevice mDevice;
@@ -89,7 +89,7 @@ public class test_grants_permissions {
         });
 
         //Checks that the Request ride page appears
-        Activity mRequestRide = mInstrumentation.waitForMonitorWithTimeout(mRulesMonitor, 1000);
+        Activity mRequestRide = mInstrumentation.waitForMonitorWithTimeout(mRulesMonitor, 4000);
         assertNotNull(mRequestRide);
     }
 }
