@@ -28,7 +28,7 @@ import static org.junit.Assert.assertTrue;
 @RunWith(AndroidJUnit4.class)
 public class test_navigate_to_rules {
     @Rule
-    private ActivityTestRule<MainActivity> mMainActivity = new ActivityTestRule<>(MainActivity.class);
+    public ActivityTestRule<MainActivity> mMainActivity = new ActivityTestRule<>(MainActivity.class);
 
     private MainActivity mActivity;
     private UiDevice mDevice;
