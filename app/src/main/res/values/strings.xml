@@ -9,6 +9,8 @@
     <string name="a2d2_rules_button">Agree</string>
     <string name="dialog_allow">ALLOW</string>
     <string name="dialog_deny">DENY</string>
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_title_LocationPermissionDenied">Location Permission Denied</string>
     <string name="location_dialog_text">Use Location?\n\nThis app wants to change</string>
     <string name="error_LocationPermissionDenied">Location not enabled!\n\n
     You have not allowed the A2D2 app to access your GPS location. Without this permission, the app cannot function.

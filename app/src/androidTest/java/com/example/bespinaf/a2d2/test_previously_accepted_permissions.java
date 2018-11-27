@@ -16,8 +16,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import butterknife.BindView;
-
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -25,7 +23,7 @@ import static org.junit.Assert.assertTrue;
 public class test_previously_accepted_permissions
 {
     @Rule
-    private ActivityTestRule<Rules> mRuleActivity = new ActivityTestRule<>(Rules.class);
+    public ActivityTestRule<Rules> mRuleActivity = new ActivityTestRule<>(Rules.class);
 
     private Rules mActivity;
     private UiDevice mDevice;

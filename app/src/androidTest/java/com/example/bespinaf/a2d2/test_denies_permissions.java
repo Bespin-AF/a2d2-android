@@ -25,7 +25,7 @@ import static org.junit.Assert.assertTrue;
 
 public class test_denies_permissions {
     @Rule
-    private ActivityTestRule<Rules> mRuleActivity = new ActivityTestRule<>(Rules.class);
+    public ActivityTestRule<Rules> mRuleActivity = new ActivityTestRule<>(Rules.class);
 
     private Rules mActivity;
     private UiDevice mDevice;
