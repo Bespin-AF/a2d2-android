@@ -1,18 +1,15 @@
 package com.example.bespinaf.a2d2;
 
 import android.Manifest;
-import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.bespinaf.a2d2.utilities.Permissions;
 
@@ -28,7 +25,7 @@ public class Rules extends AppCompatActivity implements ActivityCompat.OnRequest
         setContentView(R.layout.activity_rules);
         mDialogBuilder = new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog_Alert);
 
-        mDialogBuilder.setPositiveButton(R.string.dialog_ok, new DialogInterface.OnClickListener() {
+        mDialogBuilder.setPositiveButton(R.string.dialog_okay, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 

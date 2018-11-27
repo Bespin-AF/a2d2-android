@@ -89,7 +89,7 @@ public class test_grants_permissions {
         });
 
         //Checks that the Request ride page appears
-        Activity mRequestRide = mInstrumentation.waitForMonitorWithTimeout(mRulesMonitor, 1000);
+        Activity mRequestRide = mInstrumentation.waitForMonitorWithTimeout(mRulesMonitor, 4000);
         assertNotNull(mRequestRide);
     }
 }
