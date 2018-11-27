@@ -1,7 +1,6 @@
 package com.example.bespinaf.a2d2;
 
 import android.support.test.espresso.Espresso;
-import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.uiautomator.UiDevice;
 import android.support.test.uiautomator.UiObject;
@@ -14,10 +13,13 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
+import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.RootMatchers.isDialog;
 import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertNotNull;
@@ -50,6 +52,8 @@ public class test_location_denied_popup {
         final Button buttonAgreeToRules = mActivity.findViewById(R.id.button_rules_agree);
         assertNotNull(buttonAgreeToRules);
 
+        final String mOkayButtonText = mActivity.getResources().getString(R.string.dialog_okay);
+
         mActivity.runOnUiThread(new Runnable(){
             @Override
             public void run(){
@@ -77,25 +81,16 @@ public class test_location_denied_popup {
             }
         });
         //Makes sure the the error Toast message appears
-        Espresso.onView(ViewMatchers.withText(R.string.error_LocationPermissionDenied))
+        Espresso.onView(withText(R.string.error_LocationPermissionDenied))
                 .inRoot(withDecorView(not(is(mActivity.getWindow().getDecorView()))))
                 .check(matches(isDisplayed()));
 
-        final UiObject buttonLocationDeniedPopup = mDevice.findObject(
-                new UiSelector()
-                .clickable(true)
-                .text("OKAY")
-        );
+        //Clicks on the Okay button in the popup and then checks that the popup went away
+        Espresso.onView(withText(R.string.dialog_okay)).inRoot(isDialog())
+                .check(matches(isDisplayed()))
+                .perform(click());
 
-        mActivity.runOnUiThread(()-> {
-            try {
-                buttonLocationDeniedPopup.click();
-            } catch (UiObjectNotFoundException e) {
-                //
-            }
-        });
-
-        Espresso.onView(ViewMatchers.withText(R.string.error_LocationPermissionDenied))
+        Espresso.onView(withText(R.string.error_LocationPermissionDenied))
                 .check(doesNotExist());
     }
 }
