@@ -14,4 +14,5 @@
     You have not allowed the A2D2 app to access your GPS location. Without this permission, the app cannot function.
         Please go to your phone settings and enable the GPS permission.</string>
     <string name="error_DefaultError">An error has occurred</string>
+    <string name="label_group_size">Group Size</string>
 </resources>

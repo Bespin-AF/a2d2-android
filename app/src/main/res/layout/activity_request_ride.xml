@@ -7,4 +7,36 @@
     android:background="@color/colorPrimary"
     tools:context=".RequestRide">
 
+    <TextView
+        android:id="@+id/label_group_size"
+        android:layout_width="match_parent"
+        android:layout_height="513dp"
+        android:text="@string/label_group_size"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <Spinner
+        android:id="@+id/spinner_group_size"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp"
+        android:entries="@array/string_group_sizes"
+        app:layout_constraintTop_toTopOf="@+id/label_group_size"
+        tools:layout_editor_absoluteX="16dp" />
+
+    <android.support.design.button.MaterialButton
+        style="@style/AppTheme"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="20dp"
+        android:text="@string/a2d2_rules_button"
+        app:cornerRadius="25dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_percent="0.7" />
 </android.support.constraint.ConstraintLayout>

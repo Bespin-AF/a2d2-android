@@ -9,6 +9,14 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.withSpinnerText;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.core.AllOf.allOf;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
@@ -30,7 +38,7 @@ public class test_enter_group_size {
 
     @Test
     public void hasGroupLabel(){
-        onView(ViewMatchers.withText(R.string.label_group_size));
+        onView(withText(R.string.label_group_size));
     }
 
     @Test
@@ -41,8 +49,17 @@ public class test_enter_group_size {
     @Test
     public void groupSizeHasMinOneAndMaxOfFour(){
         for(int i = 1; i < 5; i++){
-            String item = Integer.toString(i);
-            assertSame(Integer.toString(i),item);
+            onView(ViewMatchers.withId(R.id.spinner_group_size)).perform(click());
+            Espresso.onData(
+                    allOf(
+                            is(instanceOf(String.class)),
+                            is( Integer.toString(i) )
+                    )
+            ).perform(click());
+
+            onView(ViewMatchers
+                    .withId(R.id.spinner_group_size))
+                    .check(matches(withSpinnerText(containsString(Integer.toString(i)))));
         }
     }
 }

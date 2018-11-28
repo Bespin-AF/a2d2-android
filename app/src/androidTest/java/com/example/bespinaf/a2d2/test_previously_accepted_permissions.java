@@ -16,8 +16,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import butterknife.BindView;
-
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertTrue;
