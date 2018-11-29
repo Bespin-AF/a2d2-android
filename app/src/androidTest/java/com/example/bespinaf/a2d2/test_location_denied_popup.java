@@ -1,8 +1,6 @@
 package com.example.bespinaf.a2d2;
 
-import android.app.Instrumentation;
 import android.support.test.espresso.Espresso;
-import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.uiautomator.UiDevice;
 import android.support.test.uiautomator.UiObject;
@@ -15,48 +13,33 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
+import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.RootMatchers.isDialog;
 import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-public class test_denies_permissions {
+public class test_location_denied_popup {
     @Rule
     public ActivityTestRule<Rules> mRuleActivity = new ActivityTestRule<>(Rules.class);
 
     private Rules mActivity;
     private UiDevice mDevice;
-    private Instrumentation mInstrumentation;
-    private Instrumentation.ActivityMonitor mRulesMonitor;
 
     //Indexes are language agnostic
     private static final int DENY_PERMISSION = 0;
     private static final int GRANT_PERMISSION = 1;
 
-    /**
-     *  Creates monitor for RequestRide page and creates Rules Activity
-     */
     @Before
     public void setUp(){
-        mInstrumentation = getInstrumentation();
-        mRulesMonitor = mInstrumentation
-                .addMonitor(RequestRide.class.getName(),null,false);
         mActivity = mRuleActivity.getActivity();
         mDevice = UiDevice.getInstance(getInstrumentation());
-    }
-
-    @Test
-    public void hasActivityLoaded(){
-        assertNotNull(mActivity);
-    }
-
-    @Test
-    public void doesButtonAppear(){
-        Button buttonAgreeToRules = mActivity.findViewById(R.id.button_rules_agree);
-        assertNotNull(buttonAgreeToRules);
     }
 
     /**
@@ -68,6 +51,8 @@ public class test_denies_permissions {
         //Ensures the agree button exists and clicks on it to prompt for location permission
         final Button buttonAgreeToRules = mActivity.findViewById(R.id.button_rules_agree);
         assertNotNull(buttonAgreeToRules);
+
+        final String mOkayButtonText = mActivity.getResources().getString(R.string.dialog_okay);
 
         mActivity.runOnUiThread(new Runnable(){
             @Override
@@ -96,8 +81,16 @@ public class test_denies_permissions {
             }
         });
         //Makes sure the the error Toast message appears
-        Espresso.onView(ViewMatchers.withText(R.string.error_LocationPermissionDenied))
+        Espresso.onView(withText(R.string.error_LocationPermissionDenied))
                 .inRoot(withDecorView(not(is(mActivity.getWindow().getDecorView()))))
                 .check(matches(isDisplayed()));
+
+        //Clicks on the Okay button in the popup and then checks that the popup went away
+        Espresso.onView(withText(R.string.dialog_okay)).inRoot(isDialog())
+                .check(matches(isDisplayed()))
+                .perform(click());
+
+        Espresso.onView(withText(R.string.error_LocationPermissionDenied))
+                .check(doesNotExist());
     }
 }
