@@ -15,4 +15,7 @@
         Please go to your phone settings and enable the GPS permission.</string>
     <string name="error_DefaultError">An error has occurred</string>
     <string name="label_group_size">Group Size</string>
+    <string name="button_request_driver">Request Driver</string>
+    <string name="confirm_driver_request_title">Confirm Driver Request?</string>
+    <string name="confirm_driver_request_body">Are you sure you want to dispatch a driver to your current location?</string>
 </resources>

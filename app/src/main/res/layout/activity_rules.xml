@@ -41,6 +41,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <Button
+        android:theme="@style/AppTheme"
         android:id="@+id/button_rules_agree"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

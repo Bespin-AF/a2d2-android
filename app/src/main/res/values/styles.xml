@@ -6,8 +6,8 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="colorButtonNormal">@android:color/holo_green_light</item>
-        <item name="colorControlHighlight">@android:color/holo_red_light</item>
+    </style>
+    <style name="ButtonTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
     </style>
 
 </resources>

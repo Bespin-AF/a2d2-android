@@ -1,13 +1,20 @@
 package com.example.bespinaf.a2d2;
 
+import android.app.Instrumentation;
+import android.bluetooth.BluetoothClass;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
+import android.support.test.uiautomator.UiDevice;
+import android.support.test.uiautomator.UiObject;
+import android.support.test.uiautomator.UiSelector;
+import android.widget.Button;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
@@ -27,10 +34,14 @@ public class test_enter_group_size {
 
     private RequestRide mActivity;
     private int groupSizeId = 0;
+    private UiDevice mDevice;
+    private Instrumentation mInstrumentation;
+    private Instrumentation.ActivityMonitor mRulesMonitor;
 
     @Before
     public void setUp(){
         mActivity = mRequestRideActivity.getActivity();
+        mDevice = UiDevice.getInstance(getInstrumentation());
     }
 
     @Test
@@ -49,7 +60,7 @@ public class test_enter_group_size {
     @Test
     public void groupSizeHasMinOneAndMaxOfFour(){
         for(int i = 1; i < 5; i++){
-            onView(ViewMatchers.withId(R.id.spinner_group_size)).perform(click());
+            onView(ViewMatchers.withId(R.id.group_size_spinner)).perform(click());
             Espresso.onData(
                     allOf(
                             is(instanceOf(String.class)),
@@ -58,8 +69,30 @@ public class test_enter_group_size {
             ).perform(click());
 
             onView(ViewMatchers
-                    .withId(R.id.spinner_group_size))
+                    .withId(R.id.group_size_spinner))
                     .check(matches(withSpinnerText(containsString(Integer.toString(i)))));
         }
+    }
+
+    @Test
+    public void requestDriverButtonClicked_ConfirmationPopupShows(){
+        //Ensures the request driver button exists and clicks on it
+        final Button buttonRequestDriver = mActivity.findViewById(R.id.button_request_driver);
+        assertNotNull(buttonRequestDriver);
+
+        mActivity.runOnUiThread(new Runnable(){
+            @Override
+            public void run(){
+                buttonRequestDriver.performClick();
+            }
+        });
+
+
+        //makes sure that there is a button
+//        final UiObject buttonDenyLocationPermission = mDevice.findObject(
+//                new UiSelector()
+//                        .clickable(true)
+//                        .text("OKAY")
+//        );
     }
 }
