@@ -23,6 +23,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
+        android:theme="@style/AppTheme"
         android:id="@+id/button_rules_agree"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
