@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
-        android:layout_weight="1"
+        android:layout_weight=".7"
         android:orientation="horizontal">
 
         <TextView
@@ -20,7 +20,9 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="Group Size"
-            android:textColor="@color/textColor" />
+            android:textColor="@color/textColor"
+            android:textSize="18dp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/gender_textview"
@@ -29,7 +31,9 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="Gender"
-            android:textColor="@color/textColor" />
+            android:textColor="@color/textColor"
+            android:textSize="18dp"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
@@ -41,8 +45,8 @@
         <FrameLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="36dp"
-            android:layout_marginRight="36dp"
+            android:layout_marginLeft="26dp"
+            android:layout_marginRight="26dp"
             android:layout_weight="1"
             android:background="@color/textColor">
 
@@ -57,8 +61,8 @@
         <FrameLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="36dp"
-            android:layout_marginRight="36dp"
+            android:layout_marginLeft="26dp"
+            android:layout_marginRight="26dp"
             android:layout_weight="1"
             android:background="@color/textColor">
 
@@ -92,7 +96,8 @@
             android:layout_centerInParent="true"
             android:onClick="btnRequestDriver_Clicked"
             android:text="@string/button_request_driver"
-            android:textSize="32dp" />
+            android:textSize="32dp"
+            android:elevation="6dp"/>
     </RelativeLayout>
 
 </LinearLayout>
