@@ -12,7 +12,8 @@
     <string name="location_dialog_text">Use Location?\n\nThis app wants to change</string>
     <string name="error_LocationPermissionDenied">You have not allowed the A2D2 app to access your GPS location. Without this permission, the app cannot function. Please go to your phone settings and enable the GPS permission.</string>
     <string name="error_DefaultError">An error has occurred</string>
-    <string name="label_group_size">Group Size</string>
+    <string name="tv_group_size">Group Size</string>
+    <string name="tv_gender">Gender</string>
     <string name="button_request_driver">Request Driver</string>
     <string name="confirm_driver_request_title">Confirm Driver Request?</string>
     <string name="confirm_driver_request_body">Are you sure you want to dispatch a driver to your current location?</string>

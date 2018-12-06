@@ -1,18 +1,17 @@
 package com.example.bespinaf.a2d2;
 
 import android.app.Instrumentation;
-import android.bluetooth.BluetoothClass;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.uiautomator.UiDevice;
-import android.support.test.uiautomator.UiObject;
-import android.support.test.uiautomator.UiSelector;
 import android.widget.Button;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+
+import java.util.List;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
@@ -28,15 +27,13 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.core.AllOf.allOf;
 import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
 
-public class test_enter_group_size {
+public class test_user_states_gender {
     @Rule
     public ActivityTestRule<RequestRide> mRequestRideActivity= new ActivityTestRule<>(RequestRide.class);
 
     private RequestRide mActivity;
-    private int groupSizeId;
+    private int genderId;
     private UiDevice mDevice;
     private Instrumentation mInstrumentation;
     private Instrumentation.ActivityMonitor mRulesMonitor;
@@ -44,7 +41,7 @@ public class test_enter_group_size {
     @Before
     public void setUp(){
         mActivity = mRequestRideActivity.getActivity();
-        groupSizeId = R.id.group_size_spinner;
+        genderId = R.id.gender_spinner;
         mDevice = UiDevice.getInstance(getInstrumentation());
     }
 
@@ -53,28 +50,29 @@ public class test_enter_group_size {
 
     @Test
     public void hasGroupLabel(){
-        onView(withText(R.string.tv_group_size));
+        onView(withText(R.string.tv_gender));
     }
 
     @Test
     public void hasDropDownList(){
-        onView(ViewMatchers.withId(groupSizeId));
+        onView(ViewMatchers.withId(genderId));
     }
 
     @Test
     public void groupSizeHasMinOneAndMaxOfFour(){
-        for(int i = 1; i < 5; i++){
-            onView(ViewMatchers.withId(R.id.group_size_spinner)).perform(click());
+        String[] genders = mActivity.getResources().getStringArray(R.array.string_genders);
+        for(int i = 0; i < genders.length; i++){
+            onView(ViewMatchers.withId(R.id.gender_spinner)).perform(click());
             Espresso.onData(
                     allOf(
                             is(instanceOf(String.class)),
-                            is( Integer.toString(i) )
+                            is( genders[i] )
                     )
             ).perform(click());
 
             onView(ViewMatchers
-                    .withId(R.id.group_size_spinner))
-                    .check(matches(withSpinnerText(containsString(Integer.toString(i)))));
+                    .withId(R.id.gender_spinner))
+                    .check(matches(withSpinnerText(containsString(genders[i]))));
         }
     }
 
@@ -95,12 +93,5 @@ public class test_enter_group_size {
         Espresso.onView(withText(R.string.confirm_driver_request_body))
                 .inRoot(withDecorView(not(is(mActivity.getWindow().getDecorView()))))
                 .check(matches(isDisplayed()));
-
-        //makes sure that there is a button
-//        final UiObject buttonDenyLocationPermission = mDevice.findObject(
-//                new UiSelector()
-//                        .clickable(true)
-//                        .text(R.string.dialog_okay)
-//        );
     }
 }

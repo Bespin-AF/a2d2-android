@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Group Size"
+            android:text="@string/tv_group_size"
             android:textColor="@color/textColor"
             android:textSize="18dp"
             android:textStyle="bold" />
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Gender"
+            android:text="@string/tv_gender"
             android:textColor="@color/textColor"
             android:textSize="18dp"
             android:textStyle="bold" />
@@ -71,7 +71,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="36dp"
                 android:layout_gravity="center"
-                android:entries="@array/string_group_sizes" />
+                android:entries="@array/string_genders" />
         </FrameLayout>
     </LinearLayout>
 

@@ -6,4 +6,8 @@
         <item>3</item>
         <item>4</item>
     </string-array>
+    <string-array name="string_genders">
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
 </resources>
