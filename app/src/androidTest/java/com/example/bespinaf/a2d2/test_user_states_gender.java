@@ -49,7 +49,7 @@ public class test_user_states_gender {
     public void hasActivityLoaded(){ assertNotNull(mActivity);  }
 
     @Test
-    public void hasGroupLabel(){
+    public void hasGenderLabel(){
         onView(withText(R.string.tv_gender));
     }
 
@@ -59,7 +59,7 @@ public class test_user_states_gender {
     }
 
     @Test
-    public void groupSizeHasMinOneAndMaxOfFour(){
+    public void genderSpinnerHasCorrectValues(){
         String[] genders = mActivity.getResources().getStringArray(R.array.string_genders);
         for(int i = 0; i < genders.length; i++){
             onView(ViewMatchers.withId(R.id.gender_spinner)).perform(click());
