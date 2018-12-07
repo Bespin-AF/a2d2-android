@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.bespinaf.a2d2">
 
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -27,6 +27,6 @@
             android:name=".RequestRide"
             android:label="Pickup Request Options"
             android:parentActivityName=".Rules"
-            ></activity>
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
     </application>
 </manifest>
