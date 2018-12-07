@@ -84,7 +84,7 @@
                         android:id="@+id/gender_spinner"
                         android:layout_width="match_parent"
                         android:layout_height="36dp"
-                        android:entries="@array/string_group_sizes" />
+                        android:entries="@array/string_genders" />
                 </FrameLayout>
             </RelativeLayout>
         </LinearLayout>
