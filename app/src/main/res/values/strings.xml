@@ -16,4 +16,8 @@
     <string name="button_request_driver">Request Driver</string>
     <string name="confirm_driver_request_title">Confirm Driver Request?</string>
     <string name="confirm_driver_request_body">Are you sure you want to dispatch a driver to your current location?</string>
+    <string name="remarks_optional">Remarks (optional)</string>
+    <string name="bacon_ipsum">Spicy jalapeno bacon ipsum dolor amet alcatra burgdoggen kevin sausage meatloaf, hamburger swine tongue filet mignon pastrami venison bresaola jerky. Meatball sirloin frankfurter, ham t-bone cow strip steak beef capicola ball tip. Picanha salami corned beef frankfurter, tri-tip fatback beef ribs. Short loin shank pork loin kevin, tail spare ribs ball tip picanha short ribs shoulder ground round brisket hamburger alcatra bacon. Meatball andouille fatback shoulder cow, tongue venison. Pork chop jowl biltong porchetta.</string>
+    <string name="group_size">Group Size</string>
+    <string name="gender">Gender</string>
 </resources>
