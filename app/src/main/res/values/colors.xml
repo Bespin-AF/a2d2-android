@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <color name="colorPrimary">#165B9E</color>
     <color name="colorPrimaryDark">#000b43</color>
     <color name="colorAccent">#5688cf</color>
@@ -7,4 +7,5 @@
     <color name="textInputBackgroundColor">#FFFFFF</color>
     <color name="buttonText">#707070</color>
     <color name="buttonColor">#5688cf</color>
+    <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">#cccccc</color><!-- Border/text color for unfocused TextInputLayouts -->
 </resources>
