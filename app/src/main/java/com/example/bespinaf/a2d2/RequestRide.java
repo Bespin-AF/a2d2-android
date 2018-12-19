@@ -13,7 +13,7 @@ import android.view.View;
 import org.w3c.dom.Text;
 
 public class RequestRide extends AppCompatActivity {
-    private final String ERROR_MESSAGE_REQUIRED = getResources().getString(R.string.a2d2_field_required);
+    private String ERROR_MESSAGE_REQUIRED;
 
     TextInputEditText mNameTextEdit;
 
@@ -21,6 +21,8 @@ public class RequestRide extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_ride);
+
+        ERROR_MESSAGE_REQUIRED = getResources().getString(R.string.a2d2_field_required);
 
         mNameTextEdit = (TextInputEditText) findViewById(R.id.activity_ride_request_name_text_edit);
         mNameTextEdit.addTextChangedListener(new TextWatcher() {

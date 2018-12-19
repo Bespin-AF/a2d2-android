@@ -11,6 +11,7 @@ import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.uiautomator.UiDevice;
 import android.support.test.uiautomator.UiObject;
+import android.support.test.uiautomator.UiSelector;
 import android.util.Log;
 import android.widget.Button;
 
@@ -65,11 +66,6 @@ public class test_user_enters_name {
     public void hasActivityLoaded(){ assertNotNull(mActivity);  }
 
     @Test
-    public void hasNameLabel(){
-        onView(withText(R.string.activity_request_ride_name));
-    }
-
-    @Test
     public void hasNameTextEdit(){ onView(withId(R.id.activity_ride_request_name_text_edit)); }
 
     @Test
@@ -84,34 +80,28 @@ public class test_user_enters_name {
         assertEquals(mActivity.getResources().getString(R.string.a2d2_field_required),mNameInputLayout.getError().toString());
     }
 
+    //ensures the request button exists
     @Test
-    public void requestDriverButtonClicked_ConfirmationPopupShows(){
-        //Ensures the request driver button exists and clicks on it
+    public void hasRequestDriverButton(){
         final Button buttonRequestDriver = mActivity.findViewById(R.id.button_request_driver);
         assertNotNull(buttonRequestDriver);
+    }
 
+    @Test
+    public void requestDriverButtonClicked_ConfirmationPopupShows(){
+        final Button buttonRequestDriver = mActivity.findViewById(R.id.button_request_driver);
+        //enters name into name field
+        mActivity.runOnUiThread(()->{ mNameEditText.setText(R.string.bacon_ipsum); });
+        //clicks button to request ride
         mInstrumentation.runOnMainSync(new Runnable() {
             @Override
             public void run() {
                 buttonRequestDriver.performClick();
             }
         });
-
-        /*mActivity.runOnUiThread(()->{
-            System.out.println("A2D2: mNameInputLayout error in UI Thread - " + mNameInputLayout.getError());
-            errorMessage = mNameInputLayout.getError().toString();
-
-            assertNotNull(errorMessage);
-            //String errorText = mNameInputLayout.getError().toString();
-        });*/
-
-        //onView(withText("Required*"));
-
-        //makes sure that there is a button
-//        final UiObject buttonDenyLocationPermission = mDevice.findObject(
-//                new UiSelector()
-//                        .clickable(true)
-//                        .text(R.string.dialog_okay)
-//        );
+        //Verifies the that the confirmation popup displays
+        Espresso.onView(withText(R.string.dialog_okay))
+                .inRoot(withDecorView(not(is(mActivity.getWindow().getDecorView()))))
+                .check(matches(isDisplayed()));
     }
 }
