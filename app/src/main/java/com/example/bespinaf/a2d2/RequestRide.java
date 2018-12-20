@@ -10,7 +10,10 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 
+import org.w3c.dom.Text;
+
 public class RequestRide extends AppCompatActivity {
+  
     TextInputLayout mPhoneNumberTextLayout;
     TextInputEditText mPhoneNumberEditText;
 
@@ -19,10 +22,11 @@ public class RequestRide extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_ride);
 
-         mPhoneNumberTextLayout = (TextInputLayout) findViewById(R.id.activity_request_ride_phone_number_text_input_layout);
+        mPhoneNumberTextLayout = (TextInputLayout) findViewById(R.id.activity_request_ride_phone_number_text_input_layout);
 
         mPhoneNumberEditText = (TextInputEditText) findViewById(R.id.activity_ride_request_phone_number_text_edit);
         mPhoneNumberEditText.addTextChangedListener(new TextWatcher() {
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -58,13 +62,14 @@ public class RequestRide extends AppCompatActivity {
         mPhoneNumberTextLayout.setError("");
         AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog_Alert);
 
+        setNameTextLayoutErrorMessage("");
+
+        AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog_Alert);
         mDialogBuilder.setTitle(R.string.confirm_driver_request_title)
                 .setMessage(R.string.confirm_driver_request_body)
                 .setPositiveButton("OKAY", (dialog, which) -> {
 
                 })
                 .show();
-
     }
-
 }
