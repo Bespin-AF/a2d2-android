@@ -23,4 +23,7 @@
     <string name="gender">Gender</string>
     <string name="activity_request_ride_name">Name</string>
     <string name="a2d2_field_required">Required*</string>
+    <string name="activity_request_ride_phone_number">Phone Number</string>
+    <string name="test_phone_number">1234567890</string>
+    <string name="error_phone_number">Please enter a 10 digit phone number with no -\'s or spaces</string>
 </resources>

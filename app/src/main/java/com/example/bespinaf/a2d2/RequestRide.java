@@ -13,19 +13,20 @@ import android.view.View;
 import org.w3c.dom.Text;
 
 public class RequestRide extends AppCompatActivity {
-    private String ERROR_MESSAGE_REQUIRED;
-
-    TextInputEditText mNameTextEdit;
+  
+    TextInputLayout mPhoneNumberTextLayout;
+    TextInputEditText mPhoneNumberEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_ride);
 
-        ERROR_MESSAGE_REQUIRED = getResources().getString(R.string.a2d2_field_required);
+        mPhoneNumberTextLayout = (TextInputLayout) findViewById(R.id.activity_request_ride_phone_number_text_input_layout);
 
-        mNameTextEdit = (TextInputEditText) findViewById(R.id.activity_ride_request_name_text_edit);
-        mNameTextEdit.addTextChangedListener(new TextWatcher() {
+        mPhoneNumberEditText = (TextInputEditText) findViewById(R.id.activity_ride_request_phone_number_text_edit);
+        mPhoneNumberEditText.addTextChangedListener(new TextWatcher() {
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -33,10 +34,10 @@ public class RequestRide extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(mNameTextEdit.getText().length() == 0){
-                    setNameTextLayoutErrorMessage(ERROR_MESSAGE_REQUIRED);
+                if(mPhoneNumberEditText.getText().length() == 0){
+                    mPhoneNumberTextLayout.setError(getString(R.string.a2d2_field_required));
                 } else {
-                    setNameTextLayoutErrorMessage("");
+                    mPhoneNumberTextLayout.setError("");
                 }
             }
 
@@ -49,10 +50,17 @@ public class RequestRide extends AppCompatActivity {
     }
 
     public void btnRequestDriver_Clicked(View view) {
-        if(mNameTextEdit.length() == 0){
-            setNameTextLayoutErrorMessage(ERROR_MESSAGE_REQUIRED);
+
+        if(mPhoneNumberEditText.length() == 0){
+            mPhoneNumberTextLayout.setError(getString(R.string.a2d2_field_required));
+            return;
+        }else if(mPhoneNumberEditText.length() < 10){
+            mPhoneNumberTextLayout.setError(getString(R.string.error_phone_number));
             return;
         }
+
+        mPhoneNumberTextLayout.setError("");
+        AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog_Alert);
 
         setNameTextLayoutErrorMessage("");
 
@@ -63,10 +71,5 @@ public class RequestRide extends AppCompatActivity {
 
                 })
                 .show();
-    }
-
-    public void setNameTextLayoutErrorMessage(String message){
-        TextInputLayout mNameTextLayout  = (TextInputLayout) findViewById(R.id.activity_request_ride_name_text_input_layout);
-        mNameTextLayout.setError(message);
     }
 }
