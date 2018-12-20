@@ -7,4 +7,20 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+
+    <style name="activity_a2d2_text_input_layout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="boxStrokeColor">@color/textColor</item>
+        <item name="hintTextAppearance">@style/text_input_layout_hint_text_focused</item>
+
+    </style>
+
+    <style name="text_input_layout_error_appearance" parent="@android:style/TextAppearance">
+        <item name="android:textColor">#ff3333</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="text_input_layout_hint_text_focused">
+        <item name="android:textColor">@color/textColor</item>
+        <item name="android:textSize">15sp</item>
+    </style>
 </resources>
