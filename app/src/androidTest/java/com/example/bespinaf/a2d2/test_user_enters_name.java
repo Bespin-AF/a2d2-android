@@ -47,6 +47,7 @@ public class test_user_enters_name {
     private Instrumentation mInstrumentation;
     private Instrumentation.ActivityMonitor mRulesMonitor;
     private TextInputEditText mNameEditText;
+    private TextInputEditText mPhoneNumberEditText;
     private TextInputLayout mNameInputLayout;
     private MaterialButton mRequestDriverButton;
     @Nullable
@@ -60,6 +61,7 @@ public class test_user_enters_name {
         mRequestDriverButton = mActivity.findViewById(R.id.button_request_driver);
         mNameInputLayout = (TextInputLayout) mActivity.findViewById(R.id.activity_request_ride_name_text_input_layout);
         mNameEditText = (TextInputEditText) mActivity.findViewById(R.id.activity_ride_request_name_text_edit);
+        mPhoneNumberEditText = (TextInputEditText) mActivity.findViewById(R.id.activity_ride_request_phone_number_text_edit);
     }
 
     @Test
@@ -92,6 +94,11 @@ public class test_user_enters_name {
         final Button buttonRequestDriver = mActivity.findViewById(R.id.button_request_driver);
         //enters name into name field
         mActivity.runOnUiThread(()->{ mNameEditText.setText(R.string.bacon_ipsum); });
+
+        //enters number into number field
+        mActivity.runOnUiThread(() -> {
+            mPhoneNumberEditText.setText("1234567890");
+        });
         //clicks button to request ride
         mInstrumentation.runOnMainSync(new Runnable() {
             @Override
