@@ -2,6 +2,7 @@ package com.example.bespinaf.a2d2;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -173,6 +174,9 @@ public class RequestRide extends AppCompatActivity implements LocationListener {
                                 .toString(), strCurrentDate, mLatitude, mLongitude);
 
                         mRequestsReference.push().setValue(rideRequest);
+
+                        Intent intent = new Intent(this, RideStatus.class);
+                        startActivity(intent);
 
                     } catch (Error exception) {
 
