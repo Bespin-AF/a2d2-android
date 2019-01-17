@@ -155,7 +155,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:textColor="@color/textColor"
-                    android:inputType="textLongMessage"
+                    android:inputType="textMultiLine"
                     android:gravity="start"
                     android:maxLength="255"
                     android:text="" />
