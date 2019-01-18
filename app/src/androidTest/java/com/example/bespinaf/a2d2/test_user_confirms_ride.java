@@ -65,32 +65,24 @@ public class test_user_confirms_ride {
     }
 
     @Test
-    @UiThreadTest
     public void clickConfirmButton_rideStatusPageOpens() {
 
 
         final Button buttonRequestDriver = mActivity.findViewById(R.id.button_request_driver);
         assertNotNull(buttonRequestDriver);
 
-        mInstrumentation.runOnMainSync(new Runnable() {
-            @Override
-            public void run() {
+        getInstrumentation().runOnMainSync(()->{
+            mNameEditText.setText("Scott Yamamoto");
+            mPhoneNumberEditText.setText("8087386925");
 
-                mNameEditText.setText("AUTOMATED NAME ENTRY");
-                mPhoneNumberEditText.setText("1234567890");
-
-                buttonRequestDriver.performClick();
-
-                onView(withText(R.string.dialog_okay))
-                        .inRoot(withDecorView(IsNot.not(is(mActivity.getWindow().getDecorView()))))
-                        .check(matches(isDisplayed())).perform(click());
-            }
-
+            buttonRequestDriver.performClick();
         });
 
+        onView(withText(R.string.dialog_okay))
+                .inRoot(withDecorView(IsNot.not(is(mActivity.getWindow().getDecorView()))))
+                .check(matches(isDisplayed())).perform(click());
 
-
-        Activity mRideStatusActivity = mInstrumentation.waitForMonitorWithTimeout(mRideStatusMonitor, 10);
+        Activity mRideStatusActivity = mInstrumentation.waitForMonitorWithTimeout(mRideStatusMonitor, 1000);
         assertNotNull(mRideStatusActivity);
     }
 
