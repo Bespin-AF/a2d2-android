@@ -3,7 +3,6 @@ package com.example.bespinaf.a2d2;
 import android.app.Instrumentation;
 import android.support.design.widget.TextInputEditText;
 import android.support.test.espresso.Espresso;
-import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.uiautomator.UiDevice;
 import android.widget.Button;
@@ -50,9 +49,9 @@ public class test_user_enters_remarks {
 
     @Test
     public void inputHasMaximumCharacterValue(){
-        onView(withId(R.id.et_Remarks));
+        onView(withId(R.id.request_ride_remarks_edit_text));
 
-        final TextInputEditText editTextRemarks = mActivity.findViewById(R.id.et_Remarks);
+        final TextInputEditText editTextRemarks = mActivity.findViewById(R.id.request_ride_remarks_edit_text);
 
         mActivity.runOnUiThread(new Runnable() {
             @Override

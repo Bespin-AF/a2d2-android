@@ -7,12 +7,13 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Bundle;
+import android.support.design.button.MaterialButton;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -22,24 +23,33 @@ import com.example.bespinaf.a2d2.utilities.Request;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import org.w3c.dom.Text;
-
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static com.example.bespinaf.a2d2.R.style.Theme_AppCompat_Light_Dialog_Alert;
 
 public class RequestRide extends AppCompatActivity implements LocationListener {
 
-    TextInputLayout mPhoneNumberTextLayout;
-    TextInputEditText mPhoneNumberEditText;
-    TextInputLayout mNameTextLayout;
+    @BindView(R.id.activity_ride_request_name_text_edit)
     TextInputEditText mNameEditText;
-    Spinner mGroupSizeSpinner;
+    @BindView(R.id.activity_request_ride_name_text_input_layout)
+    TextInputLayout mNameTextLayout;
+    @BindView(R.id.activity_ride_request_phone_number_text_edit)
+    TextInputEditText mPhoneNumberEditText;
+    @BindView(R.id.activity_request_ride_phone_number_text_input_layout)
+    TextInputLayout mPhoneNumberTextLayout;
+    @BindView(R.id.gender_spinner)
     Spinner mGenderSpinner;
+    @BindView(R.id.group_size_spinner)
+    Spinner mGroupSizeSpinner;
+    @BindView(R.id.request_ride_remarks_edit_text)
     TextInputEditText mRemarksEditText;
+    @BindView(R.id.button_request_driver)
+    MaterialButton buttonRequestDriver;
 
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mRequestsReference;
@@ -54,17 +64,7 @@ public class RequestRide extends AppCompatActivity implements LocationListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_ride);
-
-        //Getting the views from the activity
-        mPhoneNumberTextLayout = (TextInputLayout) findViewById(R.id.activity_request_ride_phone_number_text_input_layout);
-        mNameTextLayout = findViewById(R.id.activity_request_ride_name_text_input_layout);
-
-        mPhoneNumberEditText = (TextInputEditText) findViewById(R.id.activity_ride_request_phone_number_text_edit);
-        mNameEditText = findViewById(R.id.activity_ride_request_name_text_edit);
-
-        mGroupSizeSpinner = findViewById(R.id.group_size_spinner);
-        mGenderSpinner = findViewById(R.id.gender_spinner);
-        mRemarksEditText = (TextInputEditText) findViewById(R.id.et_Remarks);
+        ButterKnife.bind(this);
 
         mDialogBuilder = new AlertDialog.Builder(this, Theme_AppCompat_Light_Dialog_Alert);
 
@@ -72,12 +72,9 @@ public class RequestRide extends AppCompatActivity implements LocationListener {
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mRequestsReference = mFirebaseDatabase.getReference().child("requests");
 
-
         mPhoneNumberEditText.addTextChangedListener(new TextWatcher() {
-
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
@@ -93,14 +90,12 @@ public class RequestRide extends AppCompatActivity implements LocationListener {
 
             @Override
             public void afterTextChanged(Editable s) {
-
             }
         });
 
         mNameEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
@@ -113,9 +108,7 @@ public class RequestRide extends AppCompatActivity implements LocationListener {
             }
 
             @Override
-            public void afterTextChanged(Editable s) {
-
-            }
+            public void afterTextChanged(Editable s) { }
         });
 
     }
@@ -135,7 +128,8 @@ public class RequestRide extends AppCompatActivity implements LocationListener {
                 != PackageManager.PERMISSION_GRANTED) {
             mDialogBuilder.setTitle(R.string.dialog_title_LocationPermissionDenied)
                     .setMessage(R.string.error_LocationPermissionDenied)
-                    .setPositiveButton("OKAY", ((dialog, which) -> { }))
+                    .setPositiveButton("OKAY", ((dialog, which) -> {
+                    }))
                     .show();
             return;
         }
@@ -143,6 +137,7 @@ public class RequestRide extends AppCompatActivity implements LocationListener {
         LocationManager ourLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         ourLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (LocationListener) this);
 
+        //TODO: MAKE THIS A SEPARATE METHOD
         //checks the phone number field to make sure that the data is valid
         if (mPhoneNumberEditText.length() == 0) {
             mPhoneNumberTextLayout.setError(getString(R.string.a2d2_field_required));
@@ -193,17 +188,15 @@ public class RequestRide extends AppCompatActivity implements LocationListener {
     }
 
     @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
+    public void onStatusChanged(String provider, int status, Bundle extras) { }
 
     @Override
-    public void onProviderEnabled(String provider) {
-
-    }
+    public void onProviderEnabled(String provider) { }
 
     @Override
-    public void onProviderDisabled(String provider) {
+    public void onProviderDisabled(String provider) { }
 
+    @OnClick(R.id.button_request_driver)
+    public void onViewClicked() {
     }
 }
