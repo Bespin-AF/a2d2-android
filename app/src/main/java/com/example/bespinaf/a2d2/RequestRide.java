@@ -59,7 +59,6 @@ public class RequestRide extends AppCompatActivity implements LocationListener {
     private double mLatitude;
     private double mLongitude;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,8 +111,7 @@ public class RequestRide extends AppCompatActivity implements LocationListener {
         });
 
     }
-
-
+    @OnClick(R.id.button_request_driver)
     public void btnRequestDriver_Clicked(View view) {
         boolean isInputValid = true;
         String strGroupSize = mGroupSizeSpinner.getSelectedItem().toString();
@@ -199,4 +197,5 @@ public class RequestRide extends AppCompatActivity implements LocationListener {
     @OnClick(R.id.button_request_driver)
     public void onViewClicked() {
     }
+
 }
