@@ -127,7 +127,7 @@ public class RequestRide extends AppCompatActivity implements LocationListener {
         int intGroupSize = Integer.parseInt(strGroupSize);
 
         //Setting the format of the date field
-        SimpleDateFormat sdfOurFormat = new SimpleDateFormat("yyyy-dd-MM HH:mm:ss +SSSS");
+        SimpleDateFormat sdfOurFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss +SSSS");
         String strCurrentDate = sdfOurFormat.format(Calendar.getInstance().getTime());
 
         //IS THIS OK HERE OR DO WE NEED TO OPEN ON CREATE
@@ -135,7 +135,8 @@ public class RequestRide extends AppCompatActivity implements LocationListener {
                 != PackageManager.PERMISSION_GRANTED) {
             mDialogBuilder.setTitle(R.string.dialog_title_LocationPermissionDenied)
                     .setMessage(R.string.error_LocationPermissionDenied)
-                    .setPositiveButton("OKAY", ((dialog, which) -> { }))
+                    .setPositiveButton("OKAY", ((dialog, which) -> {
+                    }))
                     .show();
             return;
         }
@@ -181,6 +182,8 @@ public class RequestRide extends AppCompatActivity implements LocationListener {
                     } catch (Error exception) {
 
                     }
+
+                }).setNegativeButton(R.string.cancel, (dialog, which) -> {
 
                 })
                 .show();

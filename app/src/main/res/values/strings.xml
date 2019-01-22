@@ -27,4 +27,5 @@
     <string name="test_phone_number">1234567890</string>
     <string name="error_phone_number">Please enter a 10 digit phone number with no -\'s or spaces</string>
     <string name="ride_status_message">Your request has been received by AADD dispatch. \n\nA driver will be dispatched and contact you shortly.</string>
+    <string name="cancel">CANCEL</string>
 </resources>
