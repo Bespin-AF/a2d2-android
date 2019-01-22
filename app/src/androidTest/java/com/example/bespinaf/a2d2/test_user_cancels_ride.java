@@ -70,8 +70,8 @@ public class test_user_cancels_ride {
         assertNotNull(buttonRequestDriver);
 
         getInstrumentation().runOnMainSync(()->{
-            mNameEditText.setText("AS JUSTIN");
-            mPhoneNumberEditText.setText("3345389409");
+            mNameEditText.setText(R.string.test_user_name);
+            mPhoneNumberEditText.setText(R.string.test_phone_number);
 
             buttonRequestDriver.performClick();
         });
@@ -79,11 +79,12 @@ public class test_user_cancels_ride {
         onView(withText(R.string.cancel))
                 .inRoot(withDecorView(IsNot.not(is(mActivity.getWindow().getDecorView()))))
                 .check(matches(isDisplayed())).perform(click());
-//TODO: Check that the popup is actually dismissed
-//        onView(allOf(withText(R.string.cancel),withText(R.string.dialog_okay)))
-//                .inRoot(isDialog())
-//                .check(doesNotExist());
 
+        onView(withText(R.string.test_user_name))
+                .check(matches(isDisplayed()));
+
+        onView(withText(R.string.test_phone_number))
+                .check(matches(isDisplayed()));
 
     }
 }
