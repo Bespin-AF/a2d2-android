@@ -27,6 +27,8 @@
             android:name=".RequestRide"
             android:label="Pickup Request Options"
             android:parentActivityName=".Rules"
-            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity android:name=".RideStatus"></activity>
     </application>
+
 </manifest>

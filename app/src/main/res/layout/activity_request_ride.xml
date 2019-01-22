@@ -21,6 +21,28 @@
         android:orientation="vertical">
 
         <android.support.design.widget.TextInputLayout
+            android:id="@+id/activity_request_ride_name_text_input_layout"
+            app:errorEnabled="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:errorTextAppearance="@style/text_input_layout_error_appearance"
+            android:hint="@string/activity_request_ride_name"
+            android:textColorHint="@color/textColor"
+            style="@style/activity_a2d2_text_input_layout">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/activity_ride_request_name_text_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="100"
+                android:maxLines="1"
+                android:inputType="text"
+                android:scrollHorizontally="true"
+                android:textColor="@color/textColor"
+                app:errorEnabled="true"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
             android:id="@+id/activity_request_ride_phone_number_text_input_layout"
             app:errorEnabled="true"
             android:layout_width="match_parent"
@@ -133,7 +155,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:textColor="@color/textColor"
-                    android:inputType="textLongMessage"
+                    android:inputType="textMultiLine"
                     android:gravity="start"
                     android:maxLength="255"
                     android:text="" />

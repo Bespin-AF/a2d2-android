@@ -48,6 +48,7 @@ public class test_user_enters_phone_number {
     private Instrumentation mInstrumentation;
     private Instrumentation.ActivityMonitor mRulesMonitor;
     private TextInputEditText mPhoneNumberEditText;
+    private TextInputEditText mNameEditText;
     private TextInputLayout mPhoneNumberInputLayout;
     private MaterialButton mRequestDriverButton;
     @Nullable
@@ -61,6 +62,7 @@ public class test_user_enters_phone_number {
         mRequestDriverButton = mActivity.findViewById(R.id.button_request_driver);
         mPhoneNumberInputLayout = (TextInputLayout) mActivity.findViewById(R.id.activity_request_ride_phone_number_text_input_layout);
         mPhoneNumberEditText = (TextInputEditText) mActivity.findViewById(R.id.activity_ride_request_phone_number_text_edit);
+        mNameEditText = (TextInputEditText) mActivity.findViewById(R.id.activity_ride_request_name_text_edit);
     }
 
     @Test
@@ -99,7 +101,9 @@ public class test_user_enters_phone_number {
     @Test
     public void requestDriverButtonClicked_ConfirmationPopupShows() {
         final Button buttonRequestDriver = mActivity.findViewById(R.id.button_request_driver);
-        //enters name into name field
+
+        mActivity.runOnUiThread(()->{ mNameEditText.setText(R.string.bacon_ipsum); });
+        //enters number into number field
         mActivity.runOnUiThread(() -> {
             mPhoneNumberEditText.setText("1234567890");
         });
@@ -120,7 +124,7 @@ public class test_user_enters_phone_number {
     public void phoneNumberNotValid(){
 
         mActivity.runOnUiThread(() -> {
-            mPhoneNumberEditText.setText("1234560");
+            mPhoneNumberEditText.setText("123456");
         });
 
         mInstrumentation.runOnMainSync(() -> {
