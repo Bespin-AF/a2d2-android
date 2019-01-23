@@ -67,7 +67,7 @@ public class Rules extends AppCompatActivity implements ActivityCompat.OnRequest
                         .show();
             }
         } else {
-            //If the user grnats permissions open the request ride page
+            //If the user grants permissions open the request ride page
             Intent intent = new Intent(this, RequestRide.class);
             startActivity(intent);
         }
