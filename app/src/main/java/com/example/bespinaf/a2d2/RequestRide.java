@@ -72,7 +72,7 @@ public class RequestRide extends AppCompatActivity implements LocationListener {
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mRequestsReference = mFirebaseDatabase.getReference().child("requests");
 
-
+        //Handles the Phone Number validation/displays errors
         mPhoneNumberEditText.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -130,7 +130,6 @@ public class RequestRide extends AppCompatActivity implements LocationListener {
         SimpleDateFormat sdfOurFormat = new SimpleDateFormat("yyyy-dd-MM HH:mm:ss +SSSS");
         String strCurrentDate = sdfOurFormat.format(Calendar.getInstance().getTime());
 
-        //IS THIS OK HERE OR DO WE NEED TO OPEN ON CREATE
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             mDialogBuilder.setTitle(R.string.dialog_title_LocationPermissionDenied)
@@ -139,7 +138,7 @@ public class RequestRide extends AppCompatActivity implements LocationListener {
                     .show();
             return;
         }
-
+        //Initializing the location manager
         LocationManager ourLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         ourLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (LocationListener) this);
 
@@ -185,7 +184,7 @@ public class RequestRide extends AppCompatActivity implements LocationListener {
                 })
                 .show();
     }
-
+    //Methods handling location listener feedback
     @Override
     public void onLocationChanged(Location location) {
         mLatitude = location.getLatitude();

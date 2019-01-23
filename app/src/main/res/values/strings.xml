@@ -26,5 +26,8 @@
     <string name="activity_request_ride_phone_number">Phone Number</string>
     <string name="test_phone_number">1234567890</string>
     <string name="error_phone_number">Please enter a 10 digit phone number with no -\'s or spaces</string>
-    <string name="ride_status_message">Your request has been received by AADD dispatch. \n\nA driver will be dispatched and contact you shortly.</string>
+    <string name="ride_status_message">Your request has been received by AADD dispatch. \nA driver will be dispatched and contact you shortly.</string>
+    <string name="a2d2_number_label"><b>A2D2 Number:</b> 850-356-1450</string>
+    <string name="call_a2d2_dispatch">Call A2D2 Dispatch</string>
+    <string name="cancel_ride_request">Cancel Ride Request</string>
 </resources>

@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <!--<item name="android:background">@drawable/app_theme_gradient</item>-->
     </style>
 
     <style name="activity_a2d2_text_input_layout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
@@ -23,4 +24,5 @@
         <item name="android:textColor">@color/textColor</item>
         <item name="android:textSize">15sp</item>
     </style>
+
 </resources>
