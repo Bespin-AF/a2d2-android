@@ -16,4 +16,9 @@ public class Permissions {
         return ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED;
     }
+
+    public static boolean isPhoneCallPermissionGranted(Context context) {
+        return ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE)
+                == PackageManager.PERMISSION_GRANTED;
+    }
 }

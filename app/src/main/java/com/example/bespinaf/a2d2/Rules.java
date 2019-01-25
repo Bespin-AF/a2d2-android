@@ -27,9 +27,7 @@ public class Rules extends AppCompatActivity implements ActivityCompat.OnRequest
 
         mDialogBuilder.setPositiveButton(R.string.dialog_okay, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
+            public void onClick(DialogInterface dialog, int which) { }
         });
     }
 
