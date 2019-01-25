@@ -28,7 +28,8 @@
             android:label="Pickup Request Options"
             android:parentActivityName=".Rules"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-        <activity android:name=".RideStatus"></activity>
+        <activity android:name=".RideStatus" />
+        <activity android:name=".DriverLogin"></activity>
     </application>
 
 </manifest>
