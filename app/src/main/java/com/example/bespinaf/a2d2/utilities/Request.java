@@ -10,7 +10,7 @@ public class Request {
     private String name;
     private String phone;
     private String remarks;
-    private String timeStamp;
+    private String timestamp;
     private double lat;
     private double lon;
 
@@ -18,14 +18,14 @@ public class Request {
 
     }
 
-    public Request(String status, int groupSize, String gender, String name, String phone, String remarks, String timeStamp, double lat, double lon){
+    public Request(String status, int groupSize, String gender, String name, String phone, String remarks, String timestamp, double lat, double lon){
         this.status = status;
         this.groupSize = groupSize;
         this.gender = gender;
         this.name = name;
         this.phone = phone;
         this.remarks = remarks;
-        this.timeStamp = timeStamp;
+        this.timestamp = timestamp;
         this.lat = lat;
         this.lon = lon;
     }
@@ -72,11 +72,11 @@ public class Request {
         this.remarks = remarks;
     }
 
-    public String getTimeStamp() {
-        return timeStamp;
+    public String getTimestamp() {
+        return timestamp;
     }
-    public void setTimeStamp(String timeStamp) {
-        this.timeStamp = timeStamp;
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
     }
 
     public double getLat() {

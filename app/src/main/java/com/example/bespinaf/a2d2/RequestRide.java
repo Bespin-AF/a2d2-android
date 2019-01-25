@@ -119,7 +119,7 @@ public class RequestRide extends AppCompatActivity implements LocationListener {
         int intGroupSize = Integer.parseInt(strGroupSize);
 
         //Setting the format of the date field
-        SimpleDateFormat sdfOurFormat = new SimpleDateFormat("yyyy-dd-MM HH:mm:ss +SSSS");
+        SimpleDateFormat sdfOurFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss +SSSS");
         String strCurrentDate = sdfOurFormat.format(Calendar.getInstance().getTime());
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -172,6 +172,8 @@ public class RequestRide extends AppCompatActivity implements LocationListener {
                     } catch (Error exception) {
 
                     }
+
+                }).setNegativeButton(R.string.cancel, (dialog, which) -> {
 
                 })
                 .show();
