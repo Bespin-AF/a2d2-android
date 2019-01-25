@@ -23,4 +23,9 @@
         <item name="android:textColor">@color/textColor</item>
         <item name="android:textSize">15sp</item>
     </style>
+
+    <style name="button_transparent_with_outline">
+        <item name="android:colorPrimary">@color/buttonTransparent</item>
+        <item name="android:colorAccent">@color/buttonTransparent</item>
+    </style>
 </resources>

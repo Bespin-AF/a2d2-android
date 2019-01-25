@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/app_theme_gradient"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/textColor"
+        android:textAlignment="center"
+        android:textSize="15dp"
+        android:layout_marginLeft="72dp"
+        android:layout_marginRight="72dp"
+        android:layout_marginTop="50dp"
+        android:text="@string/driver_login_welcome_message" />
+
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/activity_driver_login_email_input_layout"
+        app:errorEnabled="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        app:errorTextAppearance="@style/text_input_layout_error_appearance"
+        android:hint="@string/driver_login_email_hint"
+        android:textColorHint="@color/textColor"
+        style="@style/activity_a2d2_text_input_layout">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/activity_driver_login_email_text_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLength="100"
+            android:maxLines="1"
+            android:inputType="textEmailAddress"
+            android:scrollHorizontally="true"
+            android:textColor="@color/textColor"
+            app:errorEnabled="true"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/activity_driver_login_password_input_layout"
+        app:errorEnabled="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:errorTextAppearance="@style/text_input_layout_error_appearance"
+        android:hint="@string/driver_login_password_hint"
+        android:textColorHint="@color/textColor"
+        style="@style/activity_a2d2_text_input_layout">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/activity_driver_login_password_text_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLength="100"
+            android:maxLines="1"
+            android:inputType="textPassword"
+            android:scrollHorizontally="true"
+            android:textColor="@color/textColor"
+            app:errorEnabled="true"/>
+    </android.support.design.widget.TextInputLayout>
+</LinearLayout>
