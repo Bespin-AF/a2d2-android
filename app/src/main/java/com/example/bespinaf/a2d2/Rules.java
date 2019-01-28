@@ -27,9 +27,7 @@ public class Rules extends AppCompatActivity implements ActivityCompat.OnRequest
 
         mDialogBuilder.setPositiveButton(R.string.dialog_okay, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
+            public void onClick(DialogInterface dialog, int which) { }
         });
     }
 
@@ -67,7 +65,7 @@ public class Rules extends AppCompatActivity implements ActivityCompat.OnRequest
                         .show();
             }
         } else {
-            //If the user grnats permissions open the request ride page
+            //If the user grants permissions open the request ride page
             Intent intent = new Intent(this, RequestRide.class);
             startActivity(intent);
         }

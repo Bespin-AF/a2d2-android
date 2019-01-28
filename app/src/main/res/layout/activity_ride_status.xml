@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="8dp"
-    android:background="@color/colorPrimary"
+    android:background="@drawable/app_theme_gradient"
     android:orientation="vertical"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
@@ -27,5 +27,33 @@
         android:textAlignment="center"
         android:textColor="@color/textColor"
         android:textSize="20dp" />
+    
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/a2d2_number_label"
+        android:textAlignment="center"
+        android:textColor="@color/textColor"
+        android:layout_marginTop="16dp"/>
+
+    <android.support.design.button.MaterialButton
+        android:id="@+id/button_call_a2d2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:backgroundTint="@color/buttonColor"
+        android:elevation="6dp"
+        android:text="@string/call_a2d2_dispatch"
+        android:textColor="@color/textColor" />
+
+    <android.support.design.button.MaterialButton
+        android:id="@+id/button_cancel_ride"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:backgroundTint="@color/buttonColor"
+        android:elevation="6dp"
+        android:text="@string/cancel_ride_request"
+        android:textColor="@color/textColor" />
 
 </LinearLayout>

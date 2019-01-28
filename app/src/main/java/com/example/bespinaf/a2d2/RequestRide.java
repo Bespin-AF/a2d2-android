@@ -71,6 +71,7 @@ public class RequestRide extends AppCompatActivity implements LocationListener {
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mRequestsReference = mFirebaseDatabase.getReference().child("requests");
 
+        //Handles the Phone Number validation/displays errors
         mPhoneNumberEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -121,21 +122,18 @@ public class RequestRide extends AppCompatActivity implements LocationListener {
         SimpleDateFormat sdfOurFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss +SSSS");
         String strCurrentDate = sdfOurFormat.format(Calendar.getInstance().getTime());
 
-        //IS THIS OK HERE OR DO WE NEED TO OPEN ON CREATE
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             mDialogBuilder.setTitle(R.string.dialog_title_LocationPermissionDenied)
                     .setMessage(R.string.error_LocationPermissionDenied)
-                    .setPositiveButton("OKAY", ((dialog, which) -> {
-                    }))
+                    .setPositiveButton("OKAY", ((dialog, which) -> { }))
                     .show();
             return;
         }
-
+        //Initializing the location manager
         LocationManager ourLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         ourLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (LocationListener) this);
 
-        //TODO: MAKE THIS A SEPARATE METHOD
         //checks the phone number field to make sure that the data is valid
         if (mPhoneNumberEditText.length() == 0) {
             mPhoneNumberTextLayout.setError(getString(R.string.a2d2_field_required));
@@ -180,7 +178,7 @@ public class RequestRide extends AppCompatActivity implements LocationListener {
                 })
                 .show();
     }
-
+    //Methods handling location listener feedback
     @Override
     public void onLocationChanged(Location location) {
         mLatitude = location.getLatitude();
