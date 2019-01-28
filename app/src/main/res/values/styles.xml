@@ -24,5 +24,4 @@
         <item name="android:textColor">@color/textColor</item>
         <item name="android:textSize">15sp</item>
     </style>
-
 </resources>
