@@ -13,6 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".RideRequests"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,7 +31,7 @@
             android:parentActivityName=".Rules"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity android:name=".RideStatus" />
-        <activity android:name=".DriverLogin"></activity>
+        <activity android:name=".DriverLogin" />
     </application>
 
 </manifest>
