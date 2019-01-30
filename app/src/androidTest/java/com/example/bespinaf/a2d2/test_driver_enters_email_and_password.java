@@ -134,11 +134,11 @@ public class test_driver_enters_email_and_password {
             public void run() {
                 TextInputEditText mEmailInput = (TextInputEditText)
                         mActivity.findViewById(R.id.activity_driver_login_email_text_edit);
-                mEmailInput.setText("testemail@gmail.com");
+                mEmailInput.setText(R.string.TEST_DRIVER_EMAIL);
 
                 TextInputEditText mPasswordInput = (TextInputEditText)
                         mActivity.findViewById(R.id.activity_driver_login_password_text_edit);
-                mPasswordInput.setText("testpassword");
+                mPasswordInput.setText(R.string.TEST_DRIVER_PASSWORD);
             }
         });
 
