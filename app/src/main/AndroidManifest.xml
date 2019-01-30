@@ -13,6 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".RideRequests"
+            android:label="Ride Requests"
+            ></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,8 +32,14 @@
             android:label="Pickup Request Options"
             android:parentActivityName=".Rules"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-        <activity android:name=".RideStatus" />
-        <activity android:name=".DriverLogin"></activity>
+        <activity android:name=".RideStatus"
+            android:label="Ride Status"
+            android:parentActivityName=".RequestRide"
+            />
+        <activity android:name=".DriverLogin"
+            android:label="Driver Login"
+            android:parentActivityName=".MainActivity"
+            />
     </application>
 
 </manifest>
