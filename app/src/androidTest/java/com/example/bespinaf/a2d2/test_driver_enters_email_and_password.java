@@ -46,7 +46,6 @@ public class test_driver_enters_email_and_password {
     private DriverLogin mActivity;
     private Instrumentation mInstrumentation;
     private Instrumentation.ActivityMonitor mRideRequestsMonitor;
-    private RideRequestAdapter mRideRequestAdapter;
 
     @Before
     public void setUp(){
@@ -147,46 +146,6 @@ public class test_driver_enters_email_and_password {
 
         Activity RideRequests = mInstrumentation.waitForMonitorWithTimeout(mRideRequestsMonitor, 10000);
         Assert.assertNotNull(RideRequests);
-    }
-
-    @Test
-    public void doJobRequestsPopulate(){
-        mInstrumentation.runOnMainSync(()->{
-            TextInputEditText mEmailInput = (TextInputEditText)
-                    mActivity.findViewById(R.id.activity_driver_login_email_text_edit);
-            TextInputEditText mPasswordInput = (TextInputEditText)
-                    mActivity.findViewById(R.id.activity_driver_login_password_text_edit);
-            mEmailInput.setText("testemail@gmail.com");
-            mEmailInput.setText("testpassword");
-        });
-
-        Espresso.onView(ViewMatchers.withId(R.id.button_driver_login)).perform(ViewActions.click());
-        Activity RideRequests = mInstrumentation.waitForMonitorWithTimeout(mRideRequestsMonitor, 10000);
-
-        // Get a reference to our ride requests
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("riderequests");
-
-        int RideRequestRecyclerViewResourceId = 0;
-        ArrayList<Request> RideRequestArrayList = new ArrayList<Request>();
-
-        //mRideRequestAdapter = new RideRequestAdapter(RideRequests, RideRequestRecyclerViewResourceId,
-        //        RideRequestArrayList);
-
-        // Attach a listener to read the data at our posts reference
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Request rideRequest = dataSnapshot.getValue(Request.class);
-                RideRequestArrayList.add(rideRequest);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
     }
 
     @After
