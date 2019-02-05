@@ -112,6 +112,7 @@ public class RequestRide extends AppCompatActivity implements LocationListener {
         });
 
     }
+
     @OnClick(R.id.button_request_driver)
     public void btnRequestDriver_Clicked(View view) {
         boolean isInputValid = true;
@@ -159,7 +160,7 @@ public class RequestRide extends AppCompatActivity implements LocationListener {
                 .setMessage(R.string.confirm_driver_request_body)
                 .setPositiveButton("OKAY", (dialog, which) -> {
                     try {
-                        Request rideRequest = new Request("", intGroupSize, mGenderSpinner
+                        Request rideRequest = new Request("Available", intGroupSize, mGenderSpinner
                                 .getSelectedItem().toString(), mNameEditText.getText().toString(),
                                 mPhoneNumberEditText.getText().toString(), mRemarksEditText.getText()
                                 .toString(), strCurrentDate, mLatitude, mLongitude);
@@ -175,7 +176,7 @@ public class RequestRide extends AppCompatActivity implements LocationListener {
 
                 }).setNegativeButton(R.string.cancel, (dialog, which) -> {
 
-                })
+        })
                 .show();
     }
     //Methods handling location listener feedback
