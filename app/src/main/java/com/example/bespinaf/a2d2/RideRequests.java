@@ -3,10 +3,13 @@ package com.example.bespinaf.a2d2;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.bespinaf.a2d2.adapters.RideRequestAdapter;
 import com.example.bespinaf.a2d2.utilities.Request;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -48,33 +51,16 @@ public class RideRequests extends AppCompatActivity {
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mRequestsReference = mFirebaseDatabase.getReference().child("requests");
 
-
         mRequestsReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                //Request request = dataSnapshot.getValue(Request.class);
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    Request currentRequest = new Request();
-                    currentRequest = ds.getValue(Request.class);
-                    Log.e("***Request populated***", ds.getValue().toString() + currentRequest.toString());
-                    //getting each object and adding it to the list of objects
-//                    currentRequest.setDriver(ds.child("driver").getValue().toString());
-//                    currentRequest.setGender(ds.child("gender").getValue().toString());
-//                    currentRequest.setPhone(ds.child("phone").getValue().toString());
-//                    currentRequest.setName(ds.child("name").getValue().toString());
-//                    currentRequest.setGroupSize(Integer.parseInt(ds.child("groupSize").getValue().toString()));
-//                    currentRequest.setLon((double) ds.child("lon").getValue());
-//                    currentRequest.setLat((double) ds.child("lat").getValue());
-//                    currentRequest.setRemarks(ds.child("remarks").getValue().toString());
-//                    currentRequest.setStatus(ds.child("status").getValue().toString());
-//                    currentRequest.setTimestamp(ds.child("timestamp").getValue().toString());
+                    Request currentRequest = ds.getValue(Request.class);
+
                     mCurrentRequests.add(currentRequest);
                 }
 
                 setRecyclerViews(mCurrentRequests);
-
-                Toast.makeText(RideRequests.this, dataSnapshot.toString(),
-                        Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -86,8 +72,43 @@ public class RideRequests extends AppCompatActivity {
     }
 
     public void setRecyclerViews(List<Request> ourRequests) {
-        for (Request requestItem : ourRequests) {
 
+        ArrayList<Request> listAvailable = new ArrayList<>();
+        ArrayList<Request> listInProgress = new ArrayList<>();
+        ArrayList<Request> listCompleted = new ArrayList<>();
+        //TODO Handle if there is a status that is not listed
+        // List<Request> listNA;
+
+        for (Request requestItem : ourRequests) {
+            Log.e("**STATUS", requestItem.getStatus());
+            if(requestItem.getStatus().equals("Available")){
+                listAvailable.add(requestItem);
+            }else if(requestItem.getStatus().equals("In Progress")){
+                listInProgress.add(requestItem);
+            }else if(requestItem.getStatus().equals("Completed")){
+                listCompleted.add(requestItem);
+            }
         }
+
+        Log.e("***LIST VALUES",  listAvailable.toString() + listInProgress + listCompleted);
+        //inflate the recycler views
+
+        inflateRecyclerView(rideRequestsAvailableRecyclerView, listAvailable);
+        inflateRecyclerView(rideRequestsInProgressRecyclerView, listInProgress);
+        inflateRecyclerView(rideRequestsCompletedRecyclerView, listCompleted);
+    }
+
+    public void inflateRecyclerView(RecyclerView view, ArrayList<Request> list){
+        RideRequestAdapter adapter = new RideRequestAdapter(list);
+        LinearLayoutManager llmRequestManager = new LinearLayoutManager(this);
+        view.setLayoutManager(llmRequestManager);
+
+        //Sets the dividers between items in the recycler view
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(
+                view.getContext(),
+                llmRequestManager.getOrientation());
+        view.addItemDecoration(dividerItemDecoration);
+
+        view.setAdapter(adapter);
     }
 }
