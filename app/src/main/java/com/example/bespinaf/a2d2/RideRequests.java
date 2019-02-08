@@ -54,6 +54,7 @@ public class RideRequests extends AppCompatActivity {
         mRequestsReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                mCurrentRequests.clear();
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     Request currentRequest = ds.getValue(Request.class);
 
