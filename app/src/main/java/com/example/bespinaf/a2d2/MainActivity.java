@@ -31,7 +31,8 @@ public class MainActivity extends AppCompatActivity {
      */
     @OnClick(R.id.button_navigate_to_rules)
     public void openRules(View view) {
-        Intent intent = new Intent(this, Rules.class);
+        //TODO: nav to rules
+        Intent intent = new Intent(this, RideRequests.class);
         startActivity(intent);
     }
 

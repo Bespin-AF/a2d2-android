@@ -49,4 +49,8 @@
     <string name="TEST_DRIVER_EMAIL">cooldriver@realandroidemail.com</string>
     <string name="TEST_DRIVER_PASSWORD">SecurePassword</string>
 
+    <string name="request_ride_available">Available</string>
+    <string name="request_ride_in_progress">In Progress</string>
+    <string name="request_ride_completed">Completed</string>
+
 </resources>
