@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <RelativeLayout
+    android:id="@+id/item_ride_request"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/textColor"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <TextView
+            android:id="@+id/card_view_group_size_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="GROUP SIZE" />
+
+        <TextView
+            android:id="@+id/card_view_gender_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="GENDER" />
+
+        <TextView
+            android:id="@+id/card_view_timestamp_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/card_view_group_size_text_view"
+            android:text="TIMESTAMP" />
+
+    </RelativeLayout>
