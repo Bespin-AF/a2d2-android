@@ -24,4 +24,16 @@
         <item name="android:textColor">@color/textColor</item>
         <item name="android:textSize">15sp</item>
     </style>
+
+    <style name="DriverTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimaryDriver</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkDriver</item>
+    </style>
+
+    <style name="DriverButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="cornerRadius">20dp</item>
+        <item name="android:textColor">@color/textColorPrimary</item>
+    </style>
 </resources>

@@ -46,7 +46,8 @@
     <string name="become_a_driver"><u>Become a Driver</u></string>
     <string name="driver_login">Login</string>
 
-    <string name="all_default_message_from_driver">This your A2D2 driver. Im on my way!</string>
+    <string name="ride_request_details_contact_rider_button_text">Contact Rider</string>
+    <string name="all_default_message_from_driver">This is your A2D2 driver. I\'m on my way!</string>
 
     <string name="TEST_DRIVER_EMAIL">cooldriver@realandroidemail.com</string>
     <string name="TEST_DRIVER_PASSWORD">SecurePassword</string>

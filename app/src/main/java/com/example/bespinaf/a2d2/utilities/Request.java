@@ -1,8 +1,11 @@
 package com.example.bespinaf.a2d2.utilities;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Date;
 
-public class Request {
+public class Request implements Parcelable {
 
     private String status;
     private int groupSize;
@@ -15,6 +18,10 @@ public class Request {
     private double lon;
 
     public Request(){
+
+    }
+
+    private Request(Parcel parcel){
 
     }
 
@@ -92,4 +99,61 @@ public class Request {
     public void setLon(double lon) {
         this.lon = lon;
     }
+
+
+    /**
+     * Parcelable Code
+     *     String status;
+     *     int groupSize;
+     *     String gender;
+     *     String name;
+     *     String phone;
+     *     String remarks;
+     *     String timestamp;
+     *     double lat;
+     *     double lon;
+     * */
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(status);
+        dest.writeInt(groupSize);
+        dest.writeString(gender);
+        dest.writeString(name);
+        dest.writeString(phone);
+        dest.writeString(remarks);
+        dest.writeString(timestamp);
+        dest.writeDouble(lat);
+        dest.writeDouble(lon);
+    }
+
+    private static Request readFromParcel(Parcel in){
+        String status = in.readString();
+        int groupSize = in.readInt();
+        String gender = in.readString();
+        String name = in.readString();
+        String phone = in.readString();
+        String remarks = in.readString();
+        String timestamp = in.readString();
+        double lat = in.readDouble();
+        double lon = in.readDouble();
+
+        return new Request(status, groupSize, gender, name, phone, remarks, timestamp, lat, lon);
+    }
+
+    public static final Parcelable.Creator<Request> CREATOR
+            = new Parcelable.Creator<Request>() {
+        public Request createFromParcel(Parcel in) {
+            return readFromParcel(in);
+        }
+
+        public Request[] newArray(int size) {
+            return new Request[size];
+        }
+    };
 }
