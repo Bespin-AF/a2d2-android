@@ -1,24 +1,15 @@
 package com.example.bespinaf.a2d2;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.example.bespinaf.a2d2.adapters.RideRequestAdapter;
 import com.example.bespinaf.a2d2.utilities.Request;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,10 +23,6 @@ public class RideRequests extends AppCompatActivity {
     @BindView(R.id.ride_requests_completed_recycler_view)
     RecyclerView rideRequestsCompletedRecyclerView;
 
-    private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference mRequestsReference;
-
-    public ArrayList<Request> mCurrentRequests = new ArrayList<Request>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,57 +33,32 @@ public class RideRequests extends AppCompatActivity {
         rideRequestsAvailableRecyclerView.setHasFixedSize(true);
         rideRequestsCompletedRecyclerView.setHasFixedSize(true);
         rideRequestsInProgressRecyclerView.setHasFixedSize(true);
-
-        //set up database connection
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        mRequestsReference = mFirebaseDatabase.getReference().child("requests");
-
-        mRequestsReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                mCurrentRequests.clear();
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    Request currentRequest = ds.getValue(Request.class);
-
-                    mCurrentRequests.add(currentRequest);
-                }
-
-                setRecyclerViews(mCurrentRequests);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(RideRequests.this, "THERE WAS AN ERROR CONNECTING",
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
+        setRecyclerViews();
     }
 
-    public void setRecyclerViews(List<Request> ourRequests) {
-
-        ArrayList<Request> listAvailable = new ArrayList<>();
-        ArrayList<Request> listInProgress = new ArrayList<>();
-        ArrayList<Request> listCompleted = new ArrayList<>();
+    private void setRecyclerViews() {
+        ArrayList<Request> ourRequests = DataSourceUtils.getCurrentRequests();
+        ArrayList<Request> listAvailable = getRequestsWithStatus("Available", ourRequests);
+        ArrayList<Request> listInProgress = getRequestsWithStatus("In Progress", ourRequests);
+        ArrayList<Request> listCompleted = getRequestsWithStatus("Completed", ourRequests);
         //TODO Handle if there is a status that is not listed
-        // List<Request> listNA;
 
-        for (Request requestItem : ourRequests) {
-            Log.e("**STATUS", requestItem.getStatus());
-            if(requestItem.getStatus().equals("Available")){
-                listAvailable.add(requestItem);
-            }else if(requestItem.getStatus().equals("In Progress")){
-                listInProgress.add(requestItem);
-            }else if(requestItem.getStatus().equals("Completed")){
-                listCompleted.add(requestItem);
-            }
-        }
-
-        Log.e("***LIST VALUES",  listAvailable.toString() + listInProgress + listCompleted);
         //inflate the recycler views
-
         inflateRecyclerView(rideRequestsAvailableRecyclerView, listAvailable);
         inflateRecyclerView(rideRequestsInProgressRecyclerView, listInProgress);
         inflateRecyclerView(rideRequestsCompletedRecyclerView, listCompleted);
+    }
+
+    private ArrayList<Request> getRequestsWithStatus(String targetStatus,ArrayList<Request> allRequests){
+        ArrayList<Request> targetRequests = new ArrayList<>();
+        for (Request request : allRequests) {
+            if (request.getStatus() == targetStatus) targetRequests.add(request);
+        }
+        return targetRequests;
+    }
+
+    private void refreshData(){
+        setRecyclerViews();
     }
 
     public void inflateRecyclerView(RecyclerView view, ArrayList<Request> list){

@@ -1,7 +1,5 @@
 package com.example.bespinaf.a2d2.utilities;
 
-import java.util.Date;
-
 public class Request {
 
     private String status;

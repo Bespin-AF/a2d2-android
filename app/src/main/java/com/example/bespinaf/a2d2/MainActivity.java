@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        DataSourceUtils.startRequestSync();
     }
 
     /**
@@ -31,8 +32,7 @@ public class MainActivity extends AppCompatActivity {
      */
     @OnClick(R.id.button_navigate_to_rules)
     public void openRules(View view) {
-        //TODO: nav to rules
-        Intent intent = new Intent(this, RideRequests.class);
+        Intent intent = new Intent(this, RequestRide.class); //TODO: replace with rules class after testing
         startActivity(intent);
     }
 

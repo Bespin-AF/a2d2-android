@@ -16,12 +16,13 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.bespinaf.a2d2.utilities.Request;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -51,8 +52,6 @@ public class RequestRide extends AppCompatActivity implements LocationListener {
     @BindView(R.id.button_request_driver)
     MaterialButton buttonRequestDriver;
 
-    private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference mRequestsReference;
 
     private AlertDialog.Builder mDialogBuilder;
 
@@ -67,118 +66,111 @@ public class RequestRide extends AppCompatActivity implements LocationListener {
 
         mDialogBuilder = new AlertDialog.Builder(this, Theme_AppCompat_Light_Dialog_Alert);
 
-        //set up database connection
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        mRequestsReference = mFirebaseDatabase.getReference().child("requests");
+        initTextFieldLiveValidation();
+    }
 
-        //Handles the Phone Number validation/displays errors
-        mPhoneNumberEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (mPhoneNumberEditText.getText().length() == 0) {
-                    mPhoneNumberTextLayout.setError(getString(R.string.a2d2_field_required));
-                } else if (mPhoneNumberEditText.length() < 10) {
-                    mPhoneNumberTextLayout.setError(getString(R.string.error_phone_number));
-                } else {
-                    mPhoneNumberTextLayout.setError("");
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-
-        mNameEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (mNameEditText.getText().length() == 0) {
-                    mNameTextLayout.setError(getString(R.string.a2d2_field_required));
-                } else {
-                    mNameTextLayout.setError("");
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) { }
-        });
-
+    private void initTextFieldLiveValidation(){
+        mPhoneNumberEditText.addTextChangedListener(getPhoneFieldWatcher());
+        mNameEditText.addTextChangedListener(getNameFieldWatcher());
     }
 
     @OnClick(R.id.button_request_driver)
     public void btnRequestDriver_Clicked(View view) {
-        boolean isInputValid = true;
-        String strGroupSize = mGroupSizeSpinner.getSelectedItem().toString();
-        int intGroupSize = Integer.parseInt(strGroupSize);
+        if(isValidData() && confirmRideRequest()){
+            submitRequest();
+        }
+    }
 
-        //Setting the format of the date field
+    private boolean isValidData(){
+        // check all fields and permissions
+        if (hasLocationPermission() && !isTextViewEmpty(mNameEditText) && !isTextViewEmpty(mPhoneNumberEditText)) {
+            return true;
+        }
+        //hasName
+
+        //hasNumber
+        return false;
+    }
+
+
+
+    private void submitRequest(){
+        Request rideRequest = buildRideRequest();
+        DataSourceUtils.sendData(rideRequest);
+        goToStatusPage();
+    }
+
+    private boolean hasLocationPermission(){
+        // Permission NOT Granted
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            String title = getString(R.string .dialog_title_LocationPermissionDenied);
+            String message = getString(R.string.error_LocationPermissionDenied);
+            notify(title, message);
+            return false;
+        }
+        return true;
+    }
+
+    private Request buildRideRequest(){
+        //Build the request
+        //Return valid Request
+        Request rideRequest = new Request();
+
+        //Setting the format of the date field -- can be abstracted
         SimpleDateFormat sdfOurFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss +SSSS");
         String strCurrentDate = sdfOurFormat.format(Calendar.getInstance().getTime());
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            mDialogBuilder.setTitle(R.string.dialog_title_LocationPermissionDenied)
-                    .setMessage(R.string.error_LocationPermissionDenied)
-                    .setPositiveButton("OKAY", ((dialog, which) -> { }))
-                    .show();
-            return;
-        }
+        //Prepare location before use
+
         //Initializing the location manager
         LocationManager ourLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         ourLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (LocationListener) this);
 
         //checks the phone number field to make sure that the data is valid
-        if (mPhoneNumberEditText.length() == 0) {
-            mPhoneNumberTextLayout.setError(getString(R.string.a2d2_field_required));
-            isInputValid = false;
-        } else if (mPhoneNumberEditText.length() < 10) {
-            mPhoneNumberTextLayout.setError(getString(R.string.error_phone_number));
-            isInputValid = false;
+        setPhoneNumberError();
+
+        setNameError();
+
+        if(mPhoneNumberTextLayout.getError() != "" && mNameTextLayout.getError() != "") {
+            //YOU NEED TO STOP
         }
 
-        if (mNameEditText.length() == 0) {
-            mNameTextLayout.setError(getString(R.string.a2d2_field_required));
-            isInputValid = false;
-        }
+        rideRequest.setGroupSize((int) mGroupSizeSpinner.getSelectedItem());
+        rideRequest.setTimestamp(strCurrentDate);
+        rideRequest.setGender(mGenderSpinner.getSelectedItem().toString());
+        rideRequest.setName(mNameEditText.getText().toString());
+        rideRequest.setPhone(mPhoneNumberEditText.getText().toString());
+        rideRequest.setRemarks(mRemarksEditText.getText().toString());
+        rideRequest.setStatus("Available");
+        rideRequest.setLat(mLatitude);
+        rideRequest.setLon(mLongitude);
 
-        if (!isInputValid) {
-            return;
-        }
+        return rideRequest;
+    }
 
-        mPhoneNumberTextLayout.setError("");
+    private void confirmRideRequest(){
         AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(this, Theme_AppCompat_Light_Dialog_Alert);
 
         mDialogBuilder.setTitle(R.string.confirm_driver_request_title)
                 .setMessage(R.string.confirm_driver_request_body)
                 .setPositiveButton("OKAY", (dialog, which) -> {
                     try {
-                        Request rideRequest = new Request("Available", intGroupSize, mGenderSpinner
-                                .getSelectedItem().toString(), mNameEditText.getText().toString(),
-                                mPhoneNumberEditText.getText().toString(), mRemarksEditText.getText()
-                                .toString(), strCurrentDate, mLatitude, mLongitude);
-
-                        mRequestsReference.push().setValue(rideRequest);
-
-                        Intent intent = new Intent(this, RideStatus.class);
-                        startActivity(intent);
-
-                    } catch (Error exception) {
-
-                    }
+                        DataSourceUtils.sendData(rideRequest);
+                    } catch (Error exception) { }
 
                 }).setNegativeButton(R.string.cancel, (dialog, which) -> {
-
-        })
+                    //Some kinda user feedback
+                })
                 .show();
     }
+
+    private void goToStatusPage(){
+        Intent intent = new Intent(this, RideStatus.class);
+        startActivity(intent);
+    }
+
+
     //Methods handling location listener feedback
     @Override
     public void onLocationChanged(Location location) {
@@ -195,8 +187,62 @@ public class RequestRide extends AppCompatActivity implements LocationListener {
     @Override
     public void onProviderDisabled(String provider) { }
 
-    @OnClick(R.id.button_request_driver)
-    public void onViewClicked() {
+    private boolean isTextViewEmpty(EditText editText){
+        return(editText.getText().length() == 0);
     }
 
+    private TextWatcher getNameFieldWatcher(){
+        return new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                setNameError();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) { }
+        };
+    }
+
+    private TextWatcher getPhoneFieldWatcher(){
+        return new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                setPhoneNumberError();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) { }
+        };
+    }
+
+    private void setNameError(){
+        if (isTextViewEmpty(mNameEditText)) {
+            mNameTextLayout.setError(getString(R.string.a2d2_field_required));
+        } else {
+            mNameTextLayout.setError("");
+        }
+    }
+
+    private void setPhoneNumberError(){
+        if (isTextViewEmpty(mPhoneNumberEditText)) {
+            mPhoneNumberTextLayout.setError(getString(R.string.a2d2_field_required));
+        } else if (mPhoneNumberEditText.length() < 10) {
+            mPhoneNumberTextLayout.setError(getString(R.string.error_phone_number));
+        } else {
+            mPhoneNumberTextLayout.setError("");
+        }
+    }
+
+    private void notify(String title, String message){
+        mDialogBuilder.setTitle(title)
+                .setMessage(message)
+                .setPositiveButton("OKAY", ((dialog, which) -> { }))
+                .show();
+    }
 }
