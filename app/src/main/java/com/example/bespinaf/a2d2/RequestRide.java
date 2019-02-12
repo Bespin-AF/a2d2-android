@@ -11,16 +11,15 @@ import android.os.Bundle;
 import android.support.design.button.MaterialButton;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.example.bespinaf.a2d2.utilities.Request;
 
@@ -67,44 +66,31 @@ public class RequestRide extends AppCompatActivity implements LocationListener {
         mDialogBuilder = new AlertDialog.Builder(this, Theme_AppCompat_Light_Dialog_Alert);
 
         initTextFieldLiveValidation();
+        startLocationSync();
     }
 
-    private void initTextFieldLiveValidation(){
+    private void initTextFieldLiveValidation() {
         mPhoneNumberEditText.addTextChangedListener(getPhoneFieldWatcher());
         mNameEditText.addTextChangedListener(getNameFieldWatcher());
     }
 
     @OnClick(R.id.button_request_driver)
     public void btnRequestDriver_Clicked(View view) {
-        if(isValidData() && confirmRideRequest()){
-            submitRequest();
+        if (isValidData()) {
+            confirmRideRequest();
         }
     }
 
-    private boolean isValidData(){
-        // check all fields and permissions
-        if (hasLocationPermission() && !isTextViewEmpty(mNameEditText) && !isTextViewEmpty(mPhoneNumberEditText)) {
-            return true;
-        }
-        //hasName
-
-        //hasNumber
-        return false;
+    // check all fields and permissions
+    private boolean isValidData() {
+        return (hasLocationPermission() && isTextViewNotEmpty(mNameEditText) && isTextViewNotEmpty(mPhoneNumberEditText));
     }
 
-
-
-    private void submitRequest(){
-        Request rideRequest = buildRideRequest();
-        DataSourceUtils.sendData(rideRequest);
-        goToStatusPage();
-    }
-
-    private boolean hasLocationPermission(){
+    private boolean hasLocationPermission() {
         // Permission NOT Granted
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
-            String title = getString(R.string .dialog_title_LocationPermissionDenied);
+            String title = getString(R.string.dialog_title_LocationPermissionDenied);
             String message = getString(R.string.error_LocationPermissionDenied);
             notify(title, message);
             return false;
@@ -112,32 +98,33 @@ public class RequestRide extends AppCompatActivity implements LocationListener {
         return true;
     }
 
-    private Request buildRideRequest(){
-        //Build the request
-        //Return valid Request
+    private void confirmRideRequest() {
+        AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(this, Theme_AppCompat_Light_Dialog_Alert);
+
+        mDialogBuilder.setTitle(R.string.confirm_driver_request_title)
+                .setMessage(R.string.confirm_driver_request_body)
+                .setPositiveButton("OKAY", (dialog, which) -> {
+                    submitRequest();
+                }).setNegativeButton(R.string.cancel, (dialog, which) -> {
+            //Some kinda user feedback
+        }).show();
+    }
+
+    private void submitRequest() {
+        Request rideRequest = buildRideRequest();
+        DataSourceUtils.sendData(rideRequest);
+        goToStatusPage();
+    }
+
+    private boolean isTextViewNotEmpty(EditText editText) {
+        return (editText.getText().length() > 0);
+    }
+
+    private Request buildRideRequest() {
         Request rideRequest = new Request();
 
-        //Setting the format of the date field -- can be abstracted
-        SimpleDateFormat sdfOurFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss +SSSS");
-        String strCurrentDate = sdfOurFormat.format(Calendar.getInstance().getTime());
-
-        //Prepare location before use
-
-        //Initializing the location manager
-        LocationManager ourLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        ourLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (LocationListener) this);
-
-        //checks the phone number field to make sure that the data is valid
-        setPhoneNumberError();
-
-        setNameError();
-
-        if(mPhoneNumberTextLayout.getError() != "" && mNameTextLayout.getError() != "") {
-            //YOU NEED TO STOP
-        }
-
-        rideRequest.setGroupSize((int) mGroupSizeSpinner.getSelectedItem());
-        rideRequest.setTimestamp(strCurrentDate);
+        rideRequest.setGroupSize(Integer.parseInt(mGroupSizeSpinner.getSelectedItem().toString()));
+        rideRequest.setTimestamp(getDateString());
         rideRequest.setGender(mGenderSpinner.getSelectedItem().toString());
         rideRequest.setName(mNameEditText.getText().toString());
         rideRequest.setPhone(mPhoneNumberEditText.getText().toString());
@@ -149,27 +136,24 @@ public class RequestRide extends AppCompatActivity implements LocationListener {
         return rideRequest;
     }
 
-    private void confirmRideRequest(){
-        AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(this, Theme_AppCompat_Light_Dialog_Alert);
+    private String getDateString(){
+        //Setting the format of the date field -- can be abstracted
+        SimpleDateFormat sdfOurFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss +SSSS");
+        return sdfOurFormat.format(Calendar.getInstance().getTime());
+    }
 
-        mDialogBuilder.setTitle(R.string.confirm_driver_request_title)
-                .setMessage(R.string.confirm_driver_request_body)
-                .setPositiveButton("OKAY", (dialog, which) -> {
-                    try {
-                        DataSourceUtils.sendData(rideRequest);
-                    } catch (Error exception) { }
-
-                }).setNegativeButton(R.string.cancel, (dialog, which) -> {
-                    //Some kinda user feedback
-                })
-                .show();
+    private void startLocationSync() {
+        LocationManager ourLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+            return;
+        ourLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
     }
 
     private void goToStatusPage(){
         Intent intent = new Intent(this, RideStatus.class);
         startActivity(intent);
     }
-
 
     //Methods handling location listener feedback
     @Override
@@ -178,19 +162,34 @@ public class RequestRide extends AppCompatActivity implements LocationListener {
         mLongitude = location.getLongitude();
     }
 
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) { }
 
-    @Override
-    public void onProviderEnabled(String provider) { }
-
-    @Override
-    public void onProviderDisabled(String provider) { }
-
-    private boolean isTextViewEmpty(EditText editText){
-        return(editText.getText().length() == 0);
+    private void notify(String title, String message){
+        mDialogBuilder.setTitle(title)
+                .setMessage(message)
+                .setPositiveButton("OKAY", ((dialog, which) -> { }))
+                .show();
     }
 
+    private void setNameError(){
+        if (!isTextViewNotEmpty(mNameEditText)) {
+            mNameTextLayout.setError(getString(R.string.a2d2_field_required));
+        } else {
+            mNameTextLayout.setError("");
+        }
+    }
+
+    private void setPhoneNumberError(){
+        if (!isTextViewNotEmpty(mPhoneNumberEditText)) {
+            mPhoneNumberTextLayout.setError(getString(R.string.a2d2_field_required));
+        } else if (mPhoneNumberEditText.length() < 10) {
+            mPhoneNumberTextLayout.setError(getString(R.string.error_phone_number));
+        } else {
+            mPhoneNumberTextLayout.setError("");
+        }
+    }
+
+
+/*** These are ugly and I'm putting it in the basement ****/
     private TextWatcher getNameFieldWatcher(){
         return new TextWatcher() {
             @Override
@@ -220,29 +219,13 @@ public class RequestRide extends AppCompatActivity implements LocationListener {
             public void afterTextChanged(Editable s) { }
         };
     }
+    
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) { }
 
-    private void setNameError(){
-        if (isTextViewEmpty(mNameEditText)) {
-            mNameTextLayout.setError(getString(R.string.a2d2_field_required));
-        } else {
-            mNameTextLayout.setError("");
-        }
-    }
+    @Override
+    public void onProviderEnabled(String provider) { }
 
-    private void setPhoneNumberError(){
-        if (isTextViewEmpty(mPhoneNumberEditText)) {
-            mPhoneNumberTextLayout.setError(getString(R.string.a2d2_field_required));
-        } else if (mPhoneNumberEditText.length() < 10) {
-            mPhoneNumberTextLayout.setError(getString(R.string.error_phone_number));
-        } else {
-            mPhoneNumberTextLayout.setError("");
-        }
-    }
-
-    private void notify(String title, String message){
-        mDialogBuilder.setTitle(title)
-                .setMessage(message)
-                .setPositiveButton("OKAY", ((dialog, which) -> { }))
-                .show();
-    }
+    @Override
+    public void onProviderDisabled(String provider) { }
 }
