@@ -4,7 +4,8 @@ import android.app.Activity;
 import android.app.Instrumentation;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
-import android.widget.ListView;
+
+import com.example.bespinaf.a2d2.controllers.RideRequests;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -12,7 +13,6 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
-import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static org.hamcrest.core.AllOf.allOf;
 

@@ -1,14 +1,13 @@
 package com.example.bespinaf.a2d2;
 
 import android.app.Instrumentation;
-import android.bluetooth.BluetoothClass;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.uiautomator.UiDevice;
-import android.support.test.uiautomator.UiObject;
-import android.support.test.uiautomator.UiSelector;
 import android.widget.Button;
+
+import com.example.bespinaf.a2d2.controllers.RequestRide;
 
 import org.junit.Before;
 import org.junit.Rule;

@@ -6,6 +6,9 @@ import android.support.design.button.MaterialButton;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.uiautomator.UiDevice;
 
+import com.example.bespinaf.a2d2.controllers.DriverLogin;
+import com.example.bespinaf.a2d2.controllers.MainActivity;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

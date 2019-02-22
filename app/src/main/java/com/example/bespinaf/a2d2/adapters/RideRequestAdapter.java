@@ -9,72 +9,65 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.bespinaf.a2d2.R;
-import com.example.bespinaf.a2d2.utilities.Request;
+import com.example.bespinaf.a2d2.controllers.RideRequests;
+import com.example.bespinaf.a2d2.models.Request;
+import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
+import butterknife.BindView;
+
+
+//Adapts a request objects for use in a recycler view
 public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.RequestViewHolder> {
+
     public static class RequestViewHolder extends RecyclerView.ViewHolder {
-        static RelativeLayout cv;
-        static TextView groupSize;
-        static TextView gender;
-        static TextView timeStamp;
+        //Incompatible with ButterKnife for an unknown reason; will return null if set with ButterKnife
+        RelativeLayout viewLayout;
+        TextView groupSizeTextView;
+        TextView genderTextView;
+        TextView timestampTextView;
 
         RequestViewHolder(View itemView) {
             super(itemView);
-            cv = itemView.findViewById(R.id.item_ride_request);
-            groupSize = itemView.findViewById(R.id.card_view_group_size_text_view);
-            gender = itemView.findViewById(R.id.card_view_gender_text_view);
-            timeStamp = itemView.findViewById(R.id.card_view_timestamp_text_view);
+            groupSizeTextView = itemView.findViewById(R.id.card_view_group_size_text_view);
+            viewLayout = itemView.findViewById(R.id.item_ride_request);
+            genderTextView = itemView.findViewById(R.id.card_view_gender_text_view);
+            timestampTextView = itemView.findViewById(R.id.card_view_timestamp_text_view);
         }
     }
 
     List<Request> requests;
 
+
     public RideRequestAdapter(List<Request> adapterRequests){
         requests = adapterRequests;
     }
+
 
     @Override
     public int getItemCount() {
         return requests.size();
     }
 
+
+    //May be able to refine this later with a deeper understanding of what's happening
     @Override
     public RequestViewHolder onCreateViewHolder(ViewGroup viewGroup, int index) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.card_view_requests, viewGroup, false);
-        RequestViewHolder pvh = new RequestViewHolder(v);
-        return pvh;
+        LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
+        View view = inflater.inflate(R.layout.card_view_requests, viewGroup, false);
+        RequestViewHolder inflatedViewHolder = new RequestViewHolder(view);
+        return inflatedViewHolder;
     }
+
 
     @Override
     public void onBindViewHolder(RequestViewHolder requestViewHolder, int index) {
-        requestViewHolder.groupSize.setText("Group Size: " + requests.get(index).getGroupSize());
-        requestViewHolder.gender.setText(requests.get(index).getGender());
+        Request request = requests.get(index);
+        String timestamp = DataSourceUtils.dateToDisplayFormat(request.getTimestamp());
 
-        String displayDateFormat = "MMM dd, HHmm";
-        String databaseDateFormat = "yyyy-MM-dd HH:mm:ss +SSSS";
-
-        SimpleDateFormat displayDateFormatter =  new SimpleDateFormat(displayDateFormat);
-        SimpleDateFormat databaseDateFormatter = new SimpleDateFormat(databaseDateFormat);
-        String timestamp = "";
-
-        try {
-            Date date = databaseDateFormatter.parse(requests.get(index).getTimestamp());
-            timestamp = displayDateFormatter.format(date);
-        } catch (ParseException pException){
-            Log.e("Parse Exception", "Database contains invalid date format");
-        }
-
-        requestViewHolder.timeStamp.setText(timestamp);
-
-    }
-
-    @Override
-    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
-        super.onAttachedToRecyclerView(recyclerView);
+        requestViewHolder.groupSizeTextView.setText("Group Size: " + request.getGroupSize());
+        requestViewHolder.genderTextView.setText(request.getGender());
+        requestViewHolder.timestampTextView.setText(timestamp);
     }
 }
