@@ -2,42 +2,26 @@ package com.example.bespinaf.a2d2;
 
 import android.app.Activity;
 import android.app.Instrumentation;
-import android.content.Context;
 import android.support.design.widget.TextInputEditText;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.action.ViewActions;
-import android.support.test.espresso.assertion.ViewAssertions;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
-import android.support.test.uiautomator.UiDevice;
 import android.text.InputType;
-import android.widget.ArrayAdapter;
 
-import com.example.bespinaf.a2d2.adapters.RideRequestAdapter;
-import com.example.bespinaf.a2d2.utilities.Request;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.example.bespinaf.a2d2.controllers.DriverLogin;
+import com.example.bespinaf.a2d2.controllers.RideRequests;
 
-import org.hamcrest.Matchers;
-import org.hamcrest.core.AllOf;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withInputType;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.CoreMatchers.containsString;
 
 public class test_driver_enters_email_and_password {
     @Rule

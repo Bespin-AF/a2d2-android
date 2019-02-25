@@ -13,10 +13,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".RideRequests"
+        <activity android:name=".controllers.RideRequests"
             android:label="Ride Requests"
             ></activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".controllers.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,21 +24,21 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Rules"
+            android:name=".controllers.Rules"
             android:label="@string/a2d2_rules_title"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".controllers.MainActivity" />
         <activity
-            android:name=".RequestRide"
+            android:name=".controllers.RequestRide"
             android:label="Pickup Request Options"
-            android:parentActivityName=".Rules"
+            android:parentActivityName=".controllers.Rules"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-        <activity android:name=".RideStatus"
+        <activity android:name=".controllers.RideStatus"
             android:label="Ride Status"
-            android:parentActivityName=".RequestRide"
+            android:parentActivityName=".controllers.RequestRide"
             />
-        <activity android:name=".DriverLogin"
+        <activity android:name=".controllers.DriverLogin"
             android:label="Driver Login"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".controllers.MainActivity"
             />
     </application>
 

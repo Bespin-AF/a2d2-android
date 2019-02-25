@@ -1,6 +1,5 @@
 package com.example.bespinaf.a2d2;
 
-import android.app.Activity;
 import android.app.Instrumentation;
 import android.support.annotation.Nullable;
 import android.support.design.button.MaterialButton;
@@ -10,6 +9,9 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.uiautomator.UiDevice;
 import android.widget.Button;
 
+import com.example.bespinaf.a2d2.controllers.RequestRide;
+import com.example.bespinaf.a2d2.controllers.RideStatus;
+
 import org.hamcrest.core.IsNot;
 import org.junit.Before;
 import org.junit.Rule;
@@ -18,9 +20,7 @@ import org.junit.Test;
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.RootMatchers.isDialog;
 import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;

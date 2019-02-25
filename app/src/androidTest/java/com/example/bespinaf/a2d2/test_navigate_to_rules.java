@@ -10,6 +10,9 @@ import android.support.test.uiautomator.UiObject;
 import android.support.test.uiautomator.UiSelector;
 import android.widget.Button;
 
+import com.example.bespinaf.a2d2.controllers.MainActivity;
+import com.example.bespinaf.a2d2.controllers.Rules;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;

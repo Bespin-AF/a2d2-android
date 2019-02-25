@@ -1,9 +1,8 @@
-package com.example.bespinaf.a2d2.utilities;
-
-import java.util.Date;
+package com.example.bespinaf.a2d2.models;
 
 public class Request {
 
+    private String driver;
     private String status;
     private int groupSize;
     private String gender;
@@ -18,17 +17,8 @@ public class Request {
 
     }
 
-    public Request(String status, int groupSize, String gender, String name, String phone, String remarks, String timestamp, double lat, double lon){
-        this.status = status;
-        this.groupSize = groupSize;
-        this.gender = gender;
-        this.name = name;
-        this.phone = phone;
-        this.remarks = remarks;
-        this.timestamp = timestamp;
-        this.lat = lat;
-        this.lon = lon;
-    }
+    public String getDriver() { return driver; }
+    public void setDriver(String driver) { this.driver = driver; }
 
     public String getStatus() {
         return status;

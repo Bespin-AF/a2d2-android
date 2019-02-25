@@ -8,6 +8,9 @@ import android.support.test.rule.GrantPermissionRule;
 import android.support.test.uiautomator.UiDevice;
 import android.widget.Button;
 
+import com.example.bespinaf.a2d2.controllers.RequestRide;
+import com.example.bespinaf.a2d2.controllers.Rules;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;

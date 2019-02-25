@@ -9,6 +9,9 @@ import android.support.test.uiautomator.UiObjectNotFoundException;
 import android.support.test.uiautomator.UiSelector;
 import android.widget.Button;
 
+import com.example.bespinaf.a2d2.controllers.RequestRide;
+import com.example.bespinaf.a2d2.controllers.Rules;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

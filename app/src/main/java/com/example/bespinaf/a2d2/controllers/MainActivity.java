@@ -1,16 +1,19 @@
-package com.example.bespinaf.a2d2;
+package com.example.bespinaf.a2d2.controllers;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.button.MaterialButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.example.bespinaf.a2d2.R;
+import com.example.bespinaf.a2d2.utilities.ActivityUtils;
+import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends ButterKnifeActivity {
 
     @BindView(R.id.button_navigate_to_rules)
     MaterialButton buttonNavigateToRules;
@@ -20,8 +23,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+        bind(R.layout.activity_main);
+
+        //Initialize application resources
+        DataSourceUtils.initDateFormatters();
     }
 
     /**
@@ -31,9 +36,7 @@ public class MainActivity extends AppCompatActivity {
      */
     @OnClick(R.id.button_navigate_to_rules)
     public void openRules(View view) {
-        //TODO: nav to rules
-        Intent intent = new Intent(this, RideRequests.class);
-        startActivity(intent);
+        ActivityUtils.navigate(this, Rules.class);
     }
 
     /**
@@ -43,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
      */
     @OnClick(R.id.button_main_driver_login)
     public void openDriverLogin(View view) {
-        Intent intent = new Intent(this, DriverLogin.class);
-        startActivity(intent);
+        ActivityUtils.navigate(this, DriverLogin.class);
     }
 }
