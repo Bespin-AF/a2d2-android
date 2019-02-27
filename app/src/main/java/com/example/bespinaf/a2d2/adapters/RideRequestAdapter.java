@@ -1,7 +1,6 @@
 package com.example.bespinaf.a2d2.adapters;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,18 +8,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.bespinaf.a2d2.R;
-import com.example.bespinaf.a2d2.controllers.RideRequests;
 import com.example.bespinaf.a2d2.models.Request;
 import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
 
 import java.util.List;
 
-import butterknife.BindView;
 
-
-//Adapts a request objects for use in a recycler view
+//Adapts request objects for use in a recycler view
 public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.RequestViewHolder> {
 
+    //RecyclerView Cell
     public static class RequestViewHolder extends RecyclerView.ViewHolder {
         //Incompatible with ButterKnife for an unknown reason; will return null if set with ButterKnife
         RelativeLayout viewLayout;
@@ -31,7 +28,7 @@ public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.
         RequestViewHolder(View itemView) {
             super(itemView);
             groupSizeTextView = itemView.findViewById(R.id.card_view_group_size_text_view);
-            viewLayout = itemView.findViewById(R.id.item_ride_request);
+            viewLayout = itemView.findViewById(R.id.ride_request_card_layout);
             genderTextView = itemView.findViewById(R.id.card_view_gender_text_view);
             timestampTextView = itemView.findViewById(R.id.card_view_timestamp_text_view);
         }
