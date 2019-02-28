@@ -8,7 +8,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.bespinaf.a2d2.R;
+import com.example.bespinaf.a2d2.controllers.MainActivity;
 import com.example.bespinaf.a2d2.models.Request;
+import com.example.bespinaf.a2d2.utilities.ActivityUtils;
 import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
 
 import java.util.List;
@@ -19,22 +21,32 @@ public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.
 
     //RecyclerView Cell
     public static class RequestViewHolder extends RecyclerView.ViewHolder {
-        //Incompatible with ButterKnife for an unknown reason; will return null if set with ButterKnife
         RelativeLayout viewLayout;
         TextView groupSizeTextView;
         TextView genderTextView;
         TextView timestampTextView;
+        View.OnClickListener navigateToRideRequestDetails = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                requests.get(0);//TODO Resolve Index
+                //RideRequestDetails
+                ActivityUtils.navigate(v.getContext(), MainActivity.class);
+            }
+        };
 
         RequestViewHolder(View itemView) {
             super(itemView);
-            groupSizeTextView = itemView.findViewById(R.id.card_view_group_size_text_view);
-            viewLayout = itemView.findViewById(R.id.ride_request_card_layout);
+            viewLayout = itemView.findViewById(R.id.request_card_view_layout);
             genderTextView = itemView.findViewById(R.id.card_view_gender_text_view);
             timestampTextView = itemView.findViewById(R.id.card_view_timestamp_text_view);
+            groupSizeTextView = itemView.findViewById(R.id.card_view_group_size_text_view);
+
+            viewLayout.setOnClickListener(navigateToRideRequestDetails);
         }
     }
 
-    List<Request> requests;
+    // Data Source for the RecyclerView
+    static List<Request> requests;
 
 
     public RideRequestAdapter(List<Request> adapterRequests){
@@ -49,6 +61,8 @@ public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.
 
 
     //May be able to refine this later with a deeper understanding of what's happening
+
+    //Note: Check out ViewGroup
     @Override
     public RequestViewHolder onCreateViewHolder(ViewGroup viewGroup, int index) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
@@ -67,4 +81,8 @@ public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.
         requestViewHolder.genderTextView.setText(request.getGender());
         requestViewHolder.timestampTextView.setText(timestamp);
     }
+
+
+    //TODO add ontap to transfer to detail page
+
 }
