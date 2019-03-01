@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import com.example.bespinaf.a2d2.R;
 import com.example.bespinaf.a2d2.adapters.RideRequestAdapter;
@@ -39,6 +40,8 @@ public class RideRequests extends ButterKnifeActivity {
         ArrayList<Request> listInProgress = DataSourceUtils.getRequestsWithStatus("In Progress");
         ArrayList<Request> listCompleted = DataSourceUtils.getRequestsWithStatus("Completed");
         //TODO Handle if there is a status that is not listed
+
+
 
         populateRecyclerView(rideRequestsAvailableRecyclerView, listAvailable);
         populateRecyclerView(rideRequestsInProgressRecyclerView, listInProgress);

@@ -1,6 +1,7 @@
 package com.example.bespinaf.a2d2.adapters;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,10 +10,12 @@ import android.widget.TextView;
 
 import com.example.bespinaf.a2d2.R;
 import com.example.bespinaf.a2d2.controllers.MainActivity;
+import com.example.bespinaf.a2d2.controllers.RideRequestDetails;
 import com.example.bespinaf.a2d2.models.Request;
 import com.example.bespinaf.a2d2.utilities.ActivityUtils;
 import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
 
+import java.io.Serializable;
 import java.util.List;
 
 
@@ -20,7 +23,7 @@ import java.util.List;
 public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.RequestViewHolder> {
 
     //RecyclerView Cell
-    public static class RequestViewHolder extends RecyclerView.ViewHolder {
+    public class RequestViewHolder extends RecyclerView.ViewHolder {
         RelativeLayout viewLayout;
         TextView groupSizeTextView;
         TextView genderTextView;
@@ -28,9 +31,10 @@ public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.
         View.OnClickListener navigateToRideRequestDetails = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requests.get(0);//TODO Resolve Index
-                //RideRequestDetails
-                ActivityUtils.navigate(v.getContext(), MainActivity.class);
+                int selectedIndex =((RecyclerView) v.getParent()).getChildAdapterPosition(v);
+                Request request = requests.get(selectedIndex);
+                Pair<String, Serializable> data  = new Pair<>("request", request);
+                ActivityUtils.navigateWithData(v.getContext(), RideRequestDetails.class, data);
             }
         };
 
@@ -46,7 +50,7 @@ public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.
     }
 
     // Data Source for the RecyclerView
-    static List<Request> requests;
+    List<Request> requests;
 
 
     public RideRequestAdapter(List<Request> adapterRequests){

@@ -2,12 +2,17 @@ package com.example.bespinaf.a2d2.utilities;
 
 import android.content.ComponentName;
 import android.net.Uri;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog.Builder;
 import android.content.Intent;
 import android.content.Context;
+import android.util.Pair;
 
 import com.example.bespinaf.a2d2.R;
+
+import java.io.Serializable;
 
 public class ActivityUtils {
 
@@ -18,11 +23,17 @@ public class ActivityUtils {
 
 
     //TODO Decide on data format and transfer standards
-    public static void openDetail(Context from, Class detail, Class data){
-        Intent detailIntent = new Intent(from, detail);
-        //Add Data
-        from.startActivity(detailIntent);
+    public static void navigateWithData(Context from, Class to, Pair<String, Serializable>... data){
+        Intent pageIntent = new Intent(from, to);
+
+        for (Pair<String, Serializable> dataPair : data){
+            pageIntent.putExtra(dataPair.first, dataPair.second);
+        }
+
+        from.startActivity(pageIntent);
     }
+
+
 
 
     public static void navigateAway(Context from, Uri to){
