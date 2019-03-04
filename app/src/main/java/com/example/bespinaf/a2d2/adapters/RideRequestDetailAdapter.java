@@ -26,12 +26,14 @@ public class RideRequestDetailAdapter extends RecyclerView.Adapter<RideRequestDe
         }
     }
 
+
     //First value is the detail's title, Second value is the detail's value
     List<Pair<String, String>> details;
 
     public RideRequestDetailAdapter(List<Pair<String, String>> adapterDetails) {
         details = adapterDetails;
     }
+
 
     @NonNull
     @Override
@@ -43,12 +45,14 @@ public class RideRequestDetailAdapter extends RecyclerView.Adapter<RideRequestDe
         return detailViewHolder;
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull DetailViewHolder detailViewHolder, int position) {
         Pair<String, String> detail = details.get(position);
         detailViewHolder.title.setText(detail.first + ":");
         detailViewHolder.value.setText(detail.second);
     }
+
 
     @Override
     public int getItemCount() {

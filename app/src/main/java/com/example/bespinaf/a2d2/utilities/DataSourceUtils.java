@@ -117,7 +117,6 @@ public class DataSourceUtils {
         }
     }
 
-
     //Update currentRequests with data from the snapshot
     private static void updateRequests(DataSnapshot snapshot){
         currentRequests.clear();
@@ -140,13 +139,26 @@ public class DataSourceUtils {
     }
 
 
+    public static boolean updateRequest(String id, Request request){
+        databaseRef.child(request.getId()).setValue(request);
+
+        return true;
+    }
+
+
     public static ArrayList<Request> getCurrentRequests(){
         return currentRequests;
     }
 
 
     public static void sendData(Object data){
-        databaseRef.push().setValue (data);
+        DatabaseReference dataReference = databaseRef.push();
+        updateData(dataReference.getKey(), data);
+    }
+
+
+    public static void updateData(String key, Object data){
+        databaseRef.child(key).setValue(data);
     }
 
 

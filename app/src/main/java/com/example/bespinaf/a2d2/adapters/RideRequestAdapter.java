@@ -31,9 +31,9 @@ public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.
         View.OnClickListener navigateToRideRequestDetails = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int selectedIndex =((RecyclerView) v.getParent()).getChildAdapterPosition(v);
+                int selectedIndex = ((RecyclerView) v.getParent()).getChildAdapterPosition(v);
                 Request request = requests.get(selectedIndex);
-                Pair<String, Serializable> data  = new Pair<>("request", request);
+                Pair<String, Serializable> data = new Pair<>("request", request);
                 ActivityUtils.navigateWithData(v.getContext(), RideRequestDetails.class, data);
             }
         };
@@ -53,7 +53,7 @@ public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.
     List<Request> requests;
 
 
-    public RideRequestAdapter(List<Request> adapterRequests){
+    public RideRequestAdapter(List<Request> adapterRequests) {
         requests = adapterRequests;
     }
 
@@ -88,5 +88,4 @@ public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.
 
 
     //TODO add ontap to transfer to detail page
-
 }

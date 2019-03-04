@@ -87,5 +87,4 @@ public class Request implements Serializable {
     public void setLon(double lon) {
         this.lon = lon;
     }
-
 }

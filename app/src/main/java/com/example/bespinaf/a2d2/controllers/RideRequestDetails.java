@@ -36,18 +36,21 @@ public class RideRequestDetails extends ButterKnifeActivity {
         loadRequestData();
     }
 
+    
     @OnClick(R.id.materialbutton_riderequestdetails_contactrider)
     protected void contactRider(){
-
         Uri telephoneNumber = Uri.parse( String.format("smsto:%s", request.getPhone()) );
-
         
         ActivityUtils.navigateAway(this, telephoneNumber );
     }
 
+    
     @OnClick(R.id.materialbutton_riderequestdetails_takejob)
-    protected void takeJob(){}
+    protected void takeJob(){
+        
+    }
 
+    
     private Request retrieveRequestFromIntent(){
         return (Request) getIntent().getSerializableExtra("request");
     }

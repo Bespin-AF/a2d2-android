@@ -42,7 +42,6 @@ public class RideRequests extends ButterKnifeActivity {
         //TODO Handle if there is a status that is not listed
 
 
-
         populateRecyclerView(rideRequestsAvailableRecyclerView, listAvailable);
         populateRecyclerView(rideRequestsInProgressRecyclerView, listInProgress);
         populateRecyclerView(rideRequestsCompletedRecyclerView, listCompleted);

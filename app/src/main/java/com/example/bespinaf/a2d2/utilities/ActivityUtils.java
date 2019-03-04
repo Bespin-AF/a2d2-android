@@ -48,7 +48,9 @@ public class ActivityUtils {
         return input.getText() == null ? true : input.getText().toString().isEmpty();
     }
 
-/*    public static boolean isFieldValid(Context context, TextInputEditText input, TextInputLayout layout){
+/*
+ //Ideally, we'll use this if we can manage to find a way to standardize validation rules or pass in rules.
+ public static boolean isFieldValid(Context context, TextInputEditText input, TextInputLayout layout){
         if(input.getText().toString().isEmpty()){
             layout.setError(context.getString(R.string.a2d2_field_required));
             return false;

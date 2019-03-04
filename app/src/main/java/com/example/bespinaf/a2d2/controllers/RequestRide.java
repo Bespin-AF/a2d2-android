@@ -64,10 +64,12 @@ public class RequestRide extends ButterKnifeActivity implements LocationListener
         startLocationSync();
     }
 
+
     private void initTextFieldLiveValidation() {
         mPhoneNumberEditText.addTextChangedListener(getTextWatcher());
         mNameEditText.addTextChangedListener(getTextWatcher());
     }
+
 
     @OnClick(R.id.button_request_driver)
     public void btnRequestDriver_Clicked(View view) {
@@ -83,16 +85,19 @@ public class RequestRide extends ButterKnifeActivity implements LocationListener
         confirmRideRequest();
     }
 
+
     // check all fields and permissions
     private boolean isValidData() {
         setErrors();
         return mPhoneNumberTextLayout.getError() == null && mNameTextLayout.getError() == null;
     }
 
+
     private boolean hasLocationPermission() {
         return (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED);
     }
+
 
     private void confirmRideRequest() {
         AlertDialog.Builder dialogBuilder = ActivityUtils.newNotifyDialogBuilder(this);
@@ -107,11 +112,13 @@ public class RequestRide extends ButterKnifeActivity implements LocationListener
                 .show();
     }
 
+
     private void submitRequest() {
         Request rideRequest = buildRideRequest();
         DataSourceUtils.sendData(rideRequest);
         ActivityUtils.navigate(this, RideStatus.class);
     }
+
 
     private Request buildRideRequest() {
         Request rideRequest = new Request();
@@ -138,6 +145,7 @@ public class RequestRide extends ButterKnifeActivity implements LocationListener
         ourLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
     }
 
+
     //Methods handling location listener feedback
     @Override
     public void onLocationChanged(@NonNull Location location) {
@@ -145,9 +153,11 @@ public class RequestRide extends ButterKnifeActivity implements LocationListener
         mLongitude = location.getLongitude();
     }
 
+
     private String getNameError(){
         return (ActivityUtils.isFieldEmpty(mNameEditText)) ? getString(R.string.a2d2_field_required) : "";
     }
+
 
     private String getPhoneNumberError(){
         if (ActivityUtils.isFieldEmpty(mPhoneNumberEditText)) {
@@ -159,6 +169,7 @@ public class RequestRide extends ButterKnifeActivity implements LocationListener
         }
     }
 
+
     private void setErrors(){
         String phoneNumberError = getPhoneNumberError();
         String nameError = getNameError();
@@ -166,6 +177,7 @@ public class RequestRide extends ButterKnifeActivity implements LocationListener
         mPhoneNumberTextLayout.setError(phoneNumberError);
         mNameTextLayout.setError(nameError);
     }
+
 
 /**** These are ugly and I'm putting them in the basement ****/
     private TextWatcher getTextWatcher(){
