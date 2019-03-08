@@ -14,9 +14,12 @@ import com.example.bespinaf.a2d2.controllers.RideRequestDetails;
 import com.example.bespinaf.a2d2.models.Request;
 import com.example.bespinaf.a2d2.utilities.ActivityUtils;
 import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
+import com.example.bespinaf.a2d2.utilities.IndexedHashMap;
 
 import java.io.Serializable;
 import java.util.List;
+
+import static java.util.Map.Entry;
 
 
 //Adapts request objects for use in a recycler view
@@ -32,7 +35,7 @@ public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.
             @Override
             public void onClick(View v) {
                 int selectedIndex = ((RecyclerView) v.getParent()).getChildAdapterPosition(v);
-                Request request = requests.get(selectedIndex);
+                String request = requests.get(selectedIndex).getKey();
                 Pair<String, Serializable> data = new Pair<>("request", request);
                 ActivityUtils.navigateWithData(v.getContext(), RideRequestDetails.class, data);
             }
@@ -50,10 +53,10 @@ public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.
     }
 
     // Data Source for the RecyclerView
-    List<Request> requests;
+    List<Entry<String, Request>> requests;
 
 
-    public RideRequestAdapter(List<Request> adapterRequests) {
+    public RideRequestAdapter(List<Entry<String, Request>> adapterRequests) {
         requests = adapterRequests;
     }
 
@@ -78,7 +81,7 @@ public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.
 
     @Override
     public void onBindViewHolder(RequestViewHolder requestViewHolder, int index) {
-        Request request = requests.get(index);
+        Request request = requests.get(index).getValue();
         String timestamp = DataSourceUtils.dateToDisplayFormat(request.getTimestamp());
 
         requestViewHolder.groupSizeTextView.setText("Group Size: " + request.getGroupSize());

@@ -1,20 +1,27 @@
 package com.example.bespinaf.a2d2.controllers;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.button.MaterialButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.app.AlertDialog.Builder;
+import android.util.Log;
 import android.util.Pair;
 
 import com.example.bespinaf.a2d2.R;
 import com.example.bespinaf.a2d2.adapters.RideRequestDetailAdapter;
 import com.example.bespinaf.a2d2.models.Request;
 import com.example.bespinaf.a2d2.utilities.ActivityUtils;
+import com.example.bespinaf.a2d2.utilities.AuthorizationUtils;
+import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -27,32 +34,58 @@ public class RideRequestDetails extends ButterKnifeActivity {
     @BindView(R.id.materialbutton_riderequestdetails_takejob)
     MaterialButton takeJobButton;
     Request request;
+    String requestId;
 
+    Builder takeJobConfirmationDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bind(R.layout.activity_ride_request_details);
         loadRequestData();
+
+        takeJobConfirmationDialog = ActivityUtils.newNotifyDialogBuilder(this);
+        takeJobConfirmationDialog.setTitle("Confirm Pickup?")
+                .setPositiveButton("CONFIRM", (dialog, which) -> {
+                    DataSourceUtils.updateRequestStatus(requestId, "In Progress");
+                    DataSourceUtils.updateDriver(requestId, AuthorizationUtils.getCurrentUser().getUid());
+                    DataSourceUtils.updateData(requestId, request);
+                    ActivityUtils.openMaps(this, request.getLat(), request.getLon());
+                })
+                .setNegativeButton("CANCEL", (dialog, which) -> {});
     }
 
     
     @OnClick(R.id.materialbutton_riderequestdetails_contactrider)
-    protected void contactRider(){
+    protected void messageRider(){
         Uri telephoneNumber = Uri.parse( String.format("smsto:%s", request.getPhone()) );
+        Pair<String, String>[] extraData = new Pair[]{
+                new Pair<>("sms_body","This is your A2D2 driver. I'm on my way!"),
+        };
         
-        ActivityUtils.navigateAway(this, telephoneNumber );
+        ActivityUtils.navigateAwayWithData(this, telephoneNumber, Intent.ACTION_SENDTO, extraData);
     }
 
     
     @OnClick(R.id.materialbutton_riderequestdetails_takejob)
-    protected void takeJob(){
-        
+    protected void takeJob() {
+        String message = "";
+
+        if(request.getStatus().equals("Available")){
+            message = "Are you sure you want to pickup this rider?";
+        } else if ( request.getStatus().equals("In Progress")) {
+            message = "This job has already been taken by another driver. Are you sure you want to pickup this rider anyway?";
+        }
+
+        takeJobConfirmationDialog.setMessage(message)
+                                  .show();
+
+        //ActivityUtils.openMaps(this, request.getLat(), request.getLon());
     }
 
     
-    private Request retrieveRequestFromIntent(){
-        return (Request) getIntent().getSerializableExtra("request");
+    private String retrieveRequestFromIntent(){
+        return (String) getIntent().getSerializableExtra("request");
     }
 
 
@@ -81,12 +114,10 @@ public class RideRequestDetails extends ButterKnifeActivity {
 
 
     private void loadRequestData(){
-        Request request = retrieveRequestFromIntent();
+        requestId = retrieveRequestFromIntent();
+        request = DataSourceUtils.getRequestById(requestId);
         ArrayList<Pair<String, String>> details = getDetails(request);
 
         populateDetails(details);
     }
-
-
-
 }

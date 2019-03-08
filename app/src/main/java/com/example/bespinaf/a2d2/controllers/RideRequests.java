@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static java.util.Map.Entry;
+
 public class RideRequests extends ButterKnifeActivity {
 
     @BindView(R.id.ride_requests_available_recycler_view)
@@ -36,9 +38,9 @@ public class RideRequests extends ButterKnifeActivity {
     }
 
     private void refreshRecyclerViews() {
-        ArrayList<Request> listAvailable = DataSourceUtils.getRequestsWithStatus("Available");
-        ArrayList<Request> listInProgress = DataSourceUtils.getRequestsWithStatus("In Progress");
-        ArrayList<Request> listCompleted = DataSourceUtils.getRequestsWithStatus("Completed");
+        ArrayList<Entry<String, Request>> listAvailable = DataSourceUtils.getRequestsWithStatus("Available");
+        ArrayList<Entry<String, Request>> listInProgress = DataSourceUtils.getRequestsWithStatus("In Progress");
+        ArrayList<Entry<String, Request>> listCompleted = DataSourceUtils.getRequestsWithStatus("Completed");
         //TODO Handle if there is a status that is not listed
 
 
@@ -49,7 +51,7 @@ public class RideRequests extends ButterKnifeActivity {
 
 
     //TODO Do headers and data layout differently
-    public void populateRecyclerView(RecyclerView view, ArrayList<Request> list){
+    public void populateRecyclerView(RecyclerView view, ArrayList<Entry<String, Request>> list){
         RideRequestAdapter adapter = new RideRequestAdapter(list);
 
         LinearLayoutManager llmRequestManager = new LinearLayoutManager(this);

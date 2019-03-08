@@ -44,6 +44,22 @@ public class ActivityUtils {
         from.startActivity(exitIntent);
     }
 
+    //TODO: Refactor to reduce duplicate code
+    public static void navigateAwayWithData(Context from, Uri to, String intentType, Pair<String, String>[] extras){
+        Intent exitIntent = newNavigationIntent(intentType, to, extras);
+        ComponentName exitIntentTarget = exitIntent.resolveActivity(from.getPackageManager());
+        exitIntent.setComponent(exitIntentTarget);
+        from.startActivity(exitIntent);
+    }
+
+    public static void openMaps(Context from, Double lat, Double lon){
+        String destination = String.format("google.navigation:q=%1$f, %2$f &avoid=tf", lat, lon);
+        Uri latLon = Uri.parse(destination);
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, latLon);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        from.startActivity(mapIntent);
+    }
+
     public static boolean isFieldEmpty(TextInputEditText input){
         return input.getText() == null ? true : input.getText().toString().isEmpty();
     }
@@ -60,6 +76,19 @@ public class ActivityUtils {
 
         return true;
     }*/
+
+
+    private static Intent newNavigationIntent(String type, Uri to, Pair<String, String>... extras){
+        String intentType = (type == null) ? "" : type;
+        Intent exitIntent = new Intent(intentType);
+        exitIntent.setData(to);
+
+        for(Pair<String, String> pair: extras){
+            exitIntent.putExtra(pair.first, pair.second);
+        }
+
+        return exitIntent;
+    }
 
 
     public static Builder newNotifyDialogBuilder(Context context){

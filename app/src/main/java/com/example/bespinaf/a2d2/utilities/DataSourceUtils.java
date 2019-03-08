@@ -17,11 +17,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
+
+import static java.util.Map.Entry;
 
 public class DataSourceUtils {
 
-    private static ArrayList<Request> currentRequests = new ArrayList<Request>();
+    private static IndexedHashMap<String, Request> currentRequests = new IndexedHashMap<>();
     private static FirebaseDatabase database = FirebaseDatabase.getInstance();
     private static DatabaseReference databaseRef = database.getReference().child("requests");
     private static Context toastContext;
@@ -123,16 +126,16 @@ public class DataSourceUtils {
         for (DataSnapshot ds : snapshot.getChildren()) {
             Request currentRequest = ds.getValue(Request.class);
 
-            currentRequests.add(currentRequest);
+            currentRequests.put(ds.getKey(), currentRequest);
         }
     }
 
 
-    public static ArrayList<Request> getRequestsWithStatus(String targetStatus){
-        ArrayList<Request> targetRequests = new ArrayList<>();
-        for (Request request : currentRequests) {
-            if (request.getStatus().equals(targetStatus)) {
-                targetRequests.add(request);
+    public static ArrayList<Entry<String, Request>> getRequestsWithStatus(String targetStatus){
+        ArrayList<Entry<String, Request>> targetRequests = new ArrayList<>();
+        for (Entry<String, Request> loopItem : currentRequests.entrySet()) {
+            if (loopItem.getValue().getStatus().equals(targetStatus)) {
+                targetRequests.add(loopItem);
             }
         }
         return targetRequests;
@@ -140,14 +143,14 @@ public class DataSourceUtils {
 
 
     public static boolean updateRequest(String id, Request request){
-        databaseRef.child(request.getId()).setValue(request);
+        databaseRef.child(id).setValue(request);
 
         return true;
     }
 
 
-    public static ArrayList<Request> getCurrentRequests(){
-        return currentRequests;
+    public static ArrayList<Entry<String, Request>> getCurrentRequests(){
+        return new ArrayList<Entry<String, Request>>(currentRequests.entrySet());
     }
 
 
@@ -165,4 +168,20 @@ public class DataSourceUtils {
     public static void setToastContext(Context newContext){
         toastContext = newContext;
     }
+
+
+    public static Request getRequestById(String requestId){
+        return currentRequests.get(requestId);
+    }
+
+
+    public static void updateRequestStatus(String requestId, String status){
+        currentRequests.get(requestId).setStatus(status);
+    }
+
+
+    public static void updateDriver(String requestId, String driverId){
+        currentRequests.get(requestId).setDriver(driverId);
+    }
+
 }
