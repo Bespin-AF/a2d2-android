@@ -1,28 +1,19 @@
 package com.example.bespinaf.a2d2;
 
-import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Intent;
 import android.support.design.button.MaterialButton;
 import android.support.test.rule.ActivityTestRule;
-import android.util.Log;
 
-import com.example.bespinaf.a2d2.controllers.DriverLogin;
 import com.example.bespinaf.a2d2.controllers.RideRequestDetails;
-import com.example.bespinaf.a2d2.controllers.RideRequests;
 import com.example.bespinaf.a2d2.models.Request;
-import com.example.bespinaf.a2d2.utilities.IndexedHashMap;
 import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
 
 import org.hamcrest.core.IsNot;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.Map;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
@@ -42,31 +33,38 @@ public class test_driver_takes_job {
 
     private RideRequestDetails mActivity;
     private Instrumentation mInstrumentation;
-    private IndexedHashMap mockDatabase;
     private MaterialButton mButtonTakeJob;
-    private String requestID;
+    private Request request;
 
 
     @Before
     public void setUp() {
-        //Sets request ID for the test
-        if (DataSourceUtils.getCurrentRequests().isEmpty()) {
-            DataSourceUtils.startRequestSync();
-            try {
-                //Required to load data before trying to perform actions/load page
-                Thread.sleep(3000);
-                requestID = DataSourceUtils.getCurrentRequests().get(0).getKey();
-            } catch (InterruptedException exception) {  }
-        } else {
-            requestID = DataSourceUtils.getCurrentRequests().get(0).getKey();
-        }
+        DataSourceUtils.initDateFormatters();
+        request = buildRideRequest();
 
-        Intent i = new Intent();
-        i.putExtra("request", requestID);
+        Intent intent = new Intent();
+        intent.putExtra("request", request);
 
-        mActivity = mRideRequestDetailsActivity.launchActivity(i);
+        mActivity = mRideRequestDetailsActivity.launchActivity(intent);
         mInstrumentation = getInstrumentation();
     }
+
+    private Request buildRideRequest() {
+        Request rideRequest = new Request();
+
+        rideRequest.setGroupSize(1);
+        rideRequest.setTimestamp(DataSourceUtils.getCurrentDateString());
+        rideRequest.setGender("Male");
+        rideRequest.setName("John Doe");
+        rideRequest.setPhone("1234554321");
+        rideRequest.setRemarks("Test Remarks");
+        rideRequest.setStatus("Available");
+        rideRequest.setLat(32.368824);
+        rideRequest.setLon(-86.270966);
+
+        return rideRequest;
+    }
+
 
 
     @After

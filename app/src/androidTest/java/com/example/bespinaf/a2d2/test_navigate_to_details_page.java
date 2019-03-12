@@ -2,18 +2,12 @@ package com.example.bespinaf.a2d2;
 
 import android.app.Activity;
 import android.app.Instrumentation;
-import android.content.Intent;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.rule.ActivityTestRule;
-import android.support.test.uiautomator.UiDevice;
 
-import com.example.bespinaf.a2d2.controllers.DriverLogin;
-import com.example.bespinaf.a2d2.controllers.MainActivity;
 import com.example.bespinaf.a2d2.controllers.RideRequestDetails;
 import com.example.bespinaf.a2d2.controllers.RideRequests;
-import com.example.bespinaf.a2d2.models.Request;
 import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
-import com.example.bespinaf.a2d2.utilities.IndexedHashMap;
 
 import org.junit.After;
 import org.junit.Before;
@@ -45,16 +39,12 @@ public class test_navigate_to_details_page {
             try {
                 //Required to load data before trying to perform actions/load page
                 Thread.sleep(5000);
-                requestID = DataSourceUtils.getCurrentRequests().get(0).getKey();
             } catch (InterruptedException exception) {  }
-        } else {
-            requestID = DataSourceUtils.getCurrentRequests().get(0).getKey();
         }
 
         mActivity = mRideRequestsActivity.getActivity();
         mInstrumentation = getInstrumentation();
         mRequestDetailsMonitor = mInstrumentation.addMonitor(RideRequestDetails.class.getName(), null, false);
-
     }
 
     //TODO: Write the test

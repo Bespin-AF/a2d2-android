@@ -3,6 +3,8 @@ package com.example.bespinaf.a2d2.controllers;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.button.MaterialButton;
@@ -19,6 +21,7 @@ import com.example.bespinaf.a2d2.utilities.ActivityUtils;
 import com.example.bespinaf.a2d2.utilities.AuthorizationUtils;
 import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -45,25 +48,40 @@ public class RideRequestDetails extends ButterKnifeActivity {
         loadRequestData();
 
         takeJobConfirmationDialog = ActivityUtils.newNotifyDialogBuilder(this);
+
         takeJobConfirmationDialog.setTitle("Confirm Pickup?")
                 .setPositiveButton("CONFIRM", (dialog, which) -> {
-                    DataSourceUtils.updateRequestStatus(requestId, "In Progress");
-                    DataSourceUtils.updateDriver(requestId, AuthorizationUtils.getCurrentUser().getUid());
+                    request.setDriver( AuthorizationUtils.getCurrentUser().getUid() );
+                    request.setStatus("In Progress");
+
                     DataSourceUtils.updateData(requestId, request);
+
+                    //TODO: Refactor NavigateAway and/or add another method to make navigation to other applications more useable
+                    //String mapsLocation = String.format("google.navigation:q=%1$f, %2$f &avoid=tf", request.getLat(), request.getLon());
+                    //Uri destination = Uri.parse(mapsLocation);
+
+                    //Placeholder
+
+
                     ActivityUtils.openMaps(this, request.getLat(), request.getLon());
                 })
                 .setNegativeButton("CANCEL", (dialog, which) -> {});
     }
 
+    @Override
+    protected void onPause(){
+        super.onPause();
+        populateDetails(getDetails(request));
+
+    }
+
     
     @OnClick(R.id.materialbutton_riderequestdetails_contactrider)
     protected void messageRider(){
-        Uri telephoneNumber = Uri.parse( String.format("smsto:%s", request.getPhone()) );
-        Pair<String, String>[] extraData = new Pair[]{
-                new Pair<>("sms_body","This is your A2D2 driver. I'm on my way!"),
-        };
+        Uri phoneNumber = Uri.parse( String.format("smsto:%s", request.getPhone()) );
+        Pair<String, String> messageBody = new Pair<>("sms_body", "This is your A2D2 driver. I'm on my way!");
         
-        ActivityUtils.navigateAwayWithData(this, telephoneNumber, Intent.ACTION_SENDTO, extraData);
+        ActivityUtils.navigateAway(this, phoneNumber, messageBody);
     }
 
     
@@ -79,13 +97,12 @@ public class RideRequestDetails extends ButterKnifeActivity {
 
         takeJobConfirmationDialog.setMessage(message)
                                   .show();
-
-        //ActivityUtils.openMaps(this, request.getLat(), request.getLon());
     }
 
     
-    private String retrieveRequestFromIntent(){
-        return (String) getIntent().getSerializableExtra("request");
+    private void loadIntentData(){
+        requestId = (String) getIntent().getSerializableExtra("requestId");
+        request = (Request) getIntent().getSerializableExtra("request");
     }
 
 
@@ -114,10 +131,8 @@ public class RideRequestDetails extends ButterKnifeActivity {
 
 
     private void loadRequestData(){
-        requestId = retrieveRequestFromIntent();
-        request = DataSourceUtils.getRequestById(requestId);
+        loadIntentData();
         ArrayList<Pair<String, String>> details = getDetails(request);
-
         populateDetails(details);
     }
 }

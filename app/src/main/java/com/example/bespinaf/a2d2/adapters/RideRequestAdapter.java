@@ -9,15 +9,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.bespinaf.a2d2.R;
-import com.example.bespinaf.a2d2.controllers.MainActivity;
 import com.example.bespinaf.a2d2.controllers.RideRequestDetails;
 import com.example.bespinaf.a2d2.models.Request;
 import com.example.bespinaf.a2d2.utilities.ActivityUtils;
 import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
-import com.example.bespinaf.a2d2.utilities.IndexedHashMap;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import static java.util.Map.Entry;
 
@@ -35,9 +36,13 @@ public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.
             @Override
             public void onClick(View v) {
                 int selectedIndex = ((RecyclerView) v.getParent()).getChildAdapterPosition(v);
-                String request = requests.get(selectedIndex).getKey();
-                Pair<String, Serializable> data = new Pair<>("request", request);
-                ActivityUtils.navigateWithData(v.getContext(), RideRequestDetails.class, data);
+                String requestId = requestIds[selectedIndex];
+                Request request = requests.get(requestId);
+
+                Pair<String, Serializable> requestIdData = new Pair<>("requestId", requestId);
+                Pair<String, Serializable> requestData = new Pair<>("request", request);
+
+                ActivityUtils.navigateWithData(v.getContext(), RideRequestDetails.class,requestIdData, requestData);
             }
         };
 
@@ -53,11 +58,15 @@ public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.
     }
 
     // Data Source for the RecyclerView
-    List<Entry<String, Request>> requests;
+    String[] requestIds;
+    HashMap<String, Request> requests;
 
 
-    public RideRequestAdapter(List<Entry<String, Request>> adapterRequests) {
+    public RideRequestAdapter(HashMap<String, Request> adapterRequests) {
+        Set<String> requestKeys = adapterRequests.keySet();
+
         requests = adapterRequests;
+        requestIds = requestKeys.toArray(new String[requestKeys.size()]);
     }
 
 
@@ -81,14 +90,12 @@ public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.
 
     @Override
     public void onBindViewHolder(RequestViewHolder requestViewHolder, int index) {
-        Request request = requests.get(index).getValue();
+        String requestId = requestIds[index];
+        Request request = requests.get(requestId);
         String timestamp = DataSourceUtils.dateToDisplayFormat(request.getTimestamp());
 
         requestViewHolder.groupSizeTextView.setText("Group Size: " + request.getGroupSize());
         requestViewHolder.genderTextView.setText(request.getGender());
         requestViewHolder.timestampTextView.setText(timestamp);
     }
-
-
-    //TODO add ontap to transfer to detail page
 }
