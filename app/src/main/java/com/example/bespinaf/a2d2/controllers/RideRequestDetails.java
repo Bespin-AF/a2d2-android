@@ -62,8 +62,10 @@ public class RideRequestDetails extends ButterKnifeActivity {
 
                     //Placeholder
 
+                    String destination = String.format("google.navigation:q=%1$f, %2$f &avoid=tf", request.getLat(), request.getLon());
+                    Uri latLon = Uri.parse(destination);
 
-                    ActivityUtils.openMaps(this, request.getLat(), request.getLon());
+                    ActivityUtils.navigateAway(this, latLon);
                 })
                 .setNegativeButton("CANCEL", (dialog, which) -> {});
     }
@@ -80,7 +82,7 @@ public class RideRequestDetails extends ButterKnifeActivity {
     protected void messageRider(){
         Uri phoneNumber = Uri.parse( String.format("smsto:%s", request.getPhone()) );
         Pair<String, String> messageBody = new Pair<>("sms_body", "This is your A2D2 driver. I'm on my way!");
-        
+
         ActivityUtils.navigateAway(this, phoneNumber, messageBody);
     }
 

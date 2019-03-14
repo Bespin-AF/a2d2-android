@@ -35,7 +35,7 @@ public class ActivityUtils {
 
 
     public static void navigateAway(Context from, Uri to, Pair<String, String>... extras) {
-        Intent exitIntent = new Intent();
+        Intent exitIntent = resolveIntent(to);
         exitIntent.setData(to);
 
         for (Pair<String, String> extra : extras) {
@@ -48,34 +48,24 @@ public class ActivityUtils {
     }
 
 
-    public static void openMaps(Context from, Double lat, Double lon) {
-        String destination = String.format("google.navigation:q=%1$f, %2$f &avoid=tf", lat, lon);
-        Uri latLon = Uri.parse(destination);
-        Intent mapIntent = new Intent(Intent.ACTION_VIEW, latLon);
-        Intent intent = new Intent();
 
-        mapIntent.setPackage("com.google.android.apps.maps");
-        from.startActivity(mapIntent);
+    private static Intent resolveIntent(Uri target){
+        String targetString = target.toString();
+        if(targetString.contains("sms")){
+            return new Intent(Intent.ACTION_SENDTO);
+        }
+        else if(targetString.contains("navigation")){
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW);
+            mapIntent.setPackage("com.google.android.apps.maps");
+            return mapIntent;
+        }
+        return new Intent(Intent.ACTION_DEFAULT);
     }
 
 
     public static boolean isFieldEmpty(TextInputEditText input) {
         return input.getText() == null ? true : input.getText().toString().isEmpty();
     }
-
-
-/*
- //Ideally, we'll use this if we can manage to find a way to standardize validation rules or pass in rules.
- public static boolean isFieldValid(Context context, TextInputEditText input, TextInputLayout layout){
-        if(input.getText().toString().isEmpty()){
-            layout.setError(context.getString(R.string.a2d2_field_required));
-            return false;
-        }
-
-        layout.setError("");
-
-        return true;
-    }*/
 
 
     public static Builder newNotifyDialogBuilder(Context context){
