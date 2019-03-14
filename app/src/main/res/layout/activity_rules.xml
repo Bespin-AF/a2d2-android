@@ -22,15 +22,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:theme="@style/AppTheme"
+    <android.support.design.button.MaterialButton
+        style="@style/App.MaterialButton"
         android:id="@+id/button_rules_agree"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:onClick="btnRulesAgree_Clicked"
         android:text="@string/a2d2_rules_button"

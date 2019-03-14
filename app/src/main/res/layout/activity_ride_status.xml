@@ -38,22 +38,19 @@
 
     <android.support.design.button.MaterialButton
         android:id="@+id/button_call_a2d2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:backgroundTint="@color/buttonColor"
+        style="@style/App.MaterialButton"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
         android:elevation="6dp"
-        android:text="@string/call_a2d2_dispatch"
-        android:textColor="@color/textColor" />
+        android:text="@string/call_a2d2_dispatch"/>
 
+    <!-- TODO: Complete story that adds ride cancel functionality. Not required for MVP
     <android.support.design.button.MaterialButton
         android:id="@+id/button_cancel_ride"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:backgroundTint="@color/buttonColor"
+        style="@style/App.MaterialButton"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
         android:elevation="6dp"
-        android:text="@string/cancel_ride_request"
-        android:textColor="@color/textColor" />
+        android:text="@string/cancel_ride_request"/>-->
 
 </LinearLayout>

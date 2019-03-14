@@ -42,7 +42,7 @@
     <string name="driver_login_email_hint">Email</string>
     <string name="driver_login_password_hint">Password</string>
 
-    <string name="main_driver_login_button"><u>Driver Login</u></string>
+    <string name="main_driver_login_button">Driver Sign In</string>
     <string name="become_a_driver"><u>Become a Driver</u></string>
     <string name="driver_login">Login</string>
 

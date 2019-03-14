@@ -7,9 +7,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/app_theme_gradient"
     android:fillViewport="true"
-    android:paddingLeft="32dp"
+    android:paddingLeft="16dp"
     android:paddingTop="16dp"
-    android:paddingRight="32dp"
+    android:paddingRight="16dp"
     android:scrollbars="none"
     tools:context=".controllers.RequestRide">
 
@@ -64,128 +64,81 @@
                 app:errorEnabled="true"/>
         </android.support.design.widget.TextInputLayout>
 
-        <LinearLayout
+        <!-- Gender Selection -->
+        <TextView
+            android:id="@+id/gender_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="8dp"
+            android:text="@string/gender"
+            android:textColor="@color/textColor"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+        <Spinner
+            android:id="@+id/gender_spinner"
+            style="@style/Widget.AppCompat.Spinner.Underlined"
             android:layout_width="match_parent"
-            android:layout_height="72dp"
-            android:layout_marginTop="10dp"
-            android:baselineAligned="false"
-            android:orientation="horizontal">
+            android:layout_height="56dp"
+            android:layout_marginBottom="16dp"
+            android:textAlignment="viewStart"
+            android:entries="@array/string_genders" />
 
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                android:layout_marginEnd="16dp">
-
-                <TextView
-                    android:id="@+id/gender_text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="8dp"
-                    android:text="@string/gender"
-                    android:textColor="@color/textColor"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/gender_text_view"
-                    android:background="@color/textColor">
-
-                    <Spinner
-                        android:id="@+id/gender_spinner"
-                        android:layout_width="match_parent"
-                        android:layout_height="36dp"
-                        android:entries="@array/string_genders" />
-                </FrameLayout>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-                <TextView
-                    android:id="@+id/group_size_text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="8dp"
-                    android:text="@string/group_size"
-                    android:textColor="@color/textColor"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/group_size_text_view"
-                    android:background="@color/textColor">
-
-                    <Spinner
-                        android:id="@+id/group_size_spinner"
-                        android:layout_width="match_parent"
-                        android:layout_height="36dp"
-                        android:layout_gravity="center"
-                        android:entries="@array/string_group_sizes" />
-                </FrameLayout>
-
-            </RelativeLayout>
-
-
-        </LinearLayout>
-
-        <RelativeLayout
+        <!-- Group Size Selection -->
+        <TextView
+            android:id="@+id/group_size_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/group_size"
+            android:textColor="@color/textColor"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+        <Spinner
+            android:id="@+id/group_size_spinner"
+            style="@style/Widget.AppCompat.Spinner.Underlined"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_marginTop="32dp">
+            android:layout_height="56dp"
+            android:layout_marginBottom="16dp"
+            android:textAlignment="viewStart"
+            android:paddingBottom="8dp"
+            android:entries="@array/string_group_sizes" />
 
-            <android.support.design.widget.TextInputLayout
+        <!-- Remarks section -->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/activity_a2d2_text_input_layout"
+            android:textColorHint="@color/textColor"
+            android:hint="@string/remarks_optional">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/request_ride_remarks_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                style="@style/activity_a2d2_text_input_layout"
-                android:textColorHint="@color/textColor"
-                android:hint="@string/remarks_optional"
-                android:entries="@array/string_genders">
+                android:textColor="@color/textColor"
+                android:inputType="textMultiLine"
+                android:gravity="start"
+                android:maxLength="255"
+                android:text="" />
+        </android.support.design.widget.TextInputLayout>
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/request_ride_remarks_edit_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:textColor="@color/textColor"
-                    android:inputType="textMultiLine"
-                    android:gravity="start"
-                    android:maxLength="255"
-                    android:text="" />
-            </android.support.design.widget.TextInputLayout>
 
-        </RelativeLayout>
+        <!-- Remarks Section -->
+
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="88dp"
             android:layout_marginTop="32dp">
 
-            <!-- android:textSize="14dp" -->
-            <!-- android:textStyle="bold" -->
-            <!-- https://material.io/design/typography/the-type-system.html#type-scale -->
+            <!-- Margins are explicitly set due to the layout using left/right padding-->
             <android.support.design.button.MaterialButton
                 android:id="@+id/button_request_driver"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:backgroundTint="@color/buttonColor"
+                style="@style/App.MaterialButton"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="0dp"
                 android:elevation="6dp"
                 android:onClick="btnRequestDriver_Clicked"
-                android:paddingLeft="25dp"
-                android:paddingTop="20dp"
-                android:paddingRight="25dp"
-                android:paddingBottom="20dp"
-                android:text="@string/button_request_driver"
-                android:textColor="@color/textColor"
-                android:textSize="24sp" />
+                android:text="@string/button_request_driver" />
         </RelativeLayout>
-
     </LinearLayout>
 </ScrollView>
