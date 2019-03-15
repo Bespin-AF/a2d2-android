@@ -1,7 +1,7 @@
 package com.example.bespinaf.a2d2.adapters;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,39 +9,64 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.bespinaf.a2d2.R;
-import com.example.bespinaf.a2d2.controllers.RideRequests;
+import com.example.bespinaf.a2d2.controllers.RideRequestDetails;
 import com.example.bespinaf.a2d2.models.Request;
+import com.example.bespinaf.a2d2.utilities.ActivityUtils;
 import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
-import butterknife.BindView;
+import static java.util.Map.Entry;
 
 
-//Adapts a request objects for use in a recycler view
+//Adapts request objects for use in a recycler view
 public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.RequestViewHolder> {
 
-    public static class RequestViewHolder extends RecyclerView.ViewHolder {
-        //Incompatible with ButterKnife for an unknown reason; will return null if set with ButterKnife
+    //RecyclerView Cell
+    public class RequestViewHolder extends RecyclerView.ViewHolder {
         RelativeLayout viewLayout;
         TextView groupSizeTextView;
         TextView genderTextView;
         TextView timestampTextView;
+        View.OnClickListener navigateToRideRequestDetails = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int selectedIndex = ((RecyclerView) v.getParent()).getChildAdapterPosition(v);
+                String requestId = requestIds[selectedIndex];
+                Request request = requests.get(requestId);
+
+                Pair<String, Serializable> requestIdData = new Pair<>("requestId", requestId);
+                Pair<String, Serializable> requestData = new Pair<>("request", request);
+
+                ActivityUtils.navigateWithData(v.getContext(), RideRequestDetails.class,requestIdData, requestData);
+            }
+        };
 
         RequestViewHolder(View itemView) {
             super(itemView);
-            groupSizeTextView = itemView.findViewById(R.id.card_view_group_size_text_view);
-            viewLayout = itemView.findViewById(R.id.item_ride_request);
+            viewLayout = itemView.findViewById(R.id.request_card_view_layout);
             genderTextView = itemView.findViewById(R.id.card_view_gender_text_view);
             timestampTextView = itemView.findViewById(R.id.card_view_timestamp_text_view);
+            groupSizeTextView = itemView.findViewById(R.id.card_view_group_size_text_view);
+
+            viewLayout.setOnClickListener(navigateToRideRequestDetails);
         }
     }
 
-    List<Request> requests;
+    // Data Source for the RecyclerView
+    String[] requestIds;
+    HashMap<String, Request> requests;
 
 
-    public RideRequestAdapter(List<Request> adapterRequests){
+    public RideRequestAdapter(HashMap<String, Request> adapterRequests) {
+        Set<String> requestKeys = adapterRequests.keySet();
+
         requests = adapterRequests;
+        requestIds = requestKeys.toArray(new String[requestKeys.size()]);
     }
 
 
@@ -52,6 +77,8 @@ public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.
 
 
     //May be able to refine this later with a deeper understanding of what's happening
+
+    //Note: Check out ViewGroup
     @Override
     public RequestViewHolder onCreateViewHolder(ViewGroup viewGroup, int index) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
@@ -63,7 +90,8 @@ public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.
 
     @Override
     public void onBindViewHolder(RequestViewHolder requestViewHolder, int index) {
-        Request request = requests.get(index);
+        String requestId = requestIds[index];
+        Request request = requests.get(requestId);
         String timestamp = DataSourceUtils.dateToDisplayFormat(request.getTimestamp());
 
         requestViewHolder.groupSizeTextView.setText("Group Size: " + request.getGroupSize());

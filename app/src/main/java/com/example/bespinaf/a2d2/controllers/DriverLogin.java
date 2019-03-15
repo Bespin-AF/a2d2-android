@@ -53,6 +53,7 @@ public class DriverLogin extends ButterKnifeActivity {
         }
     }
 
+
     private boolean isDataValid(){
         return (activityDriverLoginEmailInputLayout.getError() == null &&
                 activityDriverLoginPasswordInputLayout.getError() == null);
@@ -63,6 +64,7 @@ public class DriverLogin extends ButterKnifeActivity {
         validateField(activityDriverLoginEmailTextEdit, activityDriverLoginEmailInputLayout);
         validateField(activityDriverLoginPasswordTextEdit, activityDriverLoginPasswordInputLayout);
     }
+
 
     private void validateField(TextInputEditText input, TextInputLayout layout){
         if(ActivityUtils.isFieldEmpty(input)) { layout.setError(getString(R.string.a2d2_field_required)); }

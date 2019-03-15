@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".controllers.RideRequestDetails"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingBottom="16dp"
+    android:paddingTop="8dp">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerview_riderequestdetails_detaillist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <android.support.design.button.MaterialButton
+        android:id="@+id/materialbutton_riderequestdetails_contactrider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Contact Rider"
+        style="@style/Widget.MaterialComponents.Button"
+        app:cornerRadius="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/materialbutton_riderequestdetails_takejob"/>
+
+    <android.support.design.button.MaterialButton
+        android:id="@+id/materialbutton_riderequestdetails_takejob"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Take Job"
+        style="@style/Widget.MaterialComponents.Button"
+        app:cornerRadius="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+</android.support.constraint.ConstraintLayout>

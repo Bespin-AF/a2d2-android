@@ -26,4 +26,9 @@ public class AuthorizationUtils {
     private static void runLoginCallback(boolean wasLoginSuccessful){
         loginCallback.callback(wasLoginSuccessful);
     }
+
+
+    public static FirebaseUser getCurrentUser(){
+        return firebaseAuthorization.getCurrentUser();
+    }
 }

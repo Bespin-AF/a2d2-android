@@ -13,9 +13,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".controllers.RideRequests"
-            android:label="Ride Requests"
-            ></activity>
+        <activity android:name=".controllers.RideRequestDetails"></activity>
+        <activity
+            android:name=".controllers.RideRequests"
+            android:label="Ride Requests" />
         <activity android:name=".controllers.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,14 +33,14 @@
             android:label="Pickup Request Options"
             android:parentActivityName=".controllers.Rules"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-        <activity android:name=".controllers.RideStatus"
+        <activity
+            android:name=".controllers.RideStatus"
             android:label="Ride Status"
-            android:parentActivityName=".controllers.RequestRide"
-            />
-        <activity android:name=".controllers.DriverLogin"
+            android:parentActivityName=".controllers.RequestRide" />
+        <activity
+            android:name=".controllers.DriverLogin"
             android:label="Driver Login"
-            android:parentActivityName=".controllers.MainActivity"
-            />
+            android:parentActivityName=".controllers.MainActivity" />
     </application>
 
 </manifest>
