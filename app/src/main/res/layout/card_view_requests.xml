@@ -4,19 +4,20 @@
     android:id="@+id/item_ride_request"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/textColor"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
         <TextView
             android:id="@+id/card_view_group_size_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="#000000"
             android:text="GROUP SIZE" />
 
         <TextView
             android:id="@+id/card_view_gender_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="#000000"
             android:layout_alignParentEnd="true"
             android:text="GENDER" />
 
@@ -25,6 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/card_view_group_size_text_view"
+            android:textColor="#000000"
             android:text="TIMESTAMP" />
 
     </RelativeLayout>

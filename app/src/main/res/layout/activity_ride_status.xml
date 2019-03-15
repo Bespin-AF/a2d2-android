@@ -17,7 +17,7 @@
         android:layout_height="235dp"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        android:src="@drawable/a2d2_logo_iv" />
+        android:src="@drawable/a2d2_text_logo" />
 
     <TextView
         android:layout_width="match_parent"
@@ -44,13 +44,14 @@
         android:elevation="6dp"
         android:text="@string/call_a2d2_dispatch"/>
 
-    <!-- TODO: Complete story that adds ride cancel functionality. Not required for MVP
+    <!-- TODO: Complete story that adds ride cancel functionality. Not required for MVP -->
     <android.support.design.button.MaterialButton
         android:id="@+id/button_cancel_ride"
         style="@style/App.MaterialButton"
         android:layout_marginStart="0dp"
         android:layout_marginEnd="0dp"
         android:elevation="6dp"
-        android:text="@string/cancel_ride_request"/>-->
+        android:text="@string/cancel_ride_request"
+        android:visibility="gone"/>
 
 </LinearLayout>

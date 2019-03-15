@@ -15,11 +15,11 @@
         android:theme="@style/AppTheme">
         <activity android:name=".controllers.RideRequests"
             android:label="Ride Requests"
-            ></activity>
+        />
         <activity android:name=".controllers.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+                <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -30,11 +30,9 @@
         <activity
             android:name=".controllers.RequestRide"
             android:label="Pickup Request Options"
-            android:parentActivityName=".controllers.Rules"
-            android:windowSoftInputMode="stateHidden|adjustResize" />
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".controllers.RideStatus"
             android:label="Ride Status"
-            android:parentActivityName=".controllers.RequestRide"
             />
         <activity android:name=".controllers.DriverLogin"
             android:label="Driver Login"

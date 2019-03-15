@@ -2,11 +2,16 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <!--<item name="android:background">@drawable/app_theme_gradient</item>-->
+    </style>
+
+    <style name="App.Theme.Driver" parent="Theme.MaterialComponents">
+        <item name="colorPrimary">@color/driverColorPrimary</item>
+        <item name="colorPrimaryDark">@color/driverColorPrimaryDark</item>
+        <item name="colorAccent">@color/driverColorPrimary</item>
     </style>
 
     <style name="App.MaterialButton" parent="Widget.MaterialComponents.Button">

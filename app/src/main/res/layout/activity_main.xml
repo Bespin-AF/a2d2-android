@@ -13,7 +13,7 @@
         android:layout_height="344dp"
         android:layout_gravity="center"
         android:scaleType="centerInside"
-        android:src="@drawable/a2d2_logo_iv"
+        android:src="@drawable/a2d2_text_logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
