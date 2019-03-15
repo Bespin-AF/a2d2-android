@@ -1,26 +1,18 @@
 package com.example.bespinaf.a2d2.controllers;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
 import com.example.bespinaf.a2d2.R;
 import com.example.bespinaf.a2d2.adapters.RideRequestAdapter;
 import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
 import com.example.bespinaf.a2d2.models.Request;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.sql.DataSource;
-
 import butterknife.BindView;
-import butterknife.ButterKnife;
-
-import static java.util.Map.Entry;
 
 public class RideRequests extends ButterKnifeActivity {
 
@@ -38,11 +30,13 @@ public class RideRequests extends ButterKnifeActivity {
         bind(R.layout.activity_ride_requests);
     }
 
+
     @Override
     protected void onResume(){
         super.onResume();
         DataSourceUtils.startRequestSync(()-> refreshRecyclerViews());
     }
+
 
     @Override
     protected void onPause(){
