@@ -1,17 +1,11 @@
 package com.example.bespinaf.a2d2.controllers;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.button.MaterialButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.app.AlertDialog.Builder;
-import android.util.Log;
 import android.util.Pair;
 
 import com.example.bespinaf.a2d2.R;
@@ -21,10 +15,8 @@ import com.example.bespinaf.a2d2.utilities.ActivityUtils;
 import com.example.bespinaf.a2d2.utilities.AuthorizationUtils;
 import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -40,6 +32,7 @@ public class RideRequestDetails extends ButterKnifeActivity {
     String requestId;
 
     Builder takeJobConfirmationDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +62,7 @@ public class RideRequestDetails extends ButterKnifeActivity {
                 })
                 .setNegativeButton("CANCEL", (dialog, which) -> {});
     }
+
 
     @Override
     protected void onPause(){
