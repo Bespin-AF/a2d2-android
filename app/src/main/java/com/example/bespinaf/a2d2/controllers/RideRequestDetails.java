@@ -85,8 +85,11 @@ public class RideRequestDetails extends ButterKnifeActivity {
     protected void takeJob() {
         String message = "";
 
-        if(request.getStatus().equals("Available")){
+        if (request.getStatus().equals("Available")) {
             message = "Are you sure you want to pickup this rider?";
+        } else if(request.getDriver() == AuthorizationUtils.getCurrentUser().getUid()){
+            request.setStatus("Completed");
+            message = "Confirm you dropped off the rider?";
         } else if ( request.getStatus().equals("In Progress")) {
             message = "This job has already been taken by another driver. Are you sure you want to pickup this rider anyway?";
         }
