@@ -6,7 +6,9 @@ import android.support.design.button.MaterialButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.app.AlertDialog.Builder;
+import android.util.Log;
 import android.util.Pair;
+import android.view.View;
 
 import com.example.bespinaf.a2d2.R;
 import com.example.bespinaf.a2d2.adapters.RideRequestDetailAdapter;
@@ -26,8 +28,8 @@ public class RideRequestDetails extends ButterKnifeActivity {
     RecyclerView detailList;
     @BindView(R.id.materialbutton_riderequestdetails_contactrider)
     MaterialButton contactRiderButton;
-    @BindView(R.id.materialbutton_riderequestdetails_takejob)
-    MaterialButton takeJobButton;
+    @BindView(R.id.materialbutton_riderequestdetails_jobaction)
+    MaterialButton jobActionButton;
     Request request;
     String requestId;
 
@@ -39,13 +41,16 @@ public class RideRequestDetails extends ButterKnifeActivity {
         super.onCreate(savedInstanceState);
         bind(R.layout.activity_ride_request_details);
         loadRequestData();
+        setupView();
 
         takeJobConfirmationDialog = ActivityUtils.newNotifyDialogBuilder(this);
 
         takeJobConfirmationDialog.setTitle("Confirm Pickup?")
                 .setPositiveButton("CONFIRM", (dialog, which) -> {
+                    String updatedStatus = getUpdatedStatus(request.getStatus());
+
+                    request.setStatus(updatedStatus);
                     request.setDriver( AuthorizationUtils.getCurrentUser().getUid() );
-                    request.setStatus("In Progress");
 
                     DataSourceUtils.updateData(requestId, request);
 
@@ -53,12 +58,15 @@ public class RideRequestDetails extends ButterKnifeActivity {
                     //String mapsLocation = String.format("google.navigation:q=%1$f, %2$f &avoid=tf", request.getLat(), request.getLon());
                     //Uri destination = Uri.parse(mapsLocation);
 
-                    //Placeholder
+                    if(updatedStatus.equals("In Progress")){
+                        String destination = String.format("google.navigation:q=%1$f, %2$f &avoid=tf", request.getLat(), request.getLon());
+                        Uri latLon = Uri.parse(destination);
 
-                    String destination = String.format("google.navigation:q=%1$f, %2$f &avoid=tf", request.getLat(), request.getLon());
-                    Uri latLon = Uri.parse(destination);
-
-                    ActivityUtils.navigateAway(this, latLon);
+                        jobActionButton.setText(R.string.riderequestdetails_completejob);
+                        ActivityUtils.navigateAway(this, latLon);
+                    } else if (updatedStatus.equals("Completed")){
+                        this.finish();
+                    }
                 })
                 .setNegativeButton("CANCEL", (dialog, which) -> {});
     }
@@ -68,9 +76,24 @@ public class RideRequestDetails extends ButterKnifeActivity {
     protected void onPause(){
         super.onPause();
         populateDetails(getDetails(request));
-
     }
 
+
+    private Boolean isCurrentUserDriver(){
+        if(request.getDriver() == null){ return false; }
+        return request.getDriver().equals(AuthorizationUtils.getCurrentUser().getUid());
+    }
+
+
+    private String getUpdatedStatus(String currentStatus){
+        if(currentStatus.equals("Available")){
+            return "In Progress";
+        } else if (isCurrentUserDriver()){
+            return "Completed";
+        } else {
+            return currentStatus;
+        }
+    }
     
     @OnClick(R.id.materialbutton_riderequestdetails_contactrider)
     protected void messageRider(){
@@ -81,21 +104,25 @@ public class RideRequestDetails extends ButterKnifeActivity {
     }
 
     
-    @OnClick(R.id.materialbutton_riderequestdetails_takejob)
+    @OnClick(R.id.materialbutton_riderequestdetails_jobaction)
     protected void takeJob() {
-        String message = "";
+        String status = request.getStatus();
 
-        if (request.getStatus().equals("Available")) {
-            message = "Are you sure you want to pickup this rider?";
-        } else if(request.getDriver() == AuthorizationUtils.getCurrentUser().getUid()){
-            request.setStatus("Completed");
-            message = "Confirm you dropped off the rider?";
-        } else if ( request.getStatus().equals("In Progress")) {
-            message = "This job has already been taken by another driver. Are you sure you want to pickup this rider anyway?";
-        }
+        String message = getConfirmationMessage(status, isCurrentUserDriver());
 
         takeJobConfirmationDialog.setMessage(message)
                                   .show();
+    }
+
+
+    private String getConfirmationMessage(String status, boolean isCurrentUserDriver){
+        if(status.equals("Available")){
+            return "Are you sure you want to pickup this rider?";
+        } else if (isCurrentUserDriver){
+            return "Confirm you dropped off the rider?";
+        } else {
+            return "This job has already been taken by another driver. Are you sure you want to pickup this rider anyway?";
+        }
     }
 
     
@@ -133,5 +160,16 @@ public class RideRequestDetails extends ButterKnifeActivity {
         loadIntentData();
         ArrayList<Pair<String, String>> details = getDetails(request);
         populateDetails(details);
+    }
+
+
+    private void setupView(){
+        if(request.getStatus().equals("In Progress") && isCurrentUserDriver()){
+            jobActionButton.setText(R.string.riderequestdetails_completejob);
+        }
+        else if(request.getStatus().equals("Completed")){
+            contactRiderButton.setVisibility(View.GONE);
+            jobActionButton.setVisibility(View.GONE);
+        }
     }
 }

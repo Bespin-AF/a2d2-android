@@ -76,14 +76,14 @@ public class test_driver_takes_job {
 
     @Test
     public void isTakeJobButtonThere(){
-        mButtonTakeJob = mActivity.findViewById(R.id.materialbutton_riderequestdetails_takejob);
+        mButtonTakeJob = mActivity.findViewById(R.id.materialbutton_riderequestdetails_jobaction);
         assertNotNull(mButtonTakeJob);
     }
 
 
     @Test
     public void didPopupAppear(){
-        mButtonTakeJob = mActivity.findViewById(R.id.materialbutton_riderequestdetails_takejob);
+        mButtonTakeJob = mActivity.findViewById(R.id.materialbutton_riderequestdetails_jobaction);
 
         getInstrumentation().runOnMainSync(()->{
             mButtonTakeJob.performClick();
