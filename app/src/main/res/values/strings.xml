@@ -54,4 +54,6 @@
     <string name="request_ride_in_progress">In Progress</string>
     <string name="request_ride_completed">Completed</string>
 
+    <string name="riderequestdetails_completejob">Complete Job</string>
+
 </resources>

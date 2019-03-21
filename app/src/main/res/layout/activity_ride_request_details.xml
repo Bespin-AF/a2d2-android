@@ -26,10 +26,10 @@
         android:text="Contact Rider"
         style="@style/Widget.MaterialComponents.Button"
         app:cornerRadius="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/materialbutton_riderequestdetails_takejob"/>
+        app:layout_constraintBottom_toTopOf="@+id/materialbutton_riderequestdetails_jobaction"/>
 
     <android.support.design.button.MaterialButton
-        android:id="@+id/materialbutton_riderequestdetails_takejob"
+        android:id="@+id/materialbutton_riderequestdetails_jobaction"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Take Job"
