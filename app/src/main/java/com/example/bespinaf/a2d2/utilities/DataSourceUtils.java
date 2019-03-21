@@ -18,13 +18,16 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+
+import static java.util.Map.Entry;
 
 public class DataSourceUtils {
+    private static String[] requestIds;
+    private static HashMap<String, Request> currentRequests = new HashMap<>();
 
-    private static ArrayList<Request> currentRequests = new ArrayList<Request>();
     private static FirebaseDatabase database = FirebaseDatabase.getInstance();
     private static DatabaseReference databaseRef = database.getReference().child("requests");
-    private static Context toastContext;
     private static boolean isSyncingRequests = false;
     private static InitialSyncCallback initialSyncCallback = null;
     private static final String DISPLAY_DATE_FORMAT = "MMM dd, HHmm";
@@ -42,8 +45,7 @@ public class DataSourceUtils {
 
         @Override
         public void onCancelled(@NonNull DatabaseError databaseError) {
-            Toast.makeText(toastContext, "THERE WAS AN ERROR CONNECTING",
-                    Toast.LENGTH_SHORT).show();
+            //Show an error
         }
     };
 
@@ -117,40 +119,43 @@ public class DataSourceUtils {
         }
     }
 
-
     //Update currentRequests with data from the snapshot
     private static void updateRequests(DataSnapshot snapshot){
         currentRequests.clear();
         for (DataSnapshot ds : snapshot.getChildren()) {
             Request currentRequest = ds.getValue(Request.class);
 
-            currentRequests.add(currentRequest);
+            currentRequests.put(ds.getKey(), currentRequest);
         }
     }
 
+    public static HashMap<String, Request> getRequestsWithStatus(String targetStatus){
+        HashMap<String, Request> requests = new HashMap<>();
 
-    public static ArrayList<Request> getRequestsWithStatus(String targetStatus){
-        ArrayList<Request> targetRequests = new ArrayList<>();
-        for (Request request : currentRequests) {
-            if (request.getStatus().equals(targetStatus)) {
-                targetRequests.add(request);
+        for(Entry<String, Request> entry : currentRequests.entrySet()){
+            if(entry.getValue().getStatus().equals(targetStatus)){
+                requests.put(entry.getKey(), entry.getValue());
+
             }
         }
-        return targetRequests;
+
+        return requests;
     }
 
 
-    public static ArrayList<Request> getCurrentRequests(){
+    public static HashMap<String, Request> getCurrentRequests(){
         return currentRequests;
     }
 
 
+    //Link about updating/receiving from firebase, and handling errors: https://stackoverflow.com/questions/49979998/firebase-exception-handling-around-setvalue
     public static void sendData(Object data){
-        databaseRef.push().setValue (data);
+        DatabaseReference dataReference = databaseRef.push();
+        updateData(dataReference.getKey(), data);
     }
 
 
-    public static void setToastContext(Context newContext){
-        toastContext = newContext;
+    public static void updateData(String key, Object data){
+        databaseRef.child(key).setValue(data);
     }
 }

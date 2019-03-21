@@ -29,6 +29,7 @@ public class MainActivity extends ButterKnifeActivity {
         DataSourceUtils.initDateFormatters();
     }
 
+
     /**
      * //Open the rules page
      *
@@ -39,7 +40,8 @@ public class MainActivity extends ButterKnifeActivity {
         ActivityUtils.navigate(this, Rules.class);
     }
 
-    /**
+
+    /*
      * //Open the driver login page
      *
      * @param view the Request Ride Navigation Button

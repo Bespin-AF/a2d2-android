@@ -1,6 +1,11 @@
 package com.example.bespinaf.a2d2.models;
 
-public class Request {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
+
+public class Request implements Serializable {
 
     private String driver;
     private String status;

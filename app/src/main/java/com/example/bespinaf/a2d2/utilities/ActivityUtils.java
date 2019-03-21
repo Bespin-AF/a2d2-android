@@ -2,51 +2,70 @@ package com.example.bespinaf.a2d2.utilities;
 
 import android.content.ComponentName;
 import android.net.Uri;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog.Builder;
 import android.content.Intent;
 import android.content.Context;
+import android.util.Pair;
 
 import com.example.bespinaf.a2d2.R;
 
+import java.io.Serializable;
+
 public class ActivityUtils {
 
-    public static void navigate(Context from, Class to){
+    public static void navigate(Context from, Class to) {
         Intent pageIntent = new Intent(from, to);
         from.startActivity(pageIntent);
     }
 
 
     //TODO Decide on data format and transfer standards
-    public static void openDetail(Context from, Class detail, Class data){
-        Intent detailIntent = new Intent(from, detail);
-        //Add Data
-        from.startActivity(detailIntent);
+    public static void navigateWithData(Context from, Class to, Pair<String, Serializable>... data) {
+        Intent pageIntent = new Intent(from, to);
+
+        for (Pair<String, Serializable> dataPair : data) {
+            pageIntent.putExtra(dataPair.first, dataPair.second);
+        }
+
+        from.startActivity(pageIntent);
     }
 
 
-    public static void navigateAway(Context from, Uri to){
-        Intent exitIntent = new Intent();
+    public static void navigateAway(Context from, Uri to, Pair<String, String>... extras) {
+        Intent exitIntent = resolveIntent(to);
         exitIntent.setData(to);
+
+        for (Pair<String, String> extra : extras) {
+            exitIntent.putExtra(extra.first, extra.second);
+        }
+
         ComponentName exitIntentTarget = exitIntent.resolveActivity(from.getPackageManager());
         exitIntent.setComponent(exitIntentTarget);
         from.startActivity(exitIntent);
     }
 
-    public static boolean isFieldEmpty(TextInputEditText input){
-        return input.getText() == null ? true : input.getText().toString().isEmpty();
+
+
+    private static Intent resolveIntent(Uri target){
+        String targetString = target.toString();
+        if(targetString.contains("sms")){
+            return new Intent(Intent.ACTION_SENDTO);
+        }
+        else if(targetString.contains("navigation")){
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW);
+            mapIntent.setPackage("com.google.android.apps.maps");
+            return mapIntent;
+        }
+        return new Intent(Intent.ACTION_DEFAULT);
     }
 
-/*    public static boolean isFieldValid(Context context, TextInputEditText input, TextInputLayout layout){
-        if(input.getText().toString().isEmpty()){
-            layout.setError(context.getString(R.string.a2d2_field_required));
-            return false;
-        }
 
-        layout.setError("");
-
-        return true;
-    }*/
+    public static boolean isFieldEmpty(TextInputEditText input) {
+        return input.getText() == null ? true : input.getText().toString().isEmpty();
+    }
 
 
     public static Builder newNotifyDialogBuilder(Context context){

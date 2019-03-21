@@ -36,8 +36,7 @@
             />
         <activity android:name=".controllers.DriverLogin"
             android:label="Driver Login"
-            android:parentActivityName=".controllers.MainActivity"
-            />
+            android:parentActivityName=".controllers.MainActivity" />
     </application>
 
 </manifest>
