@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -13,47 +13,57 @@
     tools:context=".controllers.RideStatus">
 
     <ImageView
+        android:id="@+id/a2d2logo_ridestatus"
         android:layout_width="wrap_content"
         android:layout_height="235dp"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        android:src="@drawable/a2d2_logo_iv" />
+        android:src="@drawable/a2d2_text_logo"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
+        android:id="@+id/dispatchmessage_ridestatus"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/ride_status_message"
         android:layout_marginTop="7dp"
+        app:layout_constraintTop_toBottomOf="@id/a2d2logo_ridestatus"
         android:textAlignment="center"
         android:textColor="@color/textColor"
         android:textSize="20dp" />
     
     <TextView
+        android:id="@+id/a2d2number_ridestatus"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/a2d2_number_label"
         android:textAlignment="center"
+        app:layout_constraintTop_toBottomOf="@+id/dispatchmessage_ridestatus"
         android:textColor="@color/textColor"
         android:layout_marginTop="16dp"/>
 
     <android.support.design.button.MaterialButton
         android:id="@+id/button_call_a2d2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:backgroundTint="@color/buttonColor"
+        style="@style/App.MaterialButton"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         android:elevation="6dp"
-        android:text="@string/call_a2d2_dispatch"
-        android:textColor="@color/textColor" />
+        android:text="@string/call_a2d2_dispatch"/>
 
+    <!-- TODO: Complete story that adds ride cancel functionality. Not required for MVP -->
     <android.support.design.button.MaterialButton
+        android:visibility="gone"
         android:id="@+id/button_cancel_ride"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:backgroundTint="@color/buttonColor"
+        style="@style/App.MaterialButton"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         android:elevation="6dp"
-        android:text="@string/cancel_ride_request"
-        android:textColor="@color/textColor" />
+        android:text="@string/cancel_ride_request"/>
 
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

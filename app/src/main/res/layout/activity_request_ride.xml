@@ -1,191 +1,157 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/app_theme_gradient"
-    android:fillViewport="true"
-    android:paddingLeft="32dp"
-    android:paddingTop="16dp"
-    android:paddingRight="32dp"
-    android:scrollbars="none"
     tools:context=".controllers.RequestRide">
 
-    <LinearLayout
-        android:id="@+id/activity_request_ride_parent_linear_layout"
+    <!-- Rider name -->
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/activity_request_ride_name_text_input_layout"
+        app:errorEnabled="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:errorTextAppearance="@style/text_input_layout_error_appearance"
+        android:hint="@string/activity_request_ride_name"
+        android:textColorHint="@color/textColor"
+        style="@style/activity_a2d2_text_input_layout">
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/activity_request_ride_name_text_input_layout"
-            app:errorEnabled="true"
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/activity_ride_request_name_text_edit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:errorTextAppearance="@style/text_input_layout_error_appearance"
-            android:hint="@string/activity_request_ride_name"
-            android:textColorHint="@color/textColor"
-            style="@style/activity_a2d2_text_input_layout">
+            android:maxLength="100"
+            android:maxLines="1"
+            android:inputType="text"
+            android:scrollHorizontally="true"
+            android:textColor="@color/textColor"
+            app:errorEnabled="true"/>
+    </android.support.design.widget.TextInputLayout>
 
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/activity_ride_request_name_text_edit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxLength="100"
-                android:maxLines="1"
-                android:inputType="text"
-                android:scrollHorizontally="true"
-                android:textColor="@color/textColor"
-                app:errorEnabled="true"/>
-        </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/activity_request_ride_phone_number_text_input_layout"
-            app:errorEnabled="true"
+    <!-- Phone number -->
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/activity_request_ride_phone_number_text_input_layout"
+        app:errorEnabled="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/activity_request_ride_name_text_input_layout"
+        app:errorTextAppearance="@style/text_input_layout_error_appearance"
+        android:hint="@string/activity_request_ride_phone_number"
+        android:textColorHint="@color/textColor"
+        style="@style/activity_a2d2_text_input_layout">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/activity_ride_request_phone_number_text_edit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:errorTextAppearance="@style/text_input_layout_error_appearance"
-            android:hint="@string/activity_request_ride_phone_number"
-            android:textColorHint="@color/textColor"
-            style="@style/activity_a2d2_text_input_layout">
+            android:maxLength="10"
+            android:maxLines="1"
+            android:inputType="phone"
+            android:digits="1234567890"
+            android:scrollHorizontally="true"
+            android:textColor="@color/textColor"
+            app:errorEnabled="true"/>
+    </android.support.design.widget.TextInputLayout>
 
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/activity_ride_request_phone_number_text_edit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxLength="10"
-                android:maxLines="1"
-                android:inputType="phone"
-                android:digits="1234567890"
-                android:scrollHorizontally="true"
-                android:textColor="@color/textColor"
-                app:errorEnabled="true"/>
-        </android.support.design.widget.TextInputLayout>
 
-        <LinearLayout
+    <!-- Gender Selection -->
+    <TextView
+        android:id="@+id/gender_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/activity_request_ride_phone_number_text_input_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/gender"
+        android:textColor="@color/textColor"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <Spinner
+        android:id="@+id/gender_spinner"
+        style="@style/Widget.AppCompat.Spinner.Underlined"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/gender_text_view"
+        android:layout_marginBottom="16dp"
+        android:textAlignment="viewStart"
+        android:entries="@array/string_genders" />
+
+
+    <!-- Group Size Selection -->
+    <TextView
+        android:id="@+id/group_size_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/gender_spinner"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/group_size"
+        android:textColor="@color/textColor"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <Spinner
+        android:id="@+id/group_size_spinner"
+        style="@style/Widget.AppCompat.Spinner.Underlined"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/group_size_text_view"
+        android:layout_marginBottom="16dp"
+        android:textAlignment="viewStart"
+        android:paddingBottom="8dp"
+        android:entries="@array/string_group_sizes" />
+
+
+    <!-- Remarks section -->
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/request_ride_remarks_text_input_layout"
+        app:layout_constraintTop_toBottomOf="@+id/group_size_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        style="@style/activity_a2d2_text_input_layout"
+        android:textColorHint="@color/textColor"
+        android:hint="@string/remarks_optional">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/request_ride_remarks_edit_text"
             android:layout_width="match_parent"
-            android:layout_height="72dp"
-            android:layout_marginTop="10dp"
-            android:baselineAligned="false"
-            android:orientation="horizontal">
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                android:layout_marginEnd="16dp">
-
-                <TextView
-                    android:id="@+id/gender_text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="8dp"
-                    android:text="@string/gender"
-                    android:textColor="@color/textColor"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/gender_text_view"
-                    android:background="@color/textColor">
-
-                    <Spinner
-                        android:id="@+id/gender_spinner"
-                        android:layout_width="match_parent"
-                        android:layout_height="36dp"
-                        android:entries="@array/string_genders" />
-                </FrameLayout>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-                <TextView
-                    android:id="@+id/group_size_text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="8dp"
-                    android:text="@string/group_size"
-                    android:textColor="@color/textColor"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/group_size_text_view"
-                    android:background="@color/textColor">
-
-                    <Spinner
-                        android:id="@+id/group_size_spinner"
-                        android:layout_width="match_parent"
-                        android:layout_height="36dp"
-                        android:layout_gravity="center"
-                        android:entries="@array/string_group_sizes" />
-                </FrameLayout>
-
-            </RelativeLayout>
+            android:layout_height="wrap_content"
+            android:textColor="@color/textColor"
+            android:inputType="textCapSentences|textMultiLine"
+            android:scrollbars="vertical"
+            android:gravity="start"
+            android:maxLength="255"
+            android:maxHeight="152dp"
+            android:text="" />
+    </android.support.design.widget.TextInputLayout>
 
 
-        </LinearLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_marginTop="32dp">
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                style="@style/activity_a2d2_text_input_layout"
-                android:textColorHint="@color/textColor"
-                android:hint="@string/remarks_optional"
-                android:entries="@array/string_genders">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/request_ride_remarks_edit_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:textColor="@color/textColor"
-                    android:inputType="textMultiLine"
-                    android:gravity="start"
-                    android:maxLength="255"
-                    android:text="" />
-            </android.support.design.widget.TextInputLayout>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="88dp"
-            android:layout_marginTop="32dp">
-
-            <!-- android:textSize="14dp" -->
-            <!-- android:textStyle="bold" -->
-            <!-- https://material.io/design/typography/the-type-system.html#type-scale -->
-            <android.support.design.button.MaterialButton
-                android:id="@+id/button_request_driver"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:backgroundTint="@color/buttonColor"
-                android:elevation="6dp"
-                android:onClick="btnRequestDriver_Clicked"
-                android:paddingLeft="25dp"
-                android:paddingTop="20dp"
-                android:paddingRight="25dp"
-                android:paddingBottom="20dp"
-                android:text="@string/button_request_driver"
-                android:textColor="@color/textColor"
-                android:textSize="24sp" />
-        </RelativeLayout>
-
-    </LinearLayout>
-</ScrollView>
+    <android.support.design.button.MaterialButton
+        android:id="@+id/button_request_driver"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginBottom="16dp"
+        style="@style/App.MaterialButton"
+        android:elevation="6dp"
+        android:onClick="btnRequestDriver_Clicked"
+        android:text="@string/button_request_driver" />
+</android.support.constraint.ConstraintLayout>

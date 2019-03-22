@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <color name="colorPrimary">#165B9E</color>
-    <color name="colorPrimaryDark">#000b43</color>
-    <color name="colorAccent">#5688cf</color>
+    <!-- Primary theme -->
+    <color name="colorPrimary">#29323C</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#748191</color>
     <color name="textColor">#ffffff</color>
+
+    <!-- Alternate theme for drivers -->
+    <color name="driverColorPrimary">#29323C</color>
+    <color name="driverColorPrimaryDark">#000000</color>
+    <color name="driverColorAccent">#748191</color>
+    <color name="driverTextColor">#2E3131</color>
+    <color name="driverBackgroundColor">#EEEEEE</color>
+
     <color name="textInputBackgroundColor">#FFFFFF</color>
     <color name="buttonText">#707070</color>
-    <color name="buttonColor">#5688cf</color>
     <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">#cccccc</color><!-- Border/text color for unfocused TextInputLayouts -->
     <color name="buttonTransparent">#00000000</color>
 </resources>

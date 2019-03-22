@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".controllers.RideRequestDetails"
+    android:background="@color/driverBackgroundColor"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingBottom="16dp"
@@ -24,16 +25,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Contact Rider"
-        style="@style/Widget.MaterialComponents.Button"
-        app:cornerRadius="16dp"
+        style="@style/App.MaterialButton"
+        android:layout_marginEnd="0px"
+        android:layout_marginStart="0px"
         app:layout_constraintBottom_toTopOf="@+id/materialbutton_riderequestdetails_jobaction"/>
 
     <android.support.design.button.MaterialButton
         android:id="@+id/materialbutton_riderequestdetails_jobaction"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="0px"
+        android:layout_marginStart="0px"
         android:text="Take Job"
-        style="@style/Widget.MaterialComponents.Button"
-        app:cornerRadius="16dp"
+        style="@style/App.MaterialButton"
         app:layout_constraintBottom_toBottomOf="parent"/>
 </android.support.constraint.ConstraintLayout>

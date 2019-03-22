@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent"
-    android:background="@drawable/app_theme_gradient"
+    android:background="@color/driverBackgroundColor"
     tools:context=".controllers.RideRequests">
 
     <LinearLayout
@@ -16,6 +16,7 @@
         <TextView
             android:id="@+id/ride_requests_available_text_view"
             android:textColor="@color/textColor"
+            android:background="#29323C"
             android:text="@string/request_ride_available"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -30,6 +31,7 @@
         <TextView
             android:id="@+id/ride_requests_in_progress_text_view"
             android:textColor="@color/textColor"
+            android:background="#29323C"
             android:text="@string/request_ride_in_progress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -44,6 +46,7 @@
         <TextView
             android:id="@+id/ride_requests_completed_text_view"
             android:textColor="@color/textColor"
+            android:background="#29323C"
             android:text="@string/request_ride_completed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

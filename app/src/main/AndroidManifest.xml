@@ -13,14 +13,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".controllers.RideRequestDetails"></activity>
-        <activity
-            android:name=".controllers.RideRequests"
-            android:label="Ride Requests" />
+
         <activity android:name=".controllers.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+                <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -31,16 +28,23 @@
         <activity
             android:name=".controllers.RequestRide"
             android:label="Pickup Request Options"
-            android:parentActivityName=".controllers.Rules"
-            android:windowSoftInputMode="stateHidden|adjustResize" />
-        <activity
-            android:name=".controllers.RideStatus"
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".controllers.RideStatus"
             android:label="Ride Status"
-            android:parentActivityName=".controllers.RequestRide" />
-        <activity
-            android:name=".controllers.DriverLogin"
+            />
+        <activity android:name=".controllers.DriverLogin"
             android:label="Driver Login"
             android:parentActivityName=".controllers.MainActivity" />
+        <!-- Driver Activities -->
+        <activity android:name=".controllers.RideRequests"
+            android:label="Ride Requests"
+            android:theme="@style/App.Theme.Driver"
+            />
+        <activity android:name=".controllers.RideRequestDetails"
+            android:label="Ride Request Details"
+            android:parentActivityName=".controllers.RideRequests"
+            android:theme="@style/App.Theme.Driver"
+            />
     </application>
 
 </manifest>

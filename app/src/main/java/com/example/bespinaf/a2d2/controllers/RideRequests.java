@@ -70,6 +70,7 @@ public class RideRequests extends ButterKnifeActivity {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(
                 view.getContext(),
                 llmRequestManager.getOrientation());
+        dividerItemDecoration.setDrawable(getDrawable(R.drawable.ride_requests_divideritemdecoration));
         view.addItemDecoration(dividerItemDecoration);
 
         view.setAdapter(adapter);
