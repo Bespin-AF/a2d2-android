@@ -9,13 +9,11 @@
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:text="TITLE:"
-        android:textSize="14dp"
-        android:textColor="#2E3131"/>
+        android:textSize="14dp"/>
     <TextView
         android:id="@+id/request_detail_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="VALUE"
-        android:textSize="16dp"
-        android:textColor="#2E3131"/>
+        android:textSize="16dp"/>
 </LinearLayout>

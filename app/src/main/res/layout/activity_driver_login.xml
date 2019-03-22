@@ -83,8 +83,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:strokeColor="@color/textColor" />
+        app:layout_constraintBottom_toBottomOf="parent" />
 
         <!-- TODO: Remove. Requires a code change in DriverLogin.java controller: unbind butterknife-->
         <android.support.design.button.MaterialButton

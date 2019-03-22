@@ -10,7 +10,8 @@
     <color name="driverColorPrimary">#29323C</color>
     <color name="driverColorPrimaryDark">#000000</color>
     <color name="driverColorAccent">#748191</color>
-    <color name="driverTextColor">#ffffff</color>
+    <color name="driverTextColor">#2E3131</color>
+    <color name="driverBackgroundColor">#EEEEEE</color>
 
     <color name="textInputBackgroundColor">#FFFFFF</color>
     <color name="buttonText">#707070</color>
