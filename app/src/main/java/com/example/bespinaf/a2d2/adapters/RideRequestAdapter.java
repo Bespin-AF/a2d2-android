@@ -62,31 +62,20 @@ public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.
     // Data Source for the RecyclerView
     String[] requestIds;
     HashMap<String, Request> requests;
-    Comparator<Request> dateComparator = (firstRequest, secondRequest) -> {
-        Date firstDate = new Date();
-        Date secondDate = new Date();
 
-        try {
-            firstDate = DataSourceUtils.databaseDateFormatter.parse(firstRequest.getTimestamp());
-            secondDate = DataSourceUtils.databaseDateFormatter.parse(secondRequest.getTimestamp());
-        } catch (Exception error) {
-            return 0;
-        }
-
-        return firstDate.compareTo(secondDate);
+    Comparator<String> keyComparator = (firstKey, secondKey) -> {
+        return firstKey.compareTo(secondKey);
     };
 
 
     public RideRequestAdapter(HashMap<String, Request> adapterRequests) {
-        requestIds = new String[adapterRequests.keySet().size()];
+        int requestCount = adapterRequests.keySet().size();
         requests = adapterRequests;
 
-        List<Request> mRequests = new ArrayList<Request>(adapterRequests.values());
-        Collections.sort(mRequests, dateComparator);
+        List<String> mRequestIds = new ArrayList<>(adapterRequests.keySet());
+        Collections.sort(mRequestIds, keyComparator);
 
-        for(Entry<String, Request> entry : adapterRequests.entrySet()){
-            requestIds[mRequests.indexOf(entry.getValue())] = entry.getKey();
-        }
+        requestIds = mRequestIds.toArray(new String[requestCount]);
     }
 
 
