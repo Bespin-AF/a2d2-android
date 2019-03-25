@@ -16,9 +16,11 @@ import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 import static java.util.Map.Entry;
 
@@ -60,13 +62,31 @@ public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.
     // Data Source for the RecyclerView
     String[] requestIds;
     HashMap<String, Request> requests;
+    Comparator<Request> dateComparator = (firstRequest, secondRequest) -> {
+        Date firstDate = new Date();
+        Date secondDate = new Date();
+
+        try {
+            firstDate = DataSourceUtils.databaseDateFormatter.parse(firstRequest.getTimestamp());
+            secondDate = DataSourceUtils.databaseDateFormatter.parse(secondRequest.getTimestamp());
+        } catch (Exception error) {
+            return 0;
+        }
+
+        return firstDate.compareTo(secondDate);
+    };
 
 
     public RideRequestAdapter(HashMap<String, Request> adapterRequests) {
-        Set<String> requestKeys = adapterRequests.keySet();
-
+        requestIds = new String[adapterRequests.keySet().size()];
         requests = adapterRequests;
-        requestIds = requestKeys.toArray(new String[requestKeys.size()]);
+
+        List<Request> mRequests = new ArrayList<Request>(adapterRequests.values());
+        Collections.sort(mRequests, dateComparator);
+
+        for(Entry<String, Request> entry : adapterRequests.entrySet()){
+            requestIds[mRequests.indexOf(entry.getValue())] = entry.getKey();
+        }
     }
 
 
@@ -83,8 +103,7 @@ public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.
     public RequestViewHolder onCreateViewHolder(ViewGroup viewGroup, int index) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         View view = inflater.inflate(R.layout.card_view_requests, viewGroup, false);
-        RequestViewHolder inflatedViewHolder = new RequestViewHolder(view);
-        return inflatedViewHolder;
+        return new RequestViewHolder(view);
     }
 
 
