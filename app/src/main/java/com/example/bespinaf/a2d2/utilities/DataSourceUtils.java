@@ -13,12 +13,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.TimeZone;
 
 import static java.util.Map.Entry;
 
@@ -31,7 +33,8 @@ public class DataSourceUtils {
     private static boolean isSyncingRequests = false;
     private static InitialSyncCallback initialSyncCallback = null;
     private static final String DISPLAY_DATE_FORMAT = "MMM dd, HHmm";
-    private static final String DATABASE_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss +SSSS";
+    //Millseconds are hardcoded in order to prevent iOS from breaking when they read in the time
+    private static final String DATABASE_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss +0000";
     public static SimpleDateFormat displayDateFormatter;
     public static SimpleDateFormat databaseDateFormatter;
 
@@ -54,6 +57,9 @@ public class DataSourceUtils {
     public static void initDateFormatters(){
         displayDateFormatter =  new SimpleDateFormat(DISPLAY_DATE_FORMAT);
         databaseDateFormatter = new SimpleDateFormat(DATABASE_DATE_FORMAT);
+
+        displayDateFormatter.setTimeZone(TimeZone.getDefault());
+        databaseDateFormatter.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
 
 

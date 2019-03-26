@@ -16,9 +16,11 @@ import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 import static java.util.Map.Entry;
 
@@ -61,12 +63,19 @@ public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.
     String[] requestIds;
     HashMap<String, Request> requests;
 
+    Comparator<String> keyComparator = (firstKey, secondKey) -> {
+        return firstKey.compareTo(secondKey);
+    };
+
 
     public RideRequestAdapter(HashMap<String, Request> adapterRequests) {
-        Set<String> requestKeys = adapterRequests.keySet();
-
+        int requestCount = adapterRequests.keySet().size();
         requests = adapterRequests;
-        requestIds = requestKeys.toArray(new String[requestKeys.size()]);
+
+        List<String> mRequestIds = new ArrayList<>(adapterRequests.keySet());
+        Collections.sort(mRequestIds, keyComparator);
+
+        requestIds = mRequestIds.toArray(new String[requestCount]);
     }
 
 
@@ -83,8 +92,7 @@ public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.
     public RequestViewHolder onCreateViewHolder(ViewGroup viewGroup, int index) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         View view = inflater.inflate(R.layout.card_view_requests, viewGroup, false);
-        RequestViewHolder inflatedViewHolder = new RequestViewHolder(view);
-        return inflatedViewHolder;
+        return new RequestViewHolder(view);
     }
 
 
