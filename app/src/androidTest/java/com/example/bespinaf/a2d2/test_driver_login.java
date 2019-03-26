@@ -3,8 +3,11 @@ package com.example.bespinaf.a2d2;
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.support.design.button.MaterialButton;
+import android.support.test.espresso.Espresso;
+import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.uiautomator.UiDevice;
+import android.view.View;
 
 import com.example.bespinaf.a2d2.controllers.DriverLogin;
 import com.example.bespinaf.a2d2.controllers.MainActivity;
@@ -14,7 +17,9 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
+import static android.support.test.espresso.action.ViewActions.click;
 import static org.junit.Assert.assertNotNull;
+import static android.support.test.espresso.Espresso.onView;
 
 public class test_driver_login {
 
@@ -35,7 +40,6 @@ public class test_driver_login {
     public void setUp() {
         mActivity = mMainActivity.getActivity();
         mInstrumentation = getInstrumentation();
-        mDevice = UiDevice.getInstance(mInstrumentation);
         mDriverLoginMonitor = mInstrumentation.addMonitor(DriverLogin.class.getName(), null, false);
     }
 
@@ -46,20 +50,12 @@ public class test_driver_login {
 
     @Test
     public void driverLoginButtonExists(){
-        mButtonDriverLogin = mActivity.findViewById(R.id.button_main_driver_login);
-        assertNotNull(mButtonDriverLogin);
+        onView(ViewMatchers.withId(R.id.button_main_driver_login));
     }
 
     @Test
     public void buttonDriverLoginClicked_NavigateToDriverLogin(){
-        mButtonDriverLogin = mActivity.findViewById(R.id.button_main_driver_login);
-
-        mInstrumentation.runOnMainSync(new Runnable() {
-            @Override
-            public void run() {
-                mButtonDriverLogin.performClick();
-            }
-        });
+        onView(ViewMatchers.withId(R.id.button_main_driver_login)).perform(click());
 
         mDriverLoginActivity = mInstrumentation.waitForMonitorWithTimeout(mDriverLoginMonitor, 1000);
         assertNotNull(mDriverLoginActivity);

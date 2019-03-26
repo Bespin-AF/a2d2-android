@@ -99,8 +99,10 @@ public class test_driver_drops_off_rider {
 
     @Test
     public void completeJob() throws InterruptedException {
-        AuthorizationUtils.authorizeUser("cooldriver@realandroidemail.com", "SecurePassword", (wasLoginSuccessful -> { }));
-
+        AuthorizationUtils.authorizeUser(
+                mActivity.getString(R.string.TEST_DRIVER_EMAIL),
+                mActivity.getString(R.string.TEST_DRIVER_PASSWORD),
+                (wasLoginSuccessful -> { }));
 
         onView(withId(R.id.materialbutton_riderequestdetails_jobaction)).perform(click());
 
