@@ -9,9 +9,12 @@ import android.support.design.button.MaterialButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.widget.TextView;
 
 import com.example.bespinaf.a2d2.R;
 import com.example.bespinaf.a2d2.utilities.ActivityUtils;
+import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
 import com.example.bespinaf.a2d2.utilities.Permissions;
 
 import butterknife.BindView;
@@ -24,8 +27,11 @@ public class RideStatus extends ButterKnifeActivity implements ActivityCompat.On
     MaterialButton buttonCallA2d2;
     @BindView(R.id.button_cancel_ride)
     MaterialButton buttonCancelRide;
+    @BindView(R.id.a2d2number_ridestatus)
+    TextView a2d2number_textview;
 
     final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1;
+    private String a2d2Number;
 
     AlertDialog.Builder mDialogBuilder;
 
@@ -34,7 +40,25 @@ public class RideStatus extends ButterKnifeActivity implements ActivityCompat.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bind(R.layout.activity_ride_status);
+        DataSourceUtils.getResource("a2d2phonenumber", () -> displayA2D2PhoneNumber());
+
         mDialogBuilder = ActivityUtils.newNotifyDialogBuilder(this);
+    }
+
+    private void displayA2D2PhoneNumber(){
+        a2d2Number = DataSourceUtils.getA2D2Number();
+        try {
+           String displayNumber = format10DigitNumber(a2d2Number);
+           String displayMessage = String.format("A2D2 Number: %s", displayNumber);
+           a2d2number_textview.setText(displayMessage);
+        } catch (Exception error){
+            Log.e("RideStatus: phoneError", error.getMessage());
+        }
+    }
+
+    private String format10DigitNumber(String number) throws IndexOutOfBoundsException{
+        String phoneFormat = "(%1$s) %2$s-%3$s";
+        return String.format(phoneFormat, number.substring(0,3), number.substring(3,6), number.substring(6));
     }
 
 
@@ -52,7 +76,7 @@ public class RideStatus extends ButterKnifeActivity implements ActivityCompat.On
      * Attempts to open the phone's dialler with A2D2's phone number
      */
     public void openDialer(){
-        Uri phoneNumber = Uri.parse("tel:" + getString(R.string.test_phone_number)); //TODO: CHANGE THE RESOURCE FOR THE PHONE NUMBER TO A2D2
+        Uri phoneNumber = Uri.parse(String.format("tel:%s", a2d2Number));
         ActivityUtils.navigateAway(this, phoneNumber);
     }
 
