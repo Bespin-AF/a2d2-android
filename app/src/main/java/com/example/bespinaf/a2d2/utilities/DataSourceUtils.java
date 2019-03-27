@@ -26,7 +26,7 @@ public class DataSourceUtils {
     private static String a2d2number;
 
     private static FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private static DatabaseReference messagesReference = database.getReference().child("requests");
+    private static DatabaseReference requestsReference = database.getReference().child("requests");
     private static DatabaseReference resourceReference = database.getReference("Resources");
     private static boolean isSyncingRequests = false;
     private static InitialSyncCallback initialSyncCallback = null;
@@ -104,7 +104,7 @@ public class DataSourceUtils {
         else { isSyncingRequests = true; }
 
         initialSyncCallback = callback;
-        messagesReference.addValueEventListener(dataSyncEvent);
+        requestsReference.addValueEventListener(dataSyncEvent);
     }
 
 
@@ -112,7 +112,7 @@ public class DataSourceUtils {
         if(isSyncingRequests) { isSyncingRequests = false; }
         else { return; }
 
-        messagesReference.removeEventListener(dataSyncEvent);
+        requestsReference.removeEventListener(dataSyncEvent);
     }
 
 
@@ -170,12 +170,12 @@ public class DataSourceUtils {
 
     //Link about updating/receiving from firebase, and handling errors: https://stackoverflow.com/questions/49979998/firebase-exception-handling-around-setvalue
     public static void sendData(Object data){
-        DatabaseReference dataReference = messagesReference.push();
+        DatabaseReference dataReference = requestsReference.push();
         updateData(dataReference.getKey(), data);
     }
 
 
     public static void updateData(String key, Object data){
-        messagesReference.child(key).setValue(data);
+        requestsReference.child(key).setValue(data);
     }
 }
