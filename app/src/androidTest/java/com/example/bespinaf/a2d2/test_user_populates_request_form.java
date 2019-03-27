@@ -7,8 +7,6 @@ import android.support.design.widget.TextInputLayout;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
-import android.support.test.uiautomator.UiDevice;
-import android.support.v4.widget.TextViewCompat;
 
 import com.example.bespinaf.a2d2.controllers.RequestRide;
 import com.example.bespinaf.a2d2.controllers.RideStatus;
@@ -16,13 +14,12 @@ import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
 
 import junit.framework.TestCase;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.Random;
-
-import javax.sql.DataSource;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onData;
@@ -32,6 +29,7 @@ import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.RootMatchers.isDialog;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withHint;
 import static android.support.test.espresso.matcher.ViewMatchers.withSpinnerText;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.containsString;
@@ -64,6 +62,7 @@ public class test_user_populates_request_form {
     private int PHONE_MAX_LENGTH = 10;
     private int REMARKS_MAX_LENGTH = 255;
 
+
     @Before
     public void setUp(){
         mActivity = mRequestRideActivity.getActivity();
@@ -83,6 +82,23 @@ public class test_user_populates_request_form {
         remarks = mActivity.getString(R.string.bacon_ipsum);
         long_text = mActivity.getString(R.string.bacon_ipsum);
     }
+
+
+    @After
+    public void tearDown(){
+        mActivity = null;
+        mInstrumentation.removeMonitor(mRideStatusMonitor);
+        mInstrumentation = null;
+        mNameInputLayout = null;
+        mPhoneNumberInputLayout = null;
+        name = null;
+        phoneNumber = null;
+        genders = null;
+        groupSizes = null;
+        remarks = null;
+        long_text = null;
+    }
+
 
     @Test
     public void hasActivityLoaded(){ assertNotNull(mActivity);  }
@@ -115,6 +131,13 @@ public class test_user_populates_request_form {
 
     /** Name Field **/
     @Test
+    public void doesNameHintAppear(){
+        onView(withId(R.id.activity_ride_request_name_text_edit))
+                .check(matches(withHint(R.string.activity_request_ride_name)));
+    }
+
+
+    @Test
     public void doesNameHaveMaximumCharacterValue(){
         final TextInputEditText nameField = mActivity.findViewById(R.id.activity_ride_request_name_text_edit);
 
@@ -139,6 +162,13 @@ public class test_user_populates_request_form {
 
 
     /** Phone Number Field **/
+    @Test
+    public void doesPhoneNumberHintAppear(){
+        onView(withId(R.id.activity_ride_request_phone_number_text_edit))
+                .check(matches(withHint(R.string.activity_request_ride_phone_number)));
+    }
+
+
     @Test
     public void canEnterPhoneNumber(){
         onView(withId(R.id.activity_ride_request_phone_number_text_edit)).perform(replaceText(phoneNumber));
@@ -222,6 +252,13 @@ public class test_user_populates_request_form {
 
 
     @Test
+    public void isRemarksOptionalMessageDisplayed(){
+        onView(withId(R.id.request_ride_remarks_edit_text))
+                .check(matches(withHint(R.string.remarks_optional)));
+    }
+
+
+    @Test
     public void doesRemarksHaveMaximumCharacterValue(){
         final TextInputEditText editTextRemarks = mActivity.findViewById(R.id.request_ride_remarks_edit_text);
 
@@ -231,6 +268,7 @@ public class test_user_populates_request_form {
         boolean isRemarksTextLengthInvalid = (editTextRemarks.getText() != null && editTextRemarks.getText().length() <= REMARKS_MAX_LENGTH);
         assertTrue(isRemarksTextLengthInvalid);
     }
+
 
     @Test
     public void confirmationDialogAppears(){
@@ -242,6 +280,7 @@ public class test_user_populates_request_form {
                 .inRoot(isDialog())
                 .check(matches(isDisplayed()));
     }
+
 
     @Test
     public void clickConfirmButton_rideStatusPageOpens() {
@@ -260,12 +299,12 @@ public class test_user_populates_request_form {
 
         onView(withText(R.string.dialog_okay))
                 .inRoot(isDialog())
-                .check(matches(isDisplayed()))
                 .perform(click());
 
         Activity mRideStatusActivity = mInstrumentation.waitForMonitorWithTimeout(mRideStatusMonitor, 1000);
         TestCase.assertNotNull(mRideStatusActivity);
     }
+
 
     /** Utility **/
     private int getRandomNumber(int minimum, int maximum){

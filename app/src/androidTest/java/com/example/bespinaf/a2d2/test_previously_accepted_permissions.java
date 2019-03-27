@@ -6,13 +6,11 @@ import android.app.Instrumentation;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.rule.GrantPermissionRule;
-import android.support.test.uiautomator.UiDevice;
-import android.view.View;
-import android.widget.Button;
 
 import com.example.bespinaf.a2d2.controllers.RequestRide;
 import com.example.bespinaf.a2d2.controllers.Rules;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -27,14 +25,13 @@ public class test_previously_accepted_permissions
 {
     @Rule
     public ActivityTestRule<Rules> mRuleActivity = new ActivityTestRule<>(Rules.class);
+    @Rule //Assuming that permissions are granted; turns on the permissions if they are turned off
+    public GrantPermissionRule mRuntimePermissionsRule = GrantPermissionRule.grant(Manifest.permission.ACCESS_FINE_LOCATION);
 
     private Rules mActivity;
-    private UiDevice mDevice;
     private Instrumentation mInstrumentation;
     private Instrumentation.ActivityMonitor mRulesMonitor;
 
-    @Rule //Assuming that permissions are granted; turns on the permissions if they are turned off
-    public GrantPermissionRule mRuntimePermissionsRule = GrantPermissionRule.grant(Manifest.permission.ACCESS_FINE_LOCATION);
 
     /**
      *  Creates monitor for RequestRide page and creates Rule Activity
@@ -44,8 +41,16 @@ public class test_previously_accepted_permissions
         mInstrumentation = getInstrumentation();
         mRulesMonitor = mInstrumentation.addMonitor(RequestRide.class.getName(),null,false);
         mActivity = mRuleActivity.getActivity();
-        mDevice = UiDevice.getInstance(getInstrumentation());
     }
+
+
+    @After
+    public void tearDown(){
+        mActivity = null;
+        mInstrumentation.removeMonitor(mRulesMonitor);
+        mInstrumentation = null;
+    }
+
 
     @Test
     public void hasActivityLaunched(){
@@ -56,6 +61,7 @@ public class test_previously_accepted_permissions
     public void doesAgreeButtonExist(){
         onView(ViewMatchers.withId(R.id.button_rules_agree));
     }
+
 
     /*
      *  Go to the request ride page
@@ -69,5 +75,4 @@ public class test_previously_accepted_permissions
         Activity mRequestRide = mInstrumentation.waitForMonitorWithTimeout(mRulesMonitor, 1000);
         Assert.assertNotNull(mRequestRide);
     }
-
 }

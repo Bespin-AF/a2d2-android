@@ -2,10 +2,7 @@ package com.example.bespinaf.a2d2;
 
 import android.app.Activity;
 import android.app.Instrumentation;
-import android.support.test.espresso.Espresso;
-import android.support.test.espresso.assertion.ViewAssertions;
 import android.support.test.espresso.contrib.RecyclerViewActions;
-import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 
 import com.example.bespinaf.a2d2.controllers.RideRequestDetails;
@@ -31,6 +28,7 @@ public class test_navigate_to_details_page {
     private Instrumentation mInstrumentation;
     private Instrumentation.ActivityMonitor mRequestDetailsMonitor;
 
+
     @Before
     public void setUp() {
         //Sets request ID for the test
@@ -46,6 +44,7 @@ public class test_navigate_to_details_page {
         mInstrumentation = getInstrumentation();
         mRequestDetailsMonitor = mInstrumentation.addMonitor(RideRequestDetails.class.getName(), null, false);
     }
+
 
     @After
     public void tearDown(){
@@ -64,7 +63,6 @@ public class test_navigate_to_details_page {
 
     @Test
     public void navigateToDetails() throws InterruptedException{
-        Thread.sleep(10000);
         onView(withId(R.id.ride_requests_available_recycler_view)).perform(
                 RecyclerViewActions.actionOnItemAtPosition(0, click()));
 

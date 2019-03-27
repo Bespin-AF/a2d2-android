@@ -44,10 +44,23 @@ public class test_driver_enters_email_and_password {
         password = mActivity.getString(R.string.TEST_DRIVER_PASSWORD);
     }
 
+
+    @After
+    public void tearDown(){
+        mActivity = null;
+        mInstrumentation.removeMonitor(mRideRequestsMonitor);
+        mInstrumentation = null;
+        email = null;
+        password = null;
+    }
+
+
     @Test
     public void hasEmailField(){
         Espresso.onView(ViewMatchers.withId(R.id.activity_driver_login_email_text_edit));
     }
+
+
     @Test
     public void isEmailField_EmailInput(){
         TextInputEditText mEmailInput = mActivity.findViewById(R.id.activity_driver_login_email_text_edit);
@@ -61,10 +74,12 @@ public class test_driver_enters_email_and_password {
         Assert.assertEquals(mEmailInput.getInputType(), (InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS | InputType.TYPE_CLASS_TEXT ));
     }
 
+
     @Test
     public void hasPasswordField(){
         Espresso.onView(ViewMatchers.withId(R.id.activity_driver_login_password_text_edit));
     }
+
 
     @Test
     public void isPasswordField_PasswordInput(){
@@ -72,10 +87,12 @@ public class test_driver_enters_email_and_password {
         Assert.assertEquals(mPasswordInput.getInputType(), (InputType.TYPE_TEXT_VARIATION_PASSWORD | InputType.TYPE_CLASS_TEXT));
     }
 
+
     @Test
     public void hasLoginButton(){
         Espresso.onView(ViewMatchers.withId(R.id.button_driver_login));
     }
+
 
     @Test
     public void canEnterEmailIntoTextField(){
@@ -84,6 +101,7 @@ public class test_driver_enters_email_and_password {
                 .check(matches(withText(email)));
     }
 
+
     @Test
     public void canEnterPasswordIntoTextField(){
         Espresso.onView(withId(R.id.activity_driver_login_password_text_edit))
@@ -91,10 +109,12 @@ public class test_driver_enters_email_and_password {
                 .check(matches(withText(password)));
     }
 
+
     @Test
     public void doesDriverLoginButtonExist(){
         Espresso.onView(ViewMatchers.withId(R.id.button_driver_login));
     }
+
 
     @Test
     public void doesDriverLoginButtonNavigateToJobRequests(){
@@ -107,10 +127,5 @@ public class test_driver_enters_email_and_password {
 
         Activity RideRequests = mInstrumentation.waitForMonitorWithTimeout(mRideRequestsMonitor, 10000);
         Assert.assertNotNull(RideRequests);
-    }
-
-    @After
-    public void tearDown(){
-        mInstrumentation.removeMonitor(mRideRequestsMonitor);
     }
 }
