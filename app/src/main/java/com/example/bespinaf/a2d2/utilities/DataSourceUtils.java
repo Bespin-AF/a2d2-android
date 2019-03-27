@@ -1,9 +1,7 @@
 package com.example.bespinaf.a2d2.utilities;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.bespinaf.a2d2.InitialSyncCallback;
 import com.example.bespinaf.a2d2.models.Request;
@@ -13,10 +11,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -27,9 +23,11 @@ import static java.util.Map.Entry;
 public class DataSourceUtils {
     private static String[] requestIds;
     private static HashMap<String, Request> currentRequests = new HashMap<>();
+    private static String a2d2number;
 
     private static FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private static DatabaseReference databaseRef = database.getReference().child("requests");
+    private static DatabaseReference messagesReference = database.getReference().child("requests");
+    private static DatabaseReference resourceReference = database.getReference("Resources");
     private static boolean isSyncingRequests = false;
     private static InitialSyncCallback initialSyncCallback = null;
     private static final String DISPLAY_DATE_FORMAT = "MMM dd, HHmm";
@@ -106,7 +104,7 @@ public class DataSourceUtils {
         else { isSyncingRequests = true; }
 
         initialSyncCallback = callback;
-        databaseRef.addValueEventListener(dataSyncEvent);
+        messagesReference.addValueEventListener(dataSyncEvent);
     }
 
 
@@ -114,7 +112,7 @@ public class DataSourceUtils {
         if(isSyncingRequests) { isSyncingRequests = false; }
         else { return; }
 
-        databaseRef.removeEventListener(dataSyncEvent);
+        messagesReference.removeEventListener(dataSyncEvent);
     }
 
 
@@ -153,15 +151,31 @@ public class DataSourceUtils {
         return currentRequests;
     }
 
+    public static String getA2D2Number(){ return a2d2number;}
+
+    public static void getResource(String property, InitialSyncCallback callback){
+        resourceReference.child(property).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                a2d2number = dataSnapshot.getValue(String.class);
+                if(callback != null){ callback.callback(); }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("FirebaseError", databaseError.getMessage());
+            }
+        });
+    }
 
     //Link about updating/receiving from firebase, and handling errors: https://stackoverflow.com/questions/49979998/firebase-exception-handling-around-setvalue
     public static void sendData(Object data){
-        DatabaseReference dataReference = databaseRef.push();
+        DatabaseReference dataReference = messagesReference.push();
         updateData(dataReference.getKey(), data);
     }
 
 
     public static void updateData(String key, Object data){
-        databaseRef.child(key).setValue(data);
+        messagesReference.child(key).setValue(data);
     }
 }
