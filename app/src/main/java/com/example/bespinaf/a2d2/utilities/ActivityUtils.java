@@ -79,7 +79,19 @@ public class ActivityUtils {
         builder.setTitle(titleResourceId).setMessage(messageResourceId).show();
     }
 
+
     public static void showDialog(Builder builder, String title, String message){
         builder.setTitle(title).setMessage(message).show();
     }
+
+
+    public static void showCallPermissionDeniedDialog(Builder builder){
+        showDialog(builder, R.string.dialog_title_CallPermissionDenied, R.string.error_CallPermissionDenied);
+    }
+
+
+    public static void showLocationPermissionDeniedDialog(Builder builder){
+        showDialog(builder, R.string.dialog_title_LocationPermissionDenied, R.string.error_LocationPermissionDenied);
+    }
+
 }

@@ -8,7 +8,6 @@ import android.view.View;
 import com.example.bespinaf.a2d2.R;
 import com.example.bespinaf.a2d2.utilities.ActivityUtils;
 import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
-import com.example.bespinaf.a2d2.utilities.LocationUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

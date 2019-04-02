@@ -40,31 +40,23 @@ public class RideStatus extends ButterKnifeActivity implements ActivityCompat.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bind(R.layout.activity_ride_status);
-        DataSourceUtils.getResource("a2d2phonenumber", () -> displayA2D2PhoneNumber());
 
         mDialogBuilder = ActivityUtils.newNotifyDialogBuilder(this);
+        a2d2Number = DataSourceUtils.a2d2PhoneNumber;
+        displayA2D2PhoneNumber();
     }
+
 
     private void displayA2D2PhoneNumber(){
-        a2d2Number = DataSourceUtils.getA2D2Number();
-        try {
-           String displayNumber = format10DigitNumber(a2d2Number);
-           String displayMessage = String.format("A2D2 Number: %s", displayNumber);
-           a2d2number_textview.setText(displayMessage);
-        } catch (Exception error){
-            Log.e("RideStatus: phoneError", error.getMessage());
-        }
-    }
-
-    private String format10DigitNumber(String number) throws IndexOutOfBoundsException{
-        String phoneFormat = "(%1$s) %2$s-%3$s";
-        return String.format(phoneFormat, number.substring(0,3), number.substring(3,6), number.substring(6));
+        String displayNumber = DataSourceUtils.formatPhoneNumber(a2d2Number);
+        String displayMessage = String.format("A2D2 Number: %s", displayNumber);
+        a2d2number_textview.setText(displayMessage);
     }
 
 
     @OnClick(R.id.button_call_a2d2)
     public void callA2D2(){
-        if(Permissions.isPhoneCallPermissionGranted(this)){
+        if(Permissions.hasPhoneCallPermission(this)){
             openDialer();
         } else {
             getPhonePermission();
@@ -100,15 +92,8 @@ public class RideStatus extends ButterKnifeActivity implements ActivityCompat.On
         if(hasGrantedPermissions(grantResults)){
             openDialer();
         } else {
-            notifyUserDeniedPermissions();
+            ActivityUtils.showCallPermissionDeniedDialog(mDialogBuilder);
         }
-    }
-
-
-    private void notifyUserDeniedPermissions(){
-        ActivityUtils.showDialog(mDialogBuilder,
-                R.string.dialog_title_CallPermissionDenied,
-                R.string.error_CallPermissionDenied);
     }
 
 

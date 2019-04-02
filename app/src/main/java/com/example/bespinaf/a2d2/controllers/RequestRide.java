@@ -24,12 +24,14 @@ import com.example.bespinaf.a2d2.R;
 import com.example.bespinaf.a2d2.utilities.ActivityUtils;
 import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
 import com.example.bespinaf.a2d2.models.Request;
+import com.example.bespinaf.a2d2.utilities.LocationUtils;
+import com.example.bespinaf.a2d2.utilities.Permissions;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
 
-public class RequestRide extends ButterKnifeActivity implements LocationListener {
+public class RequestRide extends ButterKnifeActivity {
 
     @BindView(R.id.activity_ride_request_name_text_edit)
     TextInputEditText mNameEditText;
@@ -51,10 +53,6 @@ public class RequestRide extends ButterKnifeActivity implements LocationListener
 
     private AlertDialog.Builder mDialogBuilder;
 
-    private double mLatitude;
-    private double mLongitude;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +60,6 @@ public class RequestRide extends ButterKnifeActivity implements LocationListener
 
         mDialogBuilder = ActivityUtils.newNotifyDialogBuilder(this);
         initTextFieldLiveValidation();
-        startLocationSync();
     }
 
 
@@ -76,10 +73,8 @@ public class RequestRide extends ButterKnifeActivity implements LocationListener
     public void btnRequestDriver_Clicked(View view) {
         if(!isValidData()){
             return;
-        } else if(!hasLocationPermission()) {
-            ActivityUtils.showDialog(mDialogBuilder,
-                    R.string.dialog_title_LocationPermissionDenied,
-                    R.string.error_LocationPermissionDenied);
+        } else if(!Permissions.hasLocationPermission(this)) {
+            ActivityUtils.showLocationPermissionDeniedDialog(mDialogBuilder);
             return;
         }
 
@@ -94,13 +89,12 @@ public class RequestRide extends ButterKnifeActivity implements LocationListener
     }
 
 
-    private boolean hasLocationPermission() {
-        return (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED);
+    private void confirmRideRequest() {
+        buildConfirmationDialog().show();
     }
 
 
-    private void confirmRideRequest() {
+    private AlertDialog.Builder buildConfirmationDialog(){
         AlertDialog.Builder dialogBuilder = ActivityUtils.newNotifyDialogBuilder(this);
 
         DialogInterface.OnClickListener confirmEvent = (dialog, which) -> { submitRequest(); };
@@ -109,8 +103,8 @@ public class RequestRide extends ButterKnifeActivity implements LocationListener
         dialogBuilder.setTitle(R.string.confirm_driver_request_title)
                 .setMessage(R.string.confirm_driver_request_body)
                 .setPositiveButton(R.string.dialog_okay, confirmEvent)
-                .setNegativeButton(R.string.cancel, denyEvent)
-                .show();
+                .setNegativeButton(R.string.cancel, denyEvent);
+        return dialogBuilder;
     }
 
 
@@ -123,6 +117,7 @@ public class RequestRide extends ButterKnifeActivity implements LocationListener
 
     private Request buildRideRequest() {
         Request rideRequest = new Request();
+        Location currentLocation = LocationUtils.getCurrentLocation(this);
 
         rideRequest.setGroupSize(Integer.parseInt(mGroupSizeSpinner.getSelectedItem().toString()));
         rideRequest.setTimestamp(DataSourceUtils.getCurrentDateString());
@@ -131,30 +126,10 @@ public class RequestRide extends ButterKnifeActivity implements LocationListener
         rideRequest.setPhone(mPhoneNumberEditText.getText().toString());
         rideRequest.setRemarks(mRemarksEditText.getText().toString());
         rideRequest.setStatus(getString(R.string.request_ride_available));
-        rideRequest.setLat(mLatitude);
-        rideRequest.setLon(mLongitude);
+        rideRequest.setLat(currentLocation.getLatitude());
+        rideRequest.setLon(currentLocation.getLongitude());
 
         return rideRequest;
-    }
-
-
-    private void startLocationSync() {
-        LocationManager ourLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-            return;
-        ourLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-    }
-
-
-    //Methods handling location listener feedback
-    @Override
-    public void onLocationChanged(@NonNull Location location) {
-        mLatitude = location.getLatitude();
-        mLongitude = location.getLongitude();
-
-        Log.e("LocationLat", Double.toString(mLatitude));
-        Log.e("LocationLong", Double.toString(mLongitude));
     }
 
 
@@ -198,13 +173,4 @@ public class RequestRide extends ButterKnifeActivity implements LocationListener
             public void afterTextChanged(Editable s) { }
         };
     }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) { }
-
-    @Override
-    public void onProviderEnabled(String provider) { }
-
-    @Override
-    public void onProviderDisabled(String provider) { }
 }

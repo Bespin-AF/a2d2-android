@@ -48,9 +48,6 @@ public class DataSourceUtils {
     private static SimpleDateFormat displayDateFormatter;
     private static SimpleDateFormat databaseDateFormatter;
 
-
-
-
     public static void initializeDateFormatters(){
         displayDateFormatter =  new SimpleDateFormat(DISPLAY_DATE_FORMAT);
         databaseDateFormatter = new SimpleDateFormat(DATABASE_DATE_FORMAT);
@@ -112,6 +109,8 @@ public class DataSourceUtils {
      * */
     public static void startRequestSync(InitialSyncCallback callback){
         if(isSyncingRequests) {
+            //TODO: Validate that this call is required.
+            runInitialRequestsCallback();
             return;
         }
 
@@ -198,13 +197,14 @@ public class DataSourceUtils {
         );
     }
 
+
     private static void updateA2D2_BaseLocation(String location){
         a2d2BaseLocation = parseDatabaseLocation(location);
     }
 
-    private static Location parseDatabaseLocation(String location){
-        //Location format: Latitude, Longitude
 
+    private static Location parseDatabaseLocation(String location){
+        //Matches ±Latitude,±Longitude ; does not take into account potential spaces
         Pattern locationPattern = Pattern.compile("(-?\\d+\\.\\d*),(-?\\d+\\.\\d*)");
         Matcher coordinateMatcher = locationPattern.matcher(location);
 
@@ -230,11 +230,6 @@ public class DataSourceUtils {
     }
 
 
-    public static float calculateDistance(Location from, Location to){
-        return from.distanceTo(to);
-    }
-
-
     /* Generic Firebase CRUD utilities */
 
     public static void addData(DatabaseReference table, Object data){
@@ -255,8 +250,10 @@ public class DataSourceUtils {
     }
 
 
-    private static void stopSync(DatabaseReference table, ValueEventListener listener){
-        table.removeEventListener(listener);
+    private static void stopSync(DatabaseReference table, ValueEventListener... listeners){
+        for(ValueEventListener listener : listeners){
+            table.removeEventListener(listener);
+        }
     }
 
 
