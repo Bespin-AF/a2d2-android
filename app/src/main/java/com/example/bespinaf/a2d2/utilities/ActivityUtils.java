@@ -78,4 +78,8 @@ public class ActivityUtils {
     public static void showDialog(Builder builder, int titleResourceId, int messageResourceId){
         builder.setTitle(titleResourceId).setMessage(messageResourceId).show();
     }
+
+    public static void showDialog(Builder builder, String title, String message){
+        builder.setTitle(title).setMessage(message).show();
+    }
 }

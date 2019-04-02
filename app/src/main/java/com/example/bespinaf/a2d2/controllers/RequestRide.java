@@ -16,6 +16,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Spinner;
 
@@ -115,7 +116,7 @@ public class RequestRide extends ButterKnifeActivity implements LocationListener
 
     private void submitRequest() {
         Request rideRequest = buildRideRequest();
-        DataSourceUtils.sendData(rideRequest);
+        DataSourceUtils.addRequest(rideRequest);
         ActivityUtils.navigate(this, RideStatus.class);
     }
 
@@ -151,6 +152,9 @@ public class RequestRide extends ButterKnifeActivity implements LocationListener
     public void onLocationChanged(@NonNull Location location) {
         mLatitude = location.getLatitude();
         mLongitude = location.getLongitude();
+
+        Log.e("LocationLat", Double.toString(mLatitude));
+        Log.e("LocationLong", Double.toString(mLongitude));
     }
 
 
