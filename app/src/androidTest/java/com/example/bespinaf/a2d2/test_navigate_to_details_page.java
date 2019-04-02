@@ -35,7 +35,7 @@ public class test_navigate_to_details_page {
     public void setUp() {
         //Sets request ID for the test
         if (DataSourceUtils.getCurrentRequests().isEmpty()) {
-            DataSourceUtils.initDateFormatters();
+            DataSourceUtils.initializeDateFormatters();
             try {
                 //Required to load data before trying to perform actions/load page
                 Thread.sleep(5000);

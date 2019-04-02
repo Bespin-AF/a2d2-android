@@ -143,6 +143,11 @@ public class DataSourceUtils {
     }
 
 
+    public static HashMap<String, Request> getCurrentRequests(){
+        return requests;
+    }
+
+
     public static HashMap<String, Request> getRequestsWithStatus(String targetStatus){
         HashMap<String, Request> filteredRequests = new HashMap<>();
 

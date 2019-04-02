@@ -75,52 +75,6 @@ public class test_user_confirms_ride {
 
 
     @Test
-    public void riderOutOfRange_ErrorPopUpAppears(){
-        LocationManager lm = (LocationManager) mActivity.getSystemService(
-                Context.LOCATION_SERVICE);
-
-        lm.addTestProvider (LocationManager.GPS_PROVIDER,
-                "requiresNetwork" == "",
-                "requiresSatellite" == "",
-                "requiresCell" == "",
-                "hasMonetaryCost" == "",
-                "supportsAltitude" == "",
-                "supportsSpeed" == "",
-                "supportsBearing" == "",
-                android.location.Criteria.POWER_LOW,
-                android.location.Criteria.ACCURACY_FINE);
-
-        Location newLocation = new Location(LocationManager.GPS_PROVIDER);
-
-        newLocation.setLatitude(0);
-        newLocation.setLongitude(0);
-        newLocation.setAccuracy(1);
-        newLocation.setAltitude(10);
-        newLocation.setTime(System.currentTimeMillis());
-        newLocation.setElapsedRealtimeNanos(System.currentTimeMillis());
-        newLocation.setVerticalAccuracyMeters(1);
-        newLocation.setSpeedAccuracyMetersPerSecond(1);
-        newLocation.setBearingAccuracyDegrees(10);
-        lm.setTestProviderEnabled(LocationManager.GPS_PROVIDER, true);
-        lm.setTestProviderStatus(LocationManager.GPS_PROVIDER,
-                LocationProvider.AVAILABLE,
-                null,System.currentTimeMillis());
-        lm.setTestProviderLocation(LocationManager.GPS_PROVIDER, newLocation);
-
-        getInstrumentation().runOnMainSync(()-> {
-                    mNameEditText.setText("Scott Yamamoto");
-                    mPhoneNumberEditText.setText("8087386925");
-        });
-
-        onView(withId(R.id.button_request_driver)).perform(click());
-
-        onView(withText("You are outside of the service area. Please call (334) 953-2233 for further assistance"))
-                .inRoot(isDialog())
-                .check(matches(isDisplayed()));
-    }
-
-
-    @Test
     public void clickConfirmButton_rideStatusPageOpens() {
 
 
