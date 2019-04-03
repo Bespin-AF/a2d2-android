@@ -71,6 +71,14 @@ public class RideStatus extends ButterKnifeActivity implements ActivityCompat.On
         }
     }
 
+    @OnClick(R.id.button_cancel_ride)
+    public void cancelRideRequest(){
+        mDialogBuilder.setTitle("Confirm Cancellation?")
+                .setMessage("Are you sure you want to cancel your ride request?")
+                .setPositiveButton("Confirm",(dialog, which)->{})
+                .setNegativeButton("Cancel",(dialog, which)->{}).show();
+
+    }
 
     /**
      * Attempts to open the phone's dialler with A2D2's phone number
