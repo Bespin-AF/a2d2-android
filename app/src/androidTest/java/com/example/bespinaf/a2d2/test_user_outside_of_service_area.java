@@ -14,6 +14,7 @@ import android.support.test.uiautomator.UiDevice;
 
 import com.example.bespinaf.a2d2.controllers.RequestRide;
 import com.example.bespinaf.a2d2.controllers.Rules;
+import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
 
 import org.junit.After;
 import org.junit.Before;
@@ -40,7 +41,10 @@ public class test_user_outside_of_service_area {
     LocationManager lm;
 
     @Before
-    public void setUp(){
+    public void setUp() throws InterruptedException {
+        DataSourceUtils.loadA2D2_BaseLocation(null);
+        DataSourceUtils.loadA2D2_PhoneNumber(null);
+        Thread.sleep(1000);
         mActivity = mRuleActivityRule.getActivity();
         mInstrumentation = getInstrumentation();
         lm = (LocationManager) mActivity.getSystemService(
@@ -92,7 +96,7 @@ public class test_user_outside_of_service_area {
     public void riderOutOfRange_ErrorPopUpAppears(){
         onView(withId(R.id.button_rules_agree)).perform(click());
 
-        onView(withText("You are outside of the service area. Please call (334) 953-2233 for further assistance"))
+        onView(withText("You are outside of the 25 mile range defined by the A2D2 program rules. If you still require a ride, please call A2D2 Dispatch at (334) 953-2233"))
                 .inRoot(isDialog())
                 .check(matches(isDisplayed()));
     }
