@@ -25,10 +25,8 @@ public class test_navigate_to_details_page {
     public ActivityTestRule<RideRequests> mRideRequestsActivity = new ActivityTestRule<>(RideRequests.class);
 
     private RideRequests mActivity;
-    private Activity mRideRequestDetailsActivity;
     private Instrumentation mInstrumentation;
     private Instrumentation.ActivityMonitor mRequestDetailsMonitor;
-    private String requestID;
 
 
     @Before
@@ -47,7 +45,6 @@ public class test_navigate_to_details_page {
         mRequestDetailsMonitor = mInstrumentation.addMonitor(RideRequestDetails.class.getName(), null, false);
     }
 
-    //TODO: Write the test
 
     @After
     public void tearDown(){
@@ -66,9 +63,11 @@ public class test_navigate_to_details_page {
 
     @Test
     public void navigateToDetails() throws InterruptedException{
-        Thread.sleep(10000);
         onView(withId(R.id.ride_requests_available_recycler_view)).perform(
                 RecyclerViewActions.actionOnItemAtPosition(0, click()));
 
+
+        Activity requestDetailsActivity = mInstrumentation.waitForMonitorWithTimeout(mRequestDetailsMonitor, 1000);
+        assertNotNull(requestDetailsActivity);
     }
 }
