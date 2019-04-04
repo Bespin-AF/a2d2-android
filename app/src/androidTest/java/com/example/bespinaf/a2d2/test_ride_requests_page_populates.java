@@ -25,7 +25,7 @@ public class test_ride_requests_page_populates {
     @Before
     public void setUp(){
         if (DataSourceUtils.getCurrentRequests().isEmpty()) {
-            DataSourceUtils.initDateFormatters();
+            DataSourceUtils.initializeDateFormatters();
             try {
                 //Required to load data before trying to perform actions/load page
                 Thread.sleep(5000);
