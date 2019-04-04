@@ -169,9 +169,10 @@ public class DataSourceUtils {
     }
 
     //Link about updating/receiving from firebase, and handling errors: https://stackoverflow.com/questions/49979998/firebase-exception-handling-around-setvalue
-    public static void sendData(Object data){
+    public static String sendData(Object data){
         DatabaseReference dataReference = requestsReference.push();
         updateData(dataReference.getKey(), data);
+        return dataReference.getKey();
     }
 
 

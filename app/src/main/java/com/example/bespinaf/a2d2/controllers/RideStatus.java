@@ -1,6 +1,7 @@
 package com.example.bespinaf.a2d2.controllers;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.example.bespinaf.a2d2.R;
+import com.example.bespinaf.a2d2.models.Request;
 import com.example.bespinaf.a2d2.utilities.ActivityUtils;
 import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
 import com.example.bespinaf.a2d2.utilities.Permissions;
@@ -32,6 +34,8 @@ public class RideStatus extends ButterKnifeActivity implements ActivityCompat.On
 
     final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1;
     private String a2d2Number;
+    private String requestId;
+    private Request request;
 
     AlertDialog.Builder mDialogBuilder;
 
@@ -41,8 +45,14 @@ public class RideStatus extends ButterKnifeActivity implements ActivityCompat.On
         super.onCreate(savedInstanceState);
         bind(R.layout.activity_ride_status);
         DataSourceUtils.getResource("a2d2phonenumber", () -> displayA2D2PhoneNumber());
+        loadIntentData();
 
         mDialogBuilder = ActivityUtils.newNotifyDialogBuilder(this);
+    }
+
+    private void loadIntentData(){
+        requestId = (String) getIntent().getSerializableExtra("requestId");
+        request = (Request) getIntent().getSerializableExtra("request");
     }
 
     private void displayA2D2PhoneNumber(){
@@ -72,12 +82,33 @@ public class RideStatus extends ButterKnifeActivity implements ActivityCompat.On
     }
 
     @OnClick(R.id.button_cancel_ride)
-    public void cancelRideRequest(){
+    public void cancelButtonClicked_ConfirmCancellation(){
+        if(request == null || requestId == null){
+            Log.e("NavigationError", "Ride Status page reached without request data");
+            return;
+        }
+
         mDialogBuilder.setTitle("Confirm Cancellation?")
                 .setMessage("Are you sure you want to cancel your ride request?")
-                .setPositiveButton("Confirm",(dialog, which)->{})
+                .setPositiveButton("Confirm",(dialog, which)-> cancelRideRequest())
                 .setNegativeButton("Cancel",(dialog, which)->{}).show();
+    }
 
+    private void cancelRideRequest(){
+        request.setStatus("Cancelled");
+        DataSourceUtils.updateData(requestId, request);
+
+        AlertDialog.Builder redirectDialog = ActivityUtils.newNotifyDialogBuilder(this);
+
+        redirectDialog.setTitle("Ride Request Cancelled!")
+                .setMessage("Your request has been successfully cancelled. You will now be taken back to the home screen.")
+                .setPositiveButton("OKAY", (dialog, which)->{
+                    Intent homeNavigationIntent = new Intent(this, MainActivity.class);
+                    homeNavigationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(homeNavigationIntent);
+                    return;
+                })
+                .show();
     }
 
     /**
