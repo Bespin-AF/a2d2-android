@@ -65,6 +65,8 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
+                                                <entry key="scalingPercent" value="88" />
+                                                <entry key="trimmed" value="true" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -74,6 +76,7 @@
                                   </option>
                                   <option name="values">
                                     <map>
+                                      <entry key="backgroundImage" value="$PROJECT_DIR$/app/src/main/res/drawable/app_theme_gradient.xml" />
                                       <entry key="foregroundImage" value="$USER_HOME$/Downloads/A2D2Text.png" />
                                     </map>
                                   </option>
@@ -122,11 +125,6 @@
                                 </PersistentState>
                               </value>
                             </entry>
-                          </map>
-                        </option>
-                        <option name="values">
-                          <map>
-                            <entry key="outputIconType" value="ACTIONBAR" />
                           </map>
                         </option>
                       </PersistentState>
