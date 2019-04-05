@@ -55,7 +55,10 @@ public class test_user_cancels_ride {
 
         Intent data = new Intent();
         data.putExtra("request", buildRideRequest());
-        data.putExtra("requestId", "testRequestId");
+
+        String requestId = DataSourceUtils.sendData(buildRideRequest());
+
+        data.putExtra("requestId", requestId);
 
         mRideStatusRule.launchActivity(data);
     }
