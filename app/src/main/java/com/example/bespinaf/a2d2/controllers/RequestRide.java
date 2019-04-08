@@ -109,15 +109,20 @@ public class RequestRide extends ButterKnifeActivity {
 
 
     private void submitRequest() {
-        Request rideRequest = buildRideRequest();
-        DataSourceUtils.addRequest(rideRequest);
-        ActivityUtils.navigate(this, RideStatus.class);
+        //While it would be great if we could use getLastKnownLocation, we need a high degree of accuracy
+        //to decrease the chances of the rider driving to an outdated location
+        LocationUtils.getCurrentGPSLocationAsync(this, (location) -> {
+            Request rideRequest = buildRideRequest();
+            DataSourceUtils.addRequest(rideRequest);
+            ActivityUtils.navigate(this, RideStatus.class);
+        });
     }
 
 
     private Request buildRideRequest() {
         Request rideRequest = new Request();
-        Location currentLocation = LocationUtils.getCurrentLocation(this);
+        //Should get the latest possible location given that it's called after getting location
+        Location currentLocation = LocationUtils.getLastKnownGPSLocation(this);
 
         rideRequest.setGroupSize(Integer.parseInt(mGroupSizeSpinner.getSelectedItem().toString()));
         rideRequest.setTimestamp(DataSourceUtils.getCurrentDateString());

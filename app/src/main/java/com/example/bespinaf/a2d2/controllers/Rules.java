@@ -59,20 +59,24 @@ public class Rules extends ButterKnifeActivity implements ActivityCompat.OnReque
 
 
     private void navigateToRideRequest(){
-        Location currentLocation = LocationUtils.getCurrentLocation(this);
-
-        if(currentLocation == null){
+        if(!LocationUtils.isGPSEnabled(this)){
             ActivityUtils.showDialog(mDialogBuilder, "GPS Unavailable", "Please enable GPS and try again.");
-        } else if (!LocationUtils.isInRange(currentLocation, DataSourceUtils.a2d2BaseLocation)){
-            String contactNumber = DataSourceUtils.a2d2PhoneNumber;
-            ActivityUtils.showDialog(
-                    mDialogBuilder,
-                    "Location out of range!",
-                    String.format(userOutOfRangeMessageFormat, DataSourceUtils.formatPhoneNumber(contactNumber))
-            );
-        } else {
-            ActivityUtils.navigate(this, RequestRide.class);
+            return;
         }
+
+        LocationUtils.getCurrentGPSLocationAsync(this, (location) -> {
+            if(!LocationUtils.isInRange(location, DataSourceUtils.a2d2BaseLocation)){
+                String contactNumber = DataSourceUtils.a2d2PhoneNumber;
+                ActivityUtils.showDialog(
+                        mDialogBuilder,
+                        "Location out of range!",
+                        String.format(userOutOfRangeMessageFormat, DataSourceUtils.formatPhoneNumber(contactNumber))
+                );
+                return;
+            }
+
+            ActivityUtils.navigate(this, RequestRide.class);
+        });
     }
 
 
