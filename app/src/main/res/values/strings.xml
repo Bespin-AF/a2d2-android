@@ -3,7 +3,8 @@
     <string name="home_screen">THIS A PRIVATE ORGANIZATION. IT IS NOT PART OF THE DEPARTMENT OF DEFENSE OR ANY OF ITS COMPONENTS AND IT HAS NO GOVERNMENTAL STATUS.</string>
     <string name="request_ride_button">Request Ride</string>
     <string name="a2d2_rules_title">A2D2 Program Rules</string>
-    <string name="a2d2_rules_text">1. A2D2 is a volunteer organization of airmen dedicated to reducing the number of DUIs in the Air Force. Use of this program should be your last resort, not your Plan A.\n\n2. If you find yourself with no safe alternative, simply press the “Request Driver” button. The app will use your current GPS location and you will receive a notification when a driver is dispatched.\n\n3. A2D2 drivers will only transport you to your home address. If you are making a request on behalf of a group, the driver is only required to take the group to a single address. If members of the group need to go to multiple homes, those individuals will need to make separate pickup requests.</string>
+    <string name="a2d2_rules_text">1. You are required to show your driver your military ID to be picked up. \n\n 2. The driver will only take you to your home address. \n\n 3. Groups will only be taken to single address. \n\n 4. Your pickup location must be within 25 miles of your duty station.</string>
+    <string name="a2d2_rules_disclaimer">PRIVACY: A2D2 is an anonymous program. None of your provided information will be stored or given to leadership at anytime. \n\n DISCLAIMER: This is a private organization. It is not part of the Department of Defense or any of its components and it has no governmental status.</string>
     <string name="a2d2_rules_button">Agree</string>
     <string name="dialog_allow">ALLOW</string>
     <string name="dialog_deny">DENY</string>
