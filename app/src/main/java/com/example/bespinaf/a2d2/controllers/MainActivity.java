@@ -26,7 +26,9 @@ public class MainActivity extends ButterKnifeActivity {
         bind(R.layout.activity_main);
 
         //Initialize application resources
-        DataSourceUtils.initDateFormatters();
+        DataSourceUtils.initializeDateFormatters();
+        DataSourceUtils.loadA2D2_PhoneNumber(null);
+        DataSourceUtils.loadA2D2_BaseLocation(null);
     }
 
 

@@ -36,7 +36,8 @@ public class test_driver_drops_off_rider {
     @Before
     public void setUp() {
         if (DataSourceUtils.getCurrentRequests().isEmpty()) {
-            DataSourceUtils.initDateFormatters();
+            DataSourceUtils.initializeDateFormatters();
+            AuthorizationUtils.authorizeUser("cooldriver@realandroidemail.com", "SecurePassword", null);
             try {
                 //Required to load data before trying to perform actions/load page
                 Thread.sleep(5000);
