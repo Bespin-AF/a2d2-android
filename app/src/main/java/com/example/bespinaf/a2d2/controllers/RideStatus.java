@@ -87,7 +87,7 @@ public class RideStatus extends ButterKnifeActivity implements ActivityCompat.On
 
     private void cancelRideRequest(){
         request.setStatus("Cancelled");
-        DataSourceUtils.updateData(requestId, request);
+        DataSourceUtils.updateRequest(requestId, request);
 
         AlertDialog.Builder redirectDialog = ActivityUtils.newNotifyDialogBuilder(this);
 

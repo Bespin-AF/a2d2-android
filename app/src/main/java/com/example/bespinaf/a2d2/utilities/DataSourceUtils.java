@@ -279,5 +279,6 @@ public class DataSourceUtils {
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 failure.then(databaseError);
             }
+        };
     }
 }

@@ -17,6 +17,7 @@ import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 
+import android.util.Pair;
 import android.view.View;
 import android.widget.Spinner;
 

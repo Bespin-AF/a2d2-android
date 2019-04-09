@@ -49,14 +49,14 @@ public class test_user_cancels_ride {
 
     @Before
     public void setUp() {
-        DataSourceUtils.initDateFormatters();
+        DataSourceUtils.initializeDateFormatters();
         mInstrumentation = getInstrumentation();
         mHomeActivityMonitor = mInstrumentation.addMonitor(MainActivity.class.getName(), null, false);
 
         Intent data = new Intent();
         data.putExtra("request", buildRideRequest());
 
-        String requestId = DataSourceUtils.sendData(buildRideRequest());
+        String requestId = DataSourceUtils.addRequest(buildRideRequest());
 
         data.putExtra("requestId", requestId);
 
