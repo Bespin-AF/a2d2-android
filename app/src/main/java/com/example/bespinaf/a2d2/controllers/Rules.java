@@ -1,16 +1,22 @@
 package com.example.bespinaf.a2d2.controllers;
 
 import android.Manifest;
+import android.content.Context;
+import android.location.Location;
+import android.location.LocationManager;
 import android.support.v7.app.AlertDialog;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import com.example.bespinaf.a2d2.R;
 import com.example.bespinaf.a2d2.utilities.ActivityUtils;
+import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
+import com.example.bespinaf.a2d2.utilities.LocationUtils;
 import com.example.bespinaf.a2d2.utilities.Permissions;
 
 import butterknife.BindView;
@@ -23,6 +29,7 @@ public class Rules extends ButterKnifeActivity implements ActivityCompat.OnReque
     @BindView(R.id.button_rules_agree)
     Button buttonRulesAgree;
     private AlertDialog.Builder mDialogBuilder;
+    private String userOutOfRangeMessageFormat = "You are outside of the 25 mile range defined by the A2D2 program rules. If you still require a ride, please call A2D2 Dispatch at %s";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,24 +39,46 @@ public class Rules extends ButterKnifeActivity implements ActivityCompat.OnReque
         mDialogBuilder = ActivityUtils.newNotifyDialogBuilder(this);
     }
 
+
     @OnClick(R.id.button_rules_agree)
     public void btnRulesAgree_Clicked(View sender) {
-        if (hasLocationPermissions()) {
-            ActivityUtils.navigate(this, RequestRide.class);
-        } else {
+        if(!Permissions.hasLocationPermission(this)){
             requestLocationPermissions();
+            return;
         }
+
+        navigateToRideRequest();
     }
 
-    private boolean hasLocationPermissions(){
-        return Permissions.isLocationPermissionGranted(this);
-    }
 
     private void requestLocationPermissions(){
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                 0);
     }
+
+
+    private void navigateToRideRequest(){
+        if(!LocationUtils.isGPSEnabled(this)){
+            ActivityUtils.showDialog(mDialogBuilder, "GPS Unavailable", "Please enable GPS and try again.");
+            return;
+        }
+
+        LocationUtils.getCurrentGPSLocationAsync(this, (location) -> {
+            if(!LocationUtils.isInRange(location, DataSourceUtils.a2d2BaseLocation)){
+                String contactNumber = DataSourceUtils.a2d2PhoneNumber;
+                ActivityUtils.showDialog(
+                        mDialogBuilder,
+                        "Location out of range!",
+                        String.format(userOutOfRangeMessageFormat, DataSourceUtils.formatPhoneNumber(contactNumber))
+                );
+                return;
+            }
+
+            ActivityUtils.navigate(this, RequestRide.class);
+        });
+    }
+
 
     /**
      * Called on when the requestPermissions method is called, handles the response
@@ -62,11 +91,12 @@ public class Rules extends ButterKnifeActivity implements ActivityCompat.OnReque
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if(requestCode != MY_PERMISSIONS_REQUEST_LOCATION){ return; }
         if (hasGrantedPermissions(grantResults)) {
-            ActivityUtils.navigate(this, RequestRide.class);
+            navigateToRideRequest();
         } else {
-            ActivityUtils.showDialog(mDialogBuilder, R.string.dialog_title_LocationPermissionDenied, R.string.error_LocationPermissionDenied);
+            ActivityUtils.showLocationPermissionDeniedDialog(mDialogBuilder);
         }
     }
+
 
     private boolean hasGrantedPermissions(@NonNull int[] grantResults){
         return grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED;

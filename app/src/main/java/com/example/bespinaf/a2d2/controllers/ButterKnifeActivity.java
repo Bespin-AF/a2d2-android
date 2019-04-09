@@ -10,6 +10,7 @@ public class ButterKnifeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
     }
 
+
     protected void bind(int layoutID){
         setContentView(layoutID);
         ButterKnife.bind(this);

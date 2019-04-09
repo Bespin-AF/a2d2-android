@@ -31,7 +31,7 @@ public class test_driver_takes_job {
 
     @Before
     public void setUp() {
-        DataSourceUtils.initDateFormatters();
+        DataSourceUtils.initializeDateFormatters();
         request = buildRideRequest();
 
         Intent intent = new Intent();
