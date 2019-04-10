@@ -16,7 +16,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
+
+import android.util.Pair;
 import android.view.View;
 import android.widget.Spinner;
 
@@ -26,6 +27,8 @@ import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
 import com.example.bespinaf.a2d2.models.Request;
 import com.example.bespinaf.a2d2.utilities.LocationUtils;
 import com.example.bespinaf.a2d2.utilities.Permissions;
+
+import java.io.Serializable;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -113,8 +116,12 @@ public class RequestRide extends ButterKnifeActivity {
         //to decrease the chances of the rider driving to an outdated location
         LocationUtils.getCurrentGPSLocationAsync(this, (location) -> {
             Request rideRequest = buildRideRequest();
-            DataSourceUtils.addRequest(rideRequest);
-            ActivityUtils.navigate(this, RideStatus.class);
+            String requestId = DataSourceUtils.addRequest(rideRequest);
+
+            Pair<String, Serializable> requestIdData = new Pair<>("requestId", requestId);
+        	Pair<String, Serializable> requestData = new Pair<>("request", rideRequest);
+
+        	ActivityUtils.navigateWithData(this, RideStatus.class, requestIdData, requestData );
         });
     }
 

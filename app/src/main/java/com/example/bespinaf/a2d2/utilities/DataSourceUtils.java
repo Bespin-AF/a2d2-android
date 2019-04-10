@@ -172,8 +172,8 @@ public class DataSourceUtils {
 
     //Database CRUD
 
-    public static void addRequest(Request data){
-        addData(requestsReference, data);
+    public static String addRequest(Request data){
+        return addData(requestsReference, data);
     }
 
     public static void updateRequest(String id, Request data){
@@ -237,9 +237,10 @@ public class DataSourceUtils {
 
     /* Generic Firebase CRUD utilities */
 
-    public static void addData(DatabaseReference table, Object data){
+    public static String addData(DatabaseReference table, Object data){
         DatabaseReference databaseReference = table.push();
         updateData(table, databaseReference.getKey(), data);
+        return databaseReference.getKey();
     };
 
 
