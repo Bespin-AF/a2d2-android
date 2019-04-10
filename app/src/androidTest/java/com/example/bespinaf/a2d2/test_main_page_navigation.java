@@ -73,6 +73,7 @@ public class test_main_page_navigation {
     public void doesRulesPageContainRulesText(){
         onView(ViewMatchers.withId(R.id.button_navigate_to_rules)).perform(click());
         onView(ViewMatchers.withText(R.string.a2d2_rules_text));
+        onView(ViewMatchers.withText(mActivity.getString(R.string.a2d2_rules_disclaimer)));
     }
 
 
