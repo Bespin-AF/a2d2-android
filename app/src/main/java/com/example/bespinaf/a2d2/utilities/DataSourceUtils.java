@@ -94,6 +94,11 @@ public class DataSourceUtils {
         return String.format(PHONE_NUMBER_FORMAT, areaCode, base, extension);
     }
 
+    public static String removeNonDigitsFromString(String input){
+        String digitPattern = "[^\\d]*";
+        return input.replaceAll(digitPattern, "");
+    }
+
 
     /* Requests Utilities */
 

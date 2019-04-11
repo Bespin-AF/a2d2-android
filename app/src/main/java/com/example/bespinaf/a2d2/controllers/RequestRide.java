@@ -1,22 +1,20 @@
 package com.example.bespinaf.a2d2.controllers;
 
-import android.Manifest;
-import android.content.Context;
+
 import android.content.DialogInterface;
-import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.provider.ContactsContract;
 import android.support.design.button.MaterialButton;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
+import android.telephony.PhoneNumberFormattingTextWatcher;
+import android.telephony.PhoneNumberUtils;
 import android.text.Editable;
 import android.text.TextWatcher;
 
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.Spinner;
@@ -67,7 +65,12 @@ public class RequestRide extends ButterKnifeActivity {
 
 
     private void initTextFieldLiveValidation() {
-        mPhoneNumberEditText.addTextChangedListener(getTextWatcher());
+        mPhoneNumberEditText.addTextChangedListener(new PhoneNumberFormattingTextWatcher(){
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                setErrors();
+            }
+        });
         mNameEditText.addTextChangedListener(getTextWatcher());
     }
 
@@ -130,12 +133,15 @@ public class RequestRide extends ButterKnifeActivity {
         Request rideRequest = new Request();
         //Should get the latest possible location given that it's called after getting location
         Location currentLocation = LocationUtils.getLastKnownGPSLocation(this);
+        //Takes care of edge case where additional pluses can be prepended ad infinitum
+        String phoneNumberInput = mPhoneNumberEditText.getText().toString();
+        String phoneNumber = formatNumberToE164(phoneNumberInput);
 
         rideRequest.setGroupSize(Integer.parseInt(mGroupSizeSpinner.getSelectedItem().toString()));
         rideRequest.setTimestamp(DataSourceUtils.getCurrentDateString());
         rideRequest.setGender(mGenderSpinner.getSelectedItem().toString());
         rideRequest.setName(mNameEditText.getText().toString());
-        rideRequest.setPhone(mPhoneNumberEditText.getText().toString());
+        rideRequest.setPhone(phoneNumber);
         rideRequest.setRemarks(mRemarksEditText.getText().toString());
         rideRequest.setStatus(getString(R.string.request_ride_available));
         rideRequest.setLat(currentLocation.getLatitude());
@@ -151,15 +157,29 @@ public class RequestRide extends ButterKnifeActivity {
 
 
     private String getPhoneNumberError(){
-        if (ActivityUtils.isFieldEmpty(mPhoneNumberEditText)) {
-            return getString(R.string.a2d2_field_required);
-        } else if (mPhoneNumberEditText.length() < 10) {
+        if(ActivityUtils.isFieldEmpty(mPhoneNumberEditText)){ return getString(R.string.a2d2_field_required); }
+
+        String phoneNumber = mPhoneNumberEditText.getText() != null ? mPhoneNumberEditText.getText().toString() : "";
+        String phoneDigits = DataSourceUtils.removeNonDigitsFromString(phoneNumber);
+
+        //Note: This appears to be work mostly as intended there is a client error where they can continuously preface with pluses. This does not affect actual data
+
+        if(!isValidE164Number(phoneDigits)){
             return getString(R.string.error_phone_number);
         } else {
             return "";
         }
     }
 
+    private boolean isValidE164Number(String phoneDigits){
+        String DEFAULT_COUNTRY_CODE = "US";
+        return PhoneNumberUtils.formatNumberToE164(phoneDigits, DEFAULT_COUNTRY_CODE) != null;
+    }
+
+    private String formatNumberToE164(String phoneDigits){
+        String DEFAULT_COUNTRY_CODE = "US";
+        return PhoneNumberUtils.formatNumberToE164(phoneDigits, DEFAULT_COUNTRY_CODE);
+    }
 
     private void setErrors(){
         String phoneNumberError = getPhoneNumberError();
