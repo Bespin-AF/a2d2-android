@@ -1,5 +1,6 @@
 package com.example.bespinaf.a2d2.adapters;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import com.example.bespinaf.a2d2.controllers.RideRequestDetails;
 import com.example.bespinaf.a2d2.models.Request;
 import com.example.bespinaf.a2d2.utilities.ActivityUtils;
 import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
+import com.example.bespinaf.a2d2.utilities.FormatUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -21,6 +23,8 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 
 import static java.util.Map.Entry;
 
@@ -44,7 +48,7 @@ public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.
                 Pair<String, Serializable> requestIdData = new Pair<>("requestId", requestId);
                 Pair<String, Serializable> requestData = new Pair<>("request", request);
 
-                ActivityUtils.navigateWithData(v.getContext(), RideRequestDetails.class,requestIdData, requestData);
+                ActivityUtils.navigateWithData(v.getContext(), RideRequestDetails.class, requestIdData, requestData);
             }
         };
 
@@ -57,25 +61,28 @@ public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.
 
             viewLayout.setOnClickListener(navigateToRideRequestDetails);
         }
+
+        private void populateFields(String groupSize, String timeStamp, String gender){
+            groupSizeTextView.setText(groupSize);
+            timestampTextView.setText(timeStamp);
+            genderTextView.setText(gender);
+        }
     }
 
     // Data Source for the RecyclerView
-    String[] requestIds;
-    HashMap<String, Request> requests;
-
-    Comparator<String> keyComparator = (firstKey, secondKey) -> {
-        return firstKey.compareTo(secondKey);
-    };
-
+    private String[] requestIds;
+    private HashMap<String, Request> requests;
 
     public RideRequestAdapter(HashMap<String, Request> adapterRequests) {
-        int requestCount = adapterRequests.keySet().size();
+        requestIds = convertStringSetToSortedArray(adapterRequests.keySet());
         requests = adapterRequests;
+    }
 
-        List<String> mRequestIds = new ArrayList<>(adapterRequests.keySet());
-        Collections.sort(mRequestIds, keyComparator);
+    private String[] convertStringSetToSortedArray(Set<String> set){
+        List<String> intermediateList = new ArrayList<>(set);
+        Collections.sort(intermediateList, String::compareTo);
 
-        requestIds = mRequestIds.toArray(new String[requestCount]);
+        return intermediateList.toArray(new String[set.size()]);
     }
 
 
@@ -85,25 +92,29 @@ public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.
     }
 
 
-    //May be able to refine this later with a deeper understanding of what's happening
-
-    //Note: Check out ViewGroup
+    @NonNull
     @Override
-    public RequestViewHolder onCreateViewHolder(ViewGroup viewGroup, int index) {
-        LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-        View view = inflater.inflate(R.layout.card_view_requests, viewGroup, false);
+    public RequestViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int index) {
+        View view = LayoutInflater.from(viewGroup.getContext())
+                                  .inflate(R.layout.card_view_requests, viewGroup, false);
+
         return new RequestViewHolder(view);
     }
 
 
     @Override
-    public void onBindViewHolder(RequestViewHolder requestViewHolder, int index) {
+    public void onBindViewHolder(@NonNull RequestViewHolder requestViewHolder, int index) {
         String requestId = requestIds[index];
         Request request = requests.get(requestId);
-        String timestamp = DataSourceUtils.dateToDisplayFormat(request.getTimestamp());
 
-        requestViewHolder.groupSizeTextView.setText("Group Size: " + request.getGroupSize());
-        requestViewHolder.genderTextView.setText(request.getGender());
-        requestViewHolder.timestampTextView.setText(timestamp);
+        if(request == null){ return; }
+
+        String groupLabelFormat = "Group Size: %d";
+
+        String groupText = String.format(FormatUtils.DEFAULT_LOCALE, groupLabelFormat, request.getGroupSize());
+        String timestamp = FormatUtils.dateToDisplayFormat(request.getTimestamp());
+        String gender = request.getGender();
+
+        requestViewHolder.populateFields(groupText, timestamp, gender);
     }
 }

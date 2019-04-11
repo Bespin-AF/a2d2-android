@@ -1,5 +1,6 @@
 package com.example.bespinaf.a2d2.controllers;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -34,7 +35,7 @@ public class RideRequests extends ButterKnifeActivity {
     @Override
     protected void onResume(){
         super.onResume();
-        DataSourceUtils.startRequestSync(()-> refreshRecyclerViews());
+        DataSourceUtils.startRequestSync(this::refreshRecyclerViews);
     }
 
 
@@ -45,12 +46,11 @@ public class RideRequests extends ButterKnifeActivity {
     }
 
 
+    //At this time, only available, in progress, or completed job requests will be displayed - 11Apr2019
     private void refreshRecyclerViews() {
         HashMap<String, Request> listAvailable = DataSourceUtils.getRequestsWithStatus("Available");
         HashMap<String, Request> listInProgress = DataSourceUtils.getRequestsWithStatus("In Progress");
         HashMap<String, Request> listCompleted = DataSourceUtils.getRequestsWithStatus("Completed");
-        //TODO Handle if there is a status that is not listed
-
 
         populateRecyclerView(rideRequestsAvailableRecyclerView, listAvailable);
         populateRecyclerView(rideRequestsInProgressRecyclerView, listInProgress);
@@ -58,11 +58,12 @@ public class RideRequests extends ButterKnifeActivity {
     }
 
 
-    //TODO Do headers and data layout differently
+    //TODO Do headers and data layout differently : Using Tabs instead of one long list
     public void populateRecyclerView(RecyclerView view, HashMap<String, Request> list){
         RideRequestAdapter adapter = new RideRequestAdapter(list);
 
         LinearLayoutManager llmRequestManager = new LinearLayoutManager(this);
+        Drawable listItemDivider = getDrawable(R.drawable.ride_requests_divideritemdecoration);
         view.setLayoutManager(llmRequestManager);
         view.setHasFixedSize(true);
 
@@ -70,9 +71,9 @@ public class RideRequests extends ButterKnifeActivity {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(
                 view.getContext(),
                 llmRequestManager.getOrientation());
-        dividerItemDecoration.setDrawable(getDrawable(R.drawable.ride_requests_divideritemdecoration));
-        view.addItemDecoration(dividerItemDecoration);
+        if(listItemDivider != null){ dividerItemDecoration.setDrawable(listItemDivider); }
 
+        view.addItemDecoration(dividerItemDecoration);
         view.setAdapter(adapter);
     }
 }

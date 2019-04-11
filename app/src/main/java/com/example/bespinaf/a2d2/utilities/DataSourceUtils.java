@@ -33,7 +33,7 @@ public class DataSourceUtils {
 
     private static InitialSyncCallback requestCallback = null;
 
-    private static String REQUESTS_TABLE_KEY = "requests";
+    private static String REQUESTS_TABLE_KEY = "test_requests";
     private static String RESOURCES_TABLE_KEY = "Resources";
     private static FirebaseDatabase database = FirebaseDatabase.getInstance();
     private static DatabaseReference databaseRoot = database.getReference();
@@ -43,60 +43,10 @@ public class DataSourceUtils {
     interface onSuccess{ void then(DataSnapshot snapshot); }
     interface onFailure{ void then(DatabaseError error); }
 
-    private static final String DISPLAY_DATE_FORMAT = "MMM dd, HHmm";
-    private static final String DATABASE_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss +0000";  //+SSSS refers to time zone offset; UTC is 0000
-    private static SimpleDateFormat displayDateFormatter;
-    private static SimpleDateFormat databaseDateFormatter;
-
-    public static void initializeDateFormatters(){
-        displayDateFormatter =  new SimpleDateFormat(DISPLAY_DATE_FORMAT);
-        databaseDateFormatter = new SimpleDateFormat(DATABASE_DATE_FORMAT);
-
-        displayDateFormatter.setTimeZone(TimeZone.getDefault());
-        databaseDateFormatter.setTimeZone(TimeZone.getTimeZone("UTC"));
-    }
-
-
-    private static String convertDateFormat(String inputDate, SimpleDateFormat from, SimpleDateFormat to){
-        String output = "";
-
-        try {
-            Date date = from.parse(inputDate);
-            output = to.format(date);
-        } catch (ParseException error) {
-            Log.e("ParseError", error.getMessage());
-        }
-
-        return output;
-    }
-
-
-    public static String dateToDisplayFormat(String databaseDate){
-        return convertDateFormat(databaseDate, databaseDateFormatter, displayDateFormatter);
-    }
-
-
-    public static String dateToDatabaseFormat(String displayDate){
-        return convertDateFormat(displayDate, displayDateFormatter, databaseDateFormatter);
-    }
-
 
     public static String getCurrentDateString(){
         Date currentDate = Calendar.getInstance().getTime();
-        return databaseDateFormatter.format(currentDate);
-    }
-
-
-    public static String formatPhoneNumber(String phoneNumber){
-        String areaCode = phoneNumber.substring(0,3),
-                base = phoneNumber.substring(3,6),
-                extension = phoneNumber.substring(6);
-        return String.format(PHONE_NUMBER_FORMAT, areaCode, base, extension);
-    }
-
-    public static String removeNonDigitsFromString(String input){
-        String digitPattern = "[^\\d]*";
-        return input.replaceAll(digitPattern, "");
+        return FormatUtils.dateToDatabaseFormat(currentDate);
     }
 
 

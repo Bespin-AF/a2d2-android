@@ -12,6 +12,7 @@ import com.example.bespinaf.a2d2.R;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 public class RideRequestDetailAdapter extends RecyclerView.Adapter<RideRequestDetailAdapter.DetailViewHolder>{
 
@@ -19,7 +20,7 @@ public class RideRequestDetailAdapter extends RecyclerView.Adapter<RideRequestDe
         TextView title;
         TextView value;
 
-        public DetailViewHolder(@NonNull View itemView) {
+        private DetailViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.request_detail_title);
             value = itemView.findViewById(R.id.request_detail_value);
@@ -28,7 +29,7 @@ public class RideRequestDetailAdapter extends RecyclerView.Adapter<RideRequestDe
 
 
     //First value is the detail's title, Second value is the detail's value
-    List<Pair<String, String>> details;
+    private List<Pair<String, String>> details;
 
     public RideRequestDetailAdapter(List<Pair<String, String>> adapterDetails) {
         details = adapterDetails;
@@ -38,18 +39,18 @@ public class RideRequestDetailAdapter extends RecyclerView.Adapter<RideRequestDe
     @NonNull
     @Override
     public DetailViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-        View requestDetail = inflater.inflate(R.layout.card_ride_request_detail, viewGroup, false);
-        DetailViewHolder detailViewHolder = new DetailViewHolder(requestDetail);
+        View requestDetail = LayoutInflater.from(viewGroup.getContext())
+                                           .inflate(R.layout.card_ride_request_detail, viewGroup, false);
 
-        return detailViewHolder;
+        return new DetailViewHolder(requestDetail);
     }
 
 
     @Override
     public void onBindViewHolder(@NonNull DetailViewHolder detailViewHolder, int position) {
+        String titleFormat = "%s:";
         Pair<String, String> detail = details.get(position);
-        detailViewHolder.title.setText(detail.first + ":");
+        detailViewHolder.title.setText(String.format(Locale.ENGLISH, titleFormat, detail.first));
         detailViewHolder.value.setText(detail.second);
     }
 

@@ -4,7 +4,6 @@ package com.example.bespinaf.a2d2.controllers;
 import android.content.DialogInterface;
 import android.location.Location;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.design.button.MaterialButton;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
@@ -14,7 +13,6 @@ import android.telephony.PhoneNumberUtils;
 import android.text.Editable;
 import android.text.TextWatcher;
 
-import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.Spinner;
@@ -23,6 +21,7 @@ import com.example.bespinaf.a2d2.R;
 import com.example.bespinaf.a2d2.utilities.ActivityUtils;
 import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
 import com.example.bespinaf.a2d2.models.Request;
+import com.example.bespinaf.a2d2.utilities.FormatUtils;
 import com.example.bespinaf.a2d2.utilities.LocationUtils;
 import com.example.bespinaf.a2d2.utilities.Permissions;
 
@@ -160,7 +159,7 @@ public class RequestRide extends ButterKnifeActivity {
         if(ActivityUtils.isFieldEmpty(mPhoneNumberEditText)){ return getString(R.string.a2d2_field_required); }
 
         String phoneNumber = mPhoneNumberEditText.getText() != null ? mPhoneNumberEditText.getText().toString() : "";
-        String phoneDigits = DataSourceUtils.removeNonDigitsFromString(phoneNumber);
+        String phoneDigits = FormatUtils.fetchDigitsFromString(phoneNumber);
 
         //Note: This appears to be work mostly as intended there is a client error where they can continuously preface with pluses. This does not affect actual data
 

@@ -40,14 +40,17 @@ public class DriverLogin extends ButterKnifeActivity {
 
     @OnClick(R.id.button_driver_login)
     public void driverLogin() {
+        if(activityDriverLoginEmailTextEdit.getText() == null
+                || activityDriverLoginPasswordTextEdit.getText() == null){ return; }
+
         String  mEmail = activityDriverLoginEmailTextEdit.getText().toString(),
                 mPassword = activityDriverLoginPasswordTextEdit.getText().toString();
 
         validateInputs();
 
         if(isDataValid()){
-            AuthorizationUtils.authorizeUser(mEmail, mPassword, (loginSuccessful)->{
-                if(loginSuccessful){ ActivityUtils.navigate(this, RideRequests.class); }
+            AuthorizationUtils.authorizeUser(mEmail, mPassword, (wasLoginSuccessful)->{
+                if(wasLoginSuccessful){ ActivityUtils.navigate(this, RideRequests.class); }
                 else { Toast.makeText(this, "Invalid username or password", Toast.LENGTH_SHORT).show(); }
             });
         }

@@ -17,6 +17,7 @@ import com.example.bespinaf.a2d2.R;
 import com.example.bespinaf.a2d2.models.Request;
 import com.example.bespinaf.a2d2.utilities.ActivityUtils;
 import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
+import com.example.bespinaf.a2d2.utilities.FormatUtils;
 import com.example.bespinaf.a2d2.utilities.Permissions;
 
 import butterknife.BindView;
@@ -57,7 +58,7 @@ public class RideStatus extends ButterKnifeActivity implements ActivityCompat.On
     }
 
     private void displayA2D2PhoneNumber(){
-        String displayNumber = DataSourceUtils.formatPhoneNumber(a2d2Number);
+        String displayNumber = FormatUtils.formatPhoneNumber("3349284746");
         String displayMessage = String.format("A2D2 Number: %s", displayNumber);
         a2d2number_textview.setText(displayMessage);
     }

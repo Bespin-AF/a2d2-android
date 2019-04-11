@@ -17,7 +17,9 @@ import com.example.bespinaf.a2d2.models.Request;
 import com.example.bespinaf.a2d2.utilities.ActivityUtils;
 import com.example.bespinaf.a2d2.utilities.AuthorizationUtils;
 import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
+import com.example.bespinaf.a2d2.utilities.FormatUtils;
 
+import java.text.Format;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,11 +35,9 @@ public class RideRequestDetails extends ButterKnifeActivity {
     MaterialButton jobActionButton;
     Request request;
     String requestId;
-    String MAPS_URI_FORMAT = "google.navigation:q=%1$f, %2$f &avoid=tf";
     String currentDriver = AuthorizationUtils.getCurrentUser().getUid();
-
     Builder takeJobConfirmationDialog;
-    DialogInterface.OnClickListener confirmPickup = (dialog, which) -> {
+    DialogInterface.OnClickListener jobAction = (dialog, which) -> {
         updateRequestDetails();
 
         if(request.getStatus().equals("In Progress")){
@@ -53,12 +53,12 @@ public class RideRequestDetails extends ButterKnifeActivity {
         super.onCreate(savedInstanceState);
         bind(R.layout.activity_ride_request_details);
         loadRequestData();
-        setupView();
+        configureView();
 
         takeJobConfirmationDialog = ActivityUtils.newNotifyDialogBuilder(this)
                                             .setTitle("Confirm Pickup?")
-                                            .setPositiveButton("CONFIRM", confirmPickup)
-                                            .setNegativeButton("CANCEL", (dialog, which)->{ });
+                                            .setPositiveButton(R.string.dialog_confirm, jobAction)
+                                            .setNegativeButton(R.string.cancel, null);
     }
 
 
@@ -72,8 +72,8 @@ public class RideRequestDetails extends ButterKnifeActivity {
 
     @OnClick(R.id.materialbutton_riderequestdetails_contactrider)
     protected void messageRider(){
-        Uri phoneNumber = Uri.parse( String.format("smsto:%s", request.getPhone()) );
-        Pair<String, String> messageBody = new Pair<>("sms_body", "This is your A2D2 driver. I'm on my way!");
+        Uri phoneNumber = Uri.parse( FormatUtils.formatPhoneNumberToSMSUri(request.getPhone()) );
+        Pair<String, String> messageBody = new Pair<>("sms_body", getString(R.string.riderequestdetails_driver_messageToRider));
 
         ActivityUtils.navigateAway(this, phoneNumber, messageBody);
     }
@@ -81,9 +81,7 @@ public class RideRequestDetails extends ButterKnifeActivity {
 
     @OnClick(R.id.materialbutton_riderequestdetails_jobaction)
     protected void takeJob() {
-        String status = request.getStatus();
-
-        String message = getConfirmationMessage(status, isCurrentUserDriver());
+        String message = getConfirmationMessage(request.getStatus(), isCurrentUserDriver());
 
         takeJobConfirmationDialog.setMessage(message)
                 .show();
@@ -92,14 +90,60 @@ public class RideRequestDetails extends ButterKnifeActivity {
 
     private void loadRequestData(){
         loadIntentData();
-        ArrayList<Pair<String, String>> details = getDetails(request);
-        populateDetails(details);
+        populateDetails(getDetails(request));
     }
 
 
     private void loadIntentData(){
         requestId = (String) getIntent().getSerializableExtra("requestId");
         request = (Request) getIntent().getSerializableExtra("request");
+    }
+
+
+    private void populateDetails(List<Pair<String, String>> details){
+        RideRequestDetailAdapter detailAdapter = new RideRequestDetailAdapter(details);
+        LinearLayoutManager llmRequestManager = new LinearLayoutManager(this);
+
+        detailList.setLayoutManager(llmRequestManager);
+        detailList.setHasFixedSize(true);
+        detailList.setAdapter(detailAdapter);
+    }
+
+
+    private void configureView(){
+        if(request.getStatus().equals("In Progress") && isCurrentUserDriver()){
+            jobActionButton.setText(R.string.riderequestdetails_completejob);
+        }
+        else if(request.getStatus().equals("Completed")){
+            contactRiderButton.setVisibility(View.GONE);
+            jobActionButton.setVisibility(View.GONE);
+        }
+    }
+
+
+    private void updateRequestDetails(){
+        String updatedStatus = getUpdatedStatus(request.getStatus());
+
+        request.setStatus(updatedStatus);
+        request.setDriver(currentDriver);
+
+        DataSourceUtils.updateRequest(requestId, request);
+    }
+
+
+    private void startNavigationToRequester(){
+        String location = FormatUtils.formatLatLonToGoogleMapsUri(request.getLat(), request.getLon());
+        Uri destination = Uri.parse(location);
+
+        jobActionButton.setText(R.string.riderequestdetails_completejob);
+        ActivityUtils.navigateAway(this, destination);
+    }
+
+    /** In page utilities **/
+
+    private Boolean isCurrentUserDriver(){
+        if(request.getDriver() == null){ return false; }
+        return request.getDriver().equals(currentDriver);
     }
 
 
@@ -117,44 +161,6 @@ public class RideRequestDetails extends ButterKnifeActivity {
     }
 
 
-    private void populateDetails(List<Pair<String, String>> details){
-        RideRequestDetailAdapter detailAdapter = new RideRequestDetailAdapter(details);
-        LinearLayoutManager llmRequestManager = new LinearLayoutManager(this);
-
-        detailList.setLayoutManager(llmRequestManager);
-        detailList.setHasFixedSize(true);
-        detailList.setAdapter(detailAdapter);
-    }
-
-
-    private void setupView(){
-        if(request.getStatus().equals("In Progress") && isCurrentUserDriver()){
-            jobActionButton.setText(R.string.riderequestdetails_completejob);
-        }
-        else if(request.getStatus().equals("Completed")){
-            contactRiderButton.setVisibility(View.GONE);
-            jobActionButton.setVisibility(View.GONE);
-        }
-    }
-
-
-    private Boolean isCurrentUserDriver(){
-        if(request.getDriver() == null){ return false; }
-        return request.getDriver().equals(currentDriver);
-    }
-
-
-    private String getUpdatedStatus(String currentStatus){
-        if(currentStatus.equals("Available")){
-            return "In Progress";
-        } else if (isCurrentUserDriver()){
-            return "Completed";
-        } else {
-            return currentStatus;
-        }
-    }
-
-
     private String getConfirmationMessage(String status, boolean isCurrentUserDriver){
         if(status.equals("Available")){
             return "Are you sure you want to pickup this rider?";
@@ -166,21 +172,13 @@ public class RideRequestDetails extends ButterKnifeActivity {
     }
 
 
-    private void updateRequestDetails(){
-        String updatedStatus = getUpdatedStatus(request.getStatus());
-
-        request.setStatus(updatedStatus);
-        request.setDriver(currentDriver);
-
-        DataSourceUtils.updateRequest(requestId, request);
-    }
-
-
-    private void startNavigationToRequester(){
-        String location = String.format(MAPS_URI_FORMAT, request.getLat(), request.getLon());
-        Uri destination = Uri.parse(location);
-
-        jobActionButton.setText(R.string.riderequestdetails_completejob);
-        ActivityUtils.navigateAway(this, destination);
+    private String getUpdatedStatus(String currentStatus){
+        if(currentStatus.equals("Available")){
+            return "In Progress";
+        } else if (isCurrentUserDriver()){
+            return "Completed";
+        } else {
+            return currentStatus;
+        }
     }
 }

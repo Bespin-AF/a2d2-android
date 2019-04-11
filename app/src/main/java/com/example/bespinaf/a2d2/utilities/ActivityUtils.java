@@ -22,7 +22,6 @@ public class ActivityUtils {
     }
 
 
-    //TODO Decide on data format and transfer standards
     public static void navigateWithData(Context from, Class to, Pair<String, Serializable>... data) {
         Intent pageIntent = new Intent(from, to);
 
@@ -64,7 +63,7 @@ public class ActivityUtils {
 
 
     public static boolean isFieldEmpty(TextInputEditText input) {
-        return input.getText() == null ? true : input.getText().toString().isEmpty();
+        return input.getText() == null || input.getText().toString().isEmpty();
     }
 
 

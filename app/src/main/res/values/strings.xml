@@ -59,5 +59,6 @@
     <string name="riderequestdetails_driver_completejob">Confirm you dropped off the rider?</string>
     <string name="riderequestdetails_newdriver_takejob">This job has already been taken by another driver. Are you sure you want to pickup this rider anyway?</string>
     <string name="riderequestdetails_completejob">Complete Job</string>
+    <string name="riderequestdetails_driver_messageToRider">This is your A2D2 driver. I\'m on my way!</string>
 
 </resources>

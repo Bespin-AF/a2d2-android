@@ -16,6 +16,7 @@ import android.widget.Button;
 import com.example.bespinaf.a2d2.R;
 import com.example.bespinaf.a2d2.utilities.ActivityUtils;
 import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
+import com.example.bespinaf.a2d2.utilities.FormatUtils;
 import com.example.bespinaf.a2d2.utilities.LocationUtils;
 import com.example.bespinaf.a2d2.utilities.Permissions;
 
@@ -66,12 +67,16 @@ public class Rules extends ButterKnifeActivity implements ActivityCompat.OnReque
 
         LocationUtils.getCurrentGPSLocationAsync(this, (location) -> {
             if(!LocationUtils.isInRange(location, DataSourceUtils.a2d2BaseLocation)){
-                String contactNumber = DataSourceUtils.a2d2PhoneNumber;
-                ActivityUtils.showDialog(
-                        mDialogBuilder,
-                        "Location out of range!",
-                        String.format(userOutOfRangeMessageFormat, DataSourceUtils.formatPhoneNumber(contactNumber))
+                String outOfRangeMessage = String.format(
+                        userOutOfRangeMessageFormat,
+                        FormatUtils.formatPhoneNumber(DataSourceUtils.a2d2PhoneNumber)
                 );
+
+                ActivityUtils.showDialog( mDialogBuilder,
+                        "Location out of range!",
+                        outOfRangeMessage
+                );
+
                 return;
             }
 
