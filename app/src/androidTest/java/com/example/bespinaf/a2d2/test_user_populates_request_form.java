@@ -69,6 +69,8 @@ public class test_user_populates_request_form {
         mInstrumentation = getInstrumentation();
         mRideStatusMonitor = mInstrumentation.addMonitor(RideStatus.class.getName(), null, false);
         DataSourceUtils.initializeDateFormatters();
+        DataSourceUtils.loadA2D2_PhoneNumber(null);
+        DataSourceUtils.loadA2D2_BaseLocation(null);
 
         mNameInputLayout = mActivity.findViewById(R.id.activity_request_ride_name_text_input_layout);
         mPhoneNumberInputLayout = mActivity.findViewById(R.id.activity_request_ride_phone_number_text_input_layout);
@@ -201,19 +203,6 @@ public class test_user_populates_request_form {
             assertEquals(errorInvalid, mPhoneNumberInputLayout.getError().toString());
         }
     }
-
-
-    @Test
-    public void doesPhoneNumberHaveMaximumLength(){
-        final TextInputEditText phoneField = mActivity.findViewById(R.id.activity_ride_request_phone_number_text_edit);
-
-        onView(withId(R.id.activity_ride_request_phone_number_text_edit))
-                .perform(replaceText("12345678901234567890"));
-
-        boolean isRemarksTextLengthInvalid = (phoneField.getText() != null && phoneField.getText().length() <= PHONE_MAX_LENGTH);
-        assertTrue(isRemarksTextLengthInvalid);
-    }
-
 
     @Test
     public void groupSpinnerHasCorrectValues(){
