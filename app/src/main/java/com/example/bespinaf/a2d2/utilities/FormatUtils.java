@@ -24,7 +24,7 @@ public class FormatUtils {
     private static SimpleDateFormat displayDateFormatter;
     private static SimpleDateFormat databaseDateFormatter;
 
-    private static String formatString(String format, Object... args){
+    public static String formatString(String format, Object... args){
         return String.format(DEFAULT_LOCALE, format, args);
     }
 

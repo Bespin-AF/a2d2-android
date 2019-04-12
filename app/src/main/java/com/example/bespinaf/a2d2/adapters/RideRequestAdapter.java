@@ -13,21 +13,14 @@ import com.example.bespinaf.a2d2.R;
 import com.example.bespinaf.a2d2.controllers.RideRequestDetails;
 import com.example.bespinaf.a2d2.models.Request;
 import com.example.bespinaf.a2d2.utilities.ActivityUtils;
-import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
 import com.example.bespinaf.a2d2.utilities.FormatUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
-
-import static java.util.Map.Entry;
-
 
 //Adapts request objects for use in a recycler view
 public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.RequestViewHolder> {
@@ -38,18 +31,15 @@ public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.
         TextView groupSizeTextView;
         TextView genderTextView;
         TextView timestampTextView;
-        View.OnClickListener navigateToRideRequestDetails = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int selectedIndex = ((RecyclerView) v.getParent()).getChildAdapterPosition(v);
-                String requestId = requestIds[selectedIndex];
-                Request request = requests.get(requestId);
+        View.OnClickListener navigateToRideRequestDetails = (view) -> {
+            int selectedIndex = ((RecyclerView) view.getParent()).getChildAdapterPosition(view);
+            String requestId = requestIds[selectedIndex];
+            Request request = requests.get(requestId);
 
-                Pair<String, Serializable> requestIdData = new Pair<>("requestId", requestId);
-                Pair<String, Serializable> requestData = new Pair<>("request", request);
+            Pair<String, Serializable> requestIdData = new Pair<>("requestId", requestId);
+            Pair<String, Serializable> requestData = new Pair<>("request", request);
 
-                ActivityUtils.navigateWithData(v.getContext(), RideRequestDetails.class, requestIdData, requestData);
-            }
+            ActivityUtils.navigateWithData(view.getContext(), RideRequestDetails.class, requestIdData, requestData);
         };
 
         RequestViewHolder(View itemView) {
@@ -69,7 +59,7 @@ public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.
         }
     }
 
-    // Data Source for the RecyclerView
+    // Data source
     private String[] requestIds;
     private HashMap<String, Request> requests;
 
@@ -77,6 +67,7 @@ public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.
         requestIds = convertStringSetToSortedArray(adapterRequests.keySet());
         requests = adapterRequests;
     }
+
 
     private String[] convertStringSetToSortedArray(Set<String> set){
         List<String> intermediateList = new ArrayList<>(set);
@@ -109,9 +100,7 @@ public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.
 
         if(request == null){ return; }
 
-        String groupLabelFormat = "Group Size: %d";
-
-        String groupText = String.format(FormatUtils.DEFAULT_LOCALE, groupLabelFormat, request.getGroupSize());
+        String groupText = FormatUtils.formatString("Group Size: %d", request.getGroupSize());
         String timestamp = FormatUtils.dateToDisplayFormat(request.getTimestamp());
         String gender = request.getGender();
 

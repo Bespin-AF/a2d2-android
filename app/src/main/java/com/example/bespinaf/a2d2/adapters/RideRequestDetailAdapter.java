@@ -9,13 +9,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.bespinaf.a2d2.R;
+import com.example.bespinaf.a2d2.utilities.FormatUtils;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 public class RideRequestDetailAdapter extends RecyclerView.Adapter<RideRequestDetailAdapter.DetailViewHolder>{
-
     public class DetailViewHolder extends RecyclerView.ViewHolder{
         TextView title;
         TextView value;
@@ -28,8 +26,9 @@ public class RideRequestDetailAdapter extends RecyclerView.Adapter<RideRequestDe
     }
 
 
-    //First value is the detail's title, Second value is the detail's value
+    //List of pairs containing the details' title (first) and value (second)
     private List<Pair<String, String>> details;
+
 
     public RideRequestDetailAdapter(List<Pair<String, String>> adapterDetails) {
         details = adapterDetails;
@@ -48,9 +47,10 @@ public class RideRequestDetailAdapter extends RecyclerView.Adapter<RideRequestDe
 
     @Override
     public void onBindViewHolder(@NonNull DetailViewHolder detailViewHolder, int position) {
-        String titleFormat = "%s:";
         Pair<String, String> detail = details.get(position);
-        detailViewHolder.title.setText(String.format(Locale.ENGLISH, titleFormat, detail.first));
+        String title = FormatUtils.formatString("%s:", detail.first);
+
+        detailViewHolder.title.setText(title);
         detailViewHolder.value.setText(detail.second);
     }
 

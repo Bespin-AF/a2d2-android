@@ -66,6 +66,10 @@ public class ActivityUtils {
         return input.getText() == null || input.getText().toString().isEmpty();
     }
 
+    public static String getFieldText(TextInputEditText input){
+        return (input.getText() == null) ? null : input.getText().toString();
+    }
+
 
     public static Builder newNotifyDialogBuilder(Context context){
         Builder builder = new Builder(context, R.style.Theme_AppCompat_Light_Dialog_Alert);
