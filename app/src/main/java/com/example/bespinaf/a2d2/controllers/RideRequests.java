@@ -58,19 +58,21 @@ public class RideRequests extends ButterKnifeActivity {
     }
 
 
-    //TODO Do headers and data layout differently : Using Tabs instead of one long list
+    //TODO: Do headers and data layout differently, using Tabs instead of one long list
     public void populateRecyclerView(RecyclerView view, HashMap<String, Request> list){
         RideRequestAdapter adapter = new RideRequestAdapter(list);
 
         LinearLayoutManager llmRequestManager = new LinearLayoutManager(this);
-        Drawable listItemDivider = getDrawable(R.drawable.ride_requests_divideritemdecoration);
         view.setLayoutManager(llmRequestManager);
         view.setHasFixedSize(true);
 
-        //Sets the dividers between items in the recycler view
+        //Divider line between items in recycler view
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(
                 view.getContext(),
-                llmRequestManager.getOrientation());
+                llmRequestManager.getOrientation()
+        );
+
+        Drawable listItemDivider = getDrawable(R.drawable.ride_requests_divideritemdecoration);
         if(listItemDivider != null){ dividerItemDecoration.setDrawable(listItemDivider); }
 
         view.addItemDecoration(dividerItemDecoration);

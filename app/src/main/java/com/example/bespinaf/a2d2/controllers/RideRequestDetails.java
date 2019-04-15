@@ -72,7 +72,7 @@ public class RideRequestDetails extends ButterKnifeActivity {
 
     @OnClick(R.id.materialbutton_riderequestdetails_contactrider)
     protected void messageRider(){
-        Uri phoneNumber = Uri.parse( FormatUtils.formatPhoneNumberToSMSUri(request.getPhone()) );
+        Uri phoneNumber = Uri.parse( FormatUtils.formatPhoneNumberToSMSUri( request.getPhone() ) );
         Pair<String, String> messageBody = new Pair<>("sms_body", getString(R.string.riderequestdetails_driver_messageToRider));
 
         ActivityUtils.navigateAway(this, phoneNumber, messageBody);
@@ -84,7 +84,7 @@ public class RideRequestDetails extends ButterKnifeActivity {
         String message = getConfirmationMessage(request.getStatus(), isCurrentUserDriver());
 
         takeJobConfirmationDialog.setMessage(message)
-                .show();
+                                 .show();
     }
 
 

@@ -25,7 +25,7 @@ import java.util.Set;
 //Adapts request objects for use in a recycler view
 public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.RequestViewHolder> {
 
-    //RecyclerView Cell
+    //RecyclerView Cell Template
     public class RequestViewHolder extends RecyclerView.ViewHolder {
         RelativeLayout viewLayout;
         TextView groupSizeTextView;

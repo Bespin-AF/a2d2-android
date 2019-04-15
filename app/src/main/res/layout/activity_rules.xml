@@ -11,7 +11,7 @@
         android:id="@+id/a2d2_rules_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
+        android:textSize="16sp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
@@ -19,14 +19,14 @@
         android:text="@string/a2d2_rules_text"
         android:textAlignment="center"
         android:textColor="@color/textColor"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toTopOf="@+id/a2d2_disclaimer_text"/>
 
     <TextView
+        android:id="@+id/a2d2_disclaimer_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
+        android:textSize="16sp"
+        android:gravity="center"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="48dp"
@@ -37,10 +37,11 @@
         android:textColor="@color/textColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/a2d2_rules_text" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 
-
+s
     <android.support.design.button.MaterialButton
         style="@style/App.MaterialButton"
         android:id="@+id/button_rules_agree"

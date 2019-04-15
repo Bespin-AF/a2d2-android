@@ -180,6 +180,8 @@ public class DataSourceUtils {
             Log.e("NullLocationError", "Database contained null location for A2D2 base");
         } catch (NumberFormatException formatError) {
             Log.e("NumberFormatError", "Database location was improperly formatted: " + location);
+        } catch (Exception error) {
+            Log.e("LocationParseError", "Database location format changed or pattern needs updating");
         }
 
         Location baseLocation = new Location("");

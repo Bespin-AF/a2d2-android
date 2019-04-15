@@ -27,8 +27,6 @@ public class DriverLogin extends ButterKnifeActivity {
     TextInputLayout activityDriverLoginPasswordInputLayout;
     @BindView(R.id.button_driver_login)
     MaterialButton buttonDriverLogin;
-    @BindView(R.id.button_become_a_driver)
-    MaterialButton buttonBecomeADriver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,15 +45,16 @@ public class DriverLogin extends ButterKnifeActivity {
 
         if(mEmail == null || mPassword == null){ return; }
 
-            
-
-
-        if(isDataValid()){
-            AuthorizationUtils.authorizeUser(mEmail, mPassword, (wasLoginSuccessful)->{
-                if(wasLoginSuccessful){ ActivityUtils.navigate(this, RideRequests.class); }
-                else { Toast.makeText(this, "Invalid username or password", Toast.LENGTH_SHORT).show(); }
-            });
-        }
+        AuthorizationUtils.authorizeUser(mEmail, mPassword, (wasLoginSuccessful) -> {
+            if(wasLoginSuccessful) { ActivityUtils.navigate(this, RideRequests.class); }
+            else {
+                Toast.makeText(
+                        this,
+                        "Invalid username or password",
+                        Toast.LENGTH_SHORT
+                ).show();
+            }
+        });
     }
 
 

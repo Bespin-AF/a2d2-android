@@ -28,6 +28,12 @@ public class FormatUtils {
         return String.format(DEFAULT_LOCALE, format, args);
     }
 
+
+    public static String fetchDigitsFromString(String input){
+        return input.replaceAll(ONLY_DIGITS_REGEX, "");
+    }
+
+
     public static void initializeDateFormatters(){
         displayDateFormatter =  new SimpleDateFormat(DISPLAY_DATE_FORMAT, DEFAULT_LOCALE){{
             setTimeZone(DISPLAY_TIMEZONE);
@@ -37,21 +43,30 @@ public class FormatUtils {
         }};
     }
 
+
     public static String formatLatLonToGoogleMapsUri(double latitude, double longitude){
         return formatString(MAP_URI_FORMAT, latitude, longitude );
-    }
-
-    public static String formatPhoneNumberToSMSUri(String phoneNumber){
-        return formatString(SMS_FORMAT, phoneNumber);
     }
 
     public static String formatPhoneNumber(String phoneNumber){
         return PhoneNumberUtils.formatNumber(phoneNumber, DEFAULT_COUNTRY);
     }
 
-    public static String fetchDigitsFromString(String input){
-        return input.replaceAll(ONLY_DIGITS_REGEX, "");
+
+    public static String formatPhoneNumberToE164(String phoneDigits){
+        return PhoneNumberUtils.formatNumberToE164(phoneDigits, DEFAULT_COUNTRY);
     }
+
+
+    public static String formatPhoneNumberToSMSUri(String phoneNumber){
+        return formatString(SMS_FORMAT, phoneNumber);
+    }
+
+
+    public static boolean isValidE164PhoneNumberFormat(String phoneNumber){
+        return PhoneNumberUtils.formatNumberToE164(phoneNumber, DEFAULT_COUNTRY) != null;
+    }
+
 
     private static String convertDateFormat(String inputDate, SimpleDateFormat from, SimpleDateFormat to){
         try {
@@ -62,17 +77,21 @@ public class FormatUtils {
         }
     }
 
+
     public static String dateToDisplayFormat(String databaseDate){
         return convertDateFormat(databaseDate, databaseDateFormatter, displayDateFormatter);
     }
+
 
     public static String dateToDisplayFormat(Date databaseDate){
         return dateToDisplayFormat(databaseDate.toString());
     }
 
+
     public static String dateToDatabaseFormat(String displayDate){
         return convertDateFormat(displayDate, displayDateFormatter, databaseDateFormatter);
     }
+
 
     public static String dateToDatabaseFormat(Date displayDate){
         return dateToDatabaseFormat(displayDate.toString());

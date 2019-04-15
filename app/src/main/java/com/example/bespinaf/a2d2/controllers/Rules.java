@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationManager;
+import android.provider.ContactsContract;
 import android.support.v7.app.AlertDialog;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -65,23 +66,26 @@ public class Rules extends ButterKnifeActivity implements ActivityCompat.OnReque
             return;
         }
 
-        LocationUtils.getCurrentGPSLocationAsync(this, (location) -> {
-            if(!LocationUtils.isInRange(location, DataSourceUtils.a2d2BaseLocation)){
-                String outOfRangeMessage = String.format(
-                        userOutOfRangeMessageFormat,
-                        FormatUtils.formatPhoneNumber(DataSourceUtils.a2d2PhoneNumber)
-                );
-
-                ActivityUtils.showDialog( mDialogBuilder,
-                        "Location out of range!",
-                        outOfRangeMessage
-                );
-
+        LocationUtils.getCurrentGPSLocationAsync(this, (currentLocation) -> {
+            if(!LocationUtils.isInRange(currentLocation, DataSourceUtils.a2d2BaseLocation)){
+                displayOutOfRangeMessage();
                 return;
             }
 
             ActivityUtils.navigate(this, RequestRide.class);
         });
+    }
+
+
+    private void displayOutOfRangeMessage(){
+        String outOfRangeMessage = FormatUtils.formatString(
+                userOutOfRangeMessageFormat,
+                FormatUtils.formatPhoneNumber(DataSourceUtils.a2d2PhoneNumber)
+        );
+
+        ActivityUtils.showDialog(
+                mDialogBuilder,"Location out of range!", outOfRangeMessage
+        );
     }
 
 

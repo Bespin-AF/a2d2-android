@@ -17,14 +17,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/button_navigate_to_rules"/>
 
     <android.support.design.button.MaterialButton
         android:id="@+id/button_navigate_to_rules"
         style="@style/App.MaterialButton"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="8dp"
-        android:onClick="openRules"
         android:text="@string/request_ride_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -38,26 +38,9 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="16dp"
-        android:onClick="openRules"
         android:text="@string/main_driver_login_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
-
-
-    <!-- TODO: Decide if this needs to stay in; A2D2 will provide feedback on 15Mar2019 1300
-    <TextView
-        android:id="@+id/textview_main_disclaimer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="8dp"
-        android:text="@string/home_screen"
-        android:textAlignment="center"
-        android:textColor="@color/textColor"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="0dp" /> -->
-
-
 </android.support.constraint.ConstraintLayout>
