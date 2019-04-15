@@ -40,8 +40,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
-
-s
     <android.support.design.button.MaterialButton
         style="@style/App.MaterialButton"
         android:id="@+id/button_rules_agree"
@@ -52,5 +50,4 @@ s
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintWidth_percent="0.5" />
-
 </android.support.constraint.ConstraintLayout>

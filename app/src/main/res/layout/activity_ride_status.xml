@@ -31,7 +31,7 @@
         app:layout_constraintTop_toBottomOf="@id/a2d2logo_ridestatus"
         android:textAlignment="center"
         android:textColor="@color/textColor"
-        android:textSize="20dp" />
+        android:textSize="20sp" />
     
     <TextView
         android:id="@+id/a2d2number_ridestatus"

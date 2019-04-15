@@ -14,6 +14,7 @@
         android:layout_gravity="center"
         android:scaleType="centerInside"
         android:src="@drawable/a2d2_text_logo"
+        android:contentDescription="@string/home_page_logo_text_description"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
