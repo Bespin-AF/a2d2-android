@@ -6,6 +6,7 @@ import android.support.test.rule.ActivityTestRule;
 import com.example.bespinaf.a2d2.controllers.RideRequestDetails;
 import com.example.bespinaf.a2d2.models.Request;
 import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
+import com.example.bespinaf.a2d2.utilities.FormatUtils;
 
 import org.junit.After;
 import org.junit.Before;
@@ -31,7 +32,7 @@ public class test_driver_takes_job {
 
     @Before
     public void setUp() {
-        DataSourceUtils.initializeDateFormatters();
+        FormatUtils.initializeDateFormatters();
         request = buildRideRequest();
 
         Intent intent = new Intent();

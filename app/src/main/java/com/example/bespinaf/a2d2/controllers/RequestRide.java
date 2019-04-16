@@ -4,17 +4,14 @@ package com.example.bespinaf.a2d2.controllers;
 import android.content.DialogInterface;
 import android.location.Location;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.design.button.MaterialButton;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.telephony.PhoneNumberFormattingTextWatcher;
-import android.telephony.PhoneNumberUtils;
 import android.text.Editable;
 import android.text.TextWatcher;
 
-import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.Spinner;
@@ -23,6 +20,7 @@ import com.example.bespinaf.a2d2.R;
 import com.example.bespinaf.a2d2.utilities.ActivityUtils;
 import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
 import com.example.bespinaf.a2d2.models.Request;
+import com.example.bespinaf.a2d2.utilities.FormatUtils;
 import com.example.bespinaf.a2d2.utilities.LocationUtils;
 import com.example.bespinaf.a2d2.utilities.Permissions;
 
@@ -51,27 +49,27 @@ public class RequestRide extends ButterKnifeActivity {
     @BindView(R.id.button_request_driver)
     MaterialButton buttonRequestDriver;
 
+    private AlertDialog.Builder mErrorDialog;
 
-    private AlertDialog.Builder mDialogBuilder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bind(R.layout.activity_request_ride);
 
-        mDialogBuilder = ActivityUtils.newNotifyDialogBuilder(this);
-        initTextFieldLiveValidation();
+        mErrorDialog = ActivityUtils.newNotifyDialogBuilder(this);
+        initializeTextFieldLiveValidation();
     }
 
 
-    private void initTextFieldLiveValidation() {
-        mPhoneNumberEditText.addTextChangedListener(new PhoneNumberFormattingTextWatcher(){
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                setErrors();
-            }
-        });
-        mNameEditText.addTextChangedListener(getTextWatcher());
+    private void initializeTextFieldLiveValidation() {
+        mPhoneNumberEditText.addTextChangedListener(
+                getPhoneNumberFormattingTextWatcher(()-> mPhoneNumberTextLayout.setError(getPhoneNumberError()))
+        );
+
+        mNameEditText.addTextChangedListener(
+                getTextWatcher(()-> mNameTextLayout.setError(getNameError()) )
+        );
     }
 
 
@@ -80,7 +78,7 @@ public class RequestRide extends ButterKnifeActivity {
         if(!isValidData()){
             return;
         } else if(!Permissions.hasLocationPermission(this)) {
-            ActivityUtils.showLocationPermissionDeniedDialog(mDialogBuilder);
+            ActivityUtils.showLocationPermissionDeniedDialog(mErrorDialog);
             return;
         }
 
@@ -88,7 +86,7 @@ public class RequestRide extends ButterKnifeActivity {
     }
 
 
-    // check all fields and permissions
+    //Checks all fields for errors
     private boolean isValidData() {
         setErrors();
         return mPhoneNumberTextLayout.getError() == null && mNameTextLayout.getError() == null;
@@ -103,22 +101,20 @@ public class RequestRide extends ButterKnifeActivity {
     private AlertDialog.Builder buildConfirmationDialog(){
         AlertDialog.Builder dialogBuilder = ActivityUtils.newNotifyDialogBuilder(this);
 
-        DialogInterface.OnClickListener confirmEvent = (dialog, which) -> { submitRequest(); };
-        DialogInterface.OnClickListener denyEvent = (dialog, which) -> {};
+        DialogInterface.OnClickListener confirmEvent = (dialog, which) -> submitRequest();
 
         dialogBuilder.setTitle(R.string.confirm_driver_request_title)
                 .setMessage(R.string.confirm_driver_request_body)
                 .setPositiveButton(R.string.dialog_okay, confirmEvent)
-                .setNegativeButton(R.string.cancel, denyEvent);
+                .setNegativeButton(R.string.cancel, null);
         return dialogBuilder;
     }
 
 
+    //Performs a location sync in order to maximize accuracy vs getLastKnownLocation
     private void submitRequest() {
-        //While it would be great if we could use getLastKnownLocation, we need a high degree of accuracy
-        //to decrease the chances of the rider driving to an outdated location
         LocationUtils.getCurrentGPSLocationAsync(this, (location) -> {
-            Request rideRequest = buildRideRequest();
+            Request rideRequest = buildRideRequest(location);
             String requestId = DataSourceUtils.addRequest(rideRequest);
 
             Pair<String, Serializable> requestIdData = new Pair<>("requestId", requestId);
@@ -129,25 +125,31 @@ public class RequestRide extends ButterKnifeActivity {
     }
 
 
-    private Request buildRideRequest() {
-        Request rideRequest = new Request();
-        //Should get the latest possible location given that it's called after getting location
-        Location currentLocation = LocationUtils.getLastKnownGPSLocation(this);
-        //Takes care of edge case where additional pluses can be prepended ad infinitum
-        String phoneNumberInput = mPhoneNumberEditText.getText().toString();
-        String phoneNumber = formatNumberToE164(phoneNumberInput);
+    private Request buildRideRequest(){
+        return buildRideRequest(LocationUtils.getLastKnownGPSLocation(this));
+    }
 
-        rideRequest.setGroupSize(Integer.parseInt(mGroupSizeSpinner.getSelectedItem().toString()));
-        rideRequest.setTimestamp(DataSourceUtils.getCurrentDateString());
-        rideRequest.setGender(mGenderSpinner.getSelectedItem().toString());
-        rideRequest.setName(mNameEditText.getText().toString());
-        rideRequest.setPhone(phoneNumber);
-        rideRequest.setRemarks(mRemarksEditText.getText().toString());
-        rideRequest.setStatus(getString(R.string.request_ride_available));
-        rideRequest.setLat(currentLocation.getLatitude());
-        rideRequest.setLon(currentLocation.getLongitude());
 
-        return rideRequest;
+    private Request buildRideRequest(Location currentLocation){
+        String name = ActivityUtils.getFieldText(mNameEditText);
+        String phoneNumber = ActivityUtils.getFieldText(mPhoneNumberEditText);
+        String groupSize = mGroupSizeSpinner.getSelectedItem().toString();
+        String gender = mGenderSpinner.getSelectedItem().toString();
+        String remarks = ActivityUtils.getFieldText(mRemarksEditText);
+        String currentDate = DataSourceUtils.getCurrentDateString();
+
+        Request request = new Request();
+        request.setName(name);
+        request.setPhone(FormatUtils.formatPhoneNumberToE164(phoneNumber));
+        request.setGroupSize(Integer.parseInt(groupSize));
+        request.setGender(gender);
+        request.setRemarks(remarks);
+        request.setTimestamp(currentDate);
+        request.setLat(currentLocation.getLatitude());
+        request.setLon(currentLocation.getLongitude());
+        request.setStatus(getString(R.string.request_ride_available));
+
+        return request;
     }
 
 
@@ -156,30 +158,21 @@ public class RequestRide extends ButterKnifeActivity {
     }
 
 
+    /*
+        This appears to be work mostly as intended; there is a client error where they can continuously preface with pluses.
+        When submitted, it is normalized to conform to E164.
+        It is not compared to E164 format because it's more intuitive for some users to see e.g. (123) 456-7890
+    */
     private String getPhoneNumberError(){
-        if(ActivityUtils.isFieldEmpty(mPhoneNumberEditText)){ return getString(R.string.a2d2_field_required); }
+        String phoneNumber = ActivityUtils.getFieldText(mPhoneNumberEditText);
+        if(phoneNumber == null || ActivityUtils.isFieldEmpty(mPhoneNumberEditText)){ return getString(R.string.a2d2_field_required); }
 
-        String phoneNumber = mPhoneNumberEditText.getText() != null ? mPhoneNumberEditText.getText().toString() : "";
-        String phoneDigits = DataSourceUtils.removeNonDigitsFromString(phoneNumber);
+        String phoneDigits = FormatUtils.fetchDigitsFromString(phoneNumber);
 
-        //Note: This appears to be work mostly as intended there is a client error where they can continuously preface with pluses. This does not affect actual data
-
-        if(!isValidE164Number(phoneDigits)){
-            return getString(R.string.error_phone_number);
-        } else {
-            return "";
-        }
+        if(!FormatUtils.isValidE164PhoneNumberFormat(phoneDigits)){ return getString(R.string.error_phone_number);  }
+        else { return ""; }
     }
 
-    private boolean isValidE164Number(String phoneDigits){
-        String DEFAULT_COUNTRY_CODE = "US";
-        return PhoneNumberUtils.formatNumberToE164(phoneDigits, DEFAULT_COUNTRY_CODE) != null;
-    }
-
-    private String formatNumberToE164(String phoneDigits){
-        String DEFAULT_COUNTRY_CODE = "US";
-        return PhoneNumberUtils.formatNumberToE164(phoneDigits, DEFAULT_COUNTRY_CODE);
-    }
 
     private void setErrors(){
         String phoneNumberError = getPhoneNumberError();
@@ -190,15 +183,28 @@ public class RequestRide extends ButterKnifeActivity {
     }
 
 
-/**** These are ugly and I'm putting them in the basement ****/
-    private TextWatcher getTextWatcher(){
+    /**** Text Watcher constructors : these watch for changes to text fields ****/
+    private interface onTextChanged { void then(); }
+
+
+    private PhoneNumberFormattingTextWatcher getPhoneNumberFormattingTextWatcher(onTextChanged textChangedHandler){
+        return new PhoneNumberFormattingTextWatcher(){
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(textChangedHandler != null) { textChangedHandler.then(); }
+            }
+        };
+    }
+
+
+    private TextWatcher getTextWatcher(onTextChanged textChangedHandler){
         return new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                setErrors();
+                if(textChangedHandler != null) { textChangedHandler.then(); }
             }
 
             @Override

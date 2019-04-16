@@ -17,6 +17,7 @@ import com.example.bespinaf.a2d2.R;
 import com.example.bespinaf.a2d2.models.Request;
 import com.example.bespinaf.a2d2.utilities.ActivityUtils;
 import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
+import com.example.bespinaf.a2d2.utilities.FormatUtils;
 import com.example.bespinaf.a2d2.utilities.Permissions;
 
 import butterknife.BindView;
@@ -51,15 +52,17 @@ public class RideStatus extends ButterKnifeActivity implements ActivityCompat.On
         displayA2D2PhoneNumber();
     }
 
+
     private void loadIntentData(){
         requestId = (String) getIntent().getSerializableExtra("requestId");
         request = (Request) getIntent().getSerializableExtra("request");
     }
 
+
     private void displayA2D2PhoneNumber(){
-        String displayNumber = DataSourceUtils.formatPhoneNumber(a2d2Number);
-        String displayMessage = String.format("A2D2 Number: %s", displayNumber);
-        a2d2number_textview.setText(displayMessage);
+        a2d2number_textview.setText(
+                FormatUtils.formatString("A2D2 Number: %s", a2d2Number)
+        );
     }
 
 
@@ -75,14 +78,19 @@ public class RideStatus extends ButterKnifeActivity implements ActivityCompat.On
     @OnClick(R.id.button_cancel_ride)
     public void cancelButtonClicked_ConfirmCancellation(){
         if(request == null || requestId == null){
-            Log.e("NavigationError", "Ride Status page reached without request data");
+            String message = FormatUtils.formatString(
+                    "An error occurred trying to cancel your request. Please try again later or contact %s for further assistance.", a2d2Number
+            );
+            ActivityUtils.showDialog( mDialogBuilder, "Missing request data", message );
+
             return;
         }
 
         mDialogBuilder.setTitle("Confirm Cancellation?")
                 .setMessage("Are you sure you want to cancel your ride request?")
                 .setPositiveButton("Confirm",(dialog, which)-> cancelRideRequest())
-                .setNegativeButton("Cancel",(dialog, which)->{}).show();
+                .setNegativeButton("Cancel",null)
+                .show();
     }
 
     private void cancelRideRequest(){
@@ -93,13 +101,14 @@ public class RideStatus extends ButterKnifeActivity implements ActivityCompat.On
 
         redirectDialog.setTitle("Ride Request Cancelled!")
                 .setMessage("Your request has been successfully cancelled. You will now be taken back to the home screen.")
-                .setPositiveButton("OKAY", (dialog, which)->{
-                    Intent homeNavigationIntent = new Intent(this, MainActivity.class);
-                    homeNavigationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(homeNavigationIntent);
-                    return;
-                })
+                .setPositiveButton("OKAY", (dialog, which) -> navigateToHomePage())
                 .show();
+    }
+
+    private void navigateToHomePage(){
+        Intent homeNavigationIntent = new Intent(this, MainActivity.class);
+        homeNavigationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(homeNavigationIntent);
     }
 
     /**

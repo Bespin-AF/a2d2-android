@@ -16,6 +16,7 @@ import com.example.bespinaf.a2d2.controllers.RequestRide;
 import com.example.bespinaf.a2d2.controllers.RideStatus;
 import com.example.bespinaf.a2d2.models.Request;
 import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
+import com.example.bespinaf.a2d2.utilities.FormatUtils;
 
 import org.hamcrest.core.IsNot;
 import org.junit.After;
@@ -49,7 +50,7 @@ public class test_user_cancels_ride {
 
     @Before
     public void setUp() {
-        DataSourceUtils.initializeDateFormatters();
+        FormatUtils.initializeDateFormatters();
         mInstrumentation = getInstrumentation();
         mHomeActivityMonitor = mInstrumentation.addMonitor(MainActivity.class.getName(), null, false);
 

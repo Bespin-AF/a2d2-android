@@ -11,6 +11,7 @@ import android.support.test.rule.ActivityTestRule;
 import com.example.bespinaf.a2d2.controllers.RequestRide;
 import com.example.bespinaf.a2d2.controllers.RideStatus;
 import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
+import com.example.bespinaf.a2d2.utilities.FormatUtils;
 
 import junit.framework.TestCase;
 
@@ -68,7 +69,7 @@ public class test_user_populates_request_form {
         mActivity = mRequestRideActivity.getActivity();
         mInstrumentation = getInstrumentation();
         mRideStatusMonitor = mInstrumentation.addMonitor(RideStatus.class.getName(), null, false);
-        DataSourceUtils.initializeDateFormatters();
+        FormatUtils.initializeDateFormatters();
         DataSourceUtils.loadA2D2_PhoneNumber(null);
         DataSourceUtils.loadA2D2_BaseLocation(null);
 

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationManager;
+import android.provider.ContactsContract;
 import android.support.v7.app.AlertDialog;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.widget.Button;
 import com.example.bespinaf.a2d2.R;
 import com.example.bespinaf.a2d2.utilities.ActivityUtils;
 import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
+import com.example.bespinaf.a2d2.utilities.FormatUtils;
 import com.example.bespinaf.a2d2.utilities.LocationUtils;
 import com.example.bespinaf.a2d2.utilities.Permissions;
 
@@ -64,19 +66,26 @@ public class Rules extends ButterKnifeActivity implements ActivityCompat.OnReque
             return;
         }
 
-        LocationUtils.getCurrentGPSLocationAsync(this, (location) -> {
-            if(!LocationUtils.isInRange(location, DataSourceUtils.a2d2BaseLocation)){
-                String contactNumber = DataSourceUtils.a2d2PhoneNumber;
-                ActivityUtils.showDialog(
-                        mDialogBuilder,
-                        "Location out of range!",
-                        String.format(userOutOfRangeMessageFormat, DataSourceUtils.formatPhoneNumber(contactNumber))
-                );
+        LocationUtils.getCurrentGPSLocationAsync(this, (currentLocation) -> {
+            if(!LocationUtils.isInRange(currentLocation, DataSourceUtils.a2d2BaseLocation)){
+                displayOutOfRangeMessage();
                 return;
             }
 
             ActivityUtils.navigate(this, RequestRide.class);
         });
+    }
+
+
+    private void displayOutOfRangeMessage(){
+        String outOfRangeMessage = FormatUtils.formatString(
+                userOutOfRangeMessageFormat,
+                FormatUtils.formatPhoneNumber(DataSourceUtils.a2d2PhoneNumber)
+        );
+
+        ActivityUtils.showDialog(
+                mDialogBuilder,"Location out of range!", outOfRangeMessage
+        );
     }
 
 
