@@ -138,17 +138,18 @@ public class RequestRide extends ButterKnifeActivity {
         String remarks = ActivityUtils.getFieldText(mRemarksEditText);
         String currentDate = DataSourceUtils.getCurrentDateString();
 
-        return new Request(){{
-            setName(name);
-            setPhone(FormatUtils.formatPhoneNumberToE164(phoneNumber));
-            setGroupSize(Integer.parseInt(groupSize));
-            setGender(gender);
-            setRemarks(remarks);
-            setTimestamp(currentDate);
-            setLat(currentLocation.getLatitude());
-            setLon(currentLocation.getLongitude());
-            setStatus(getString(R.string.request_ride_available));
-        }};
+        Request request = new Request();
+        request.setName(name);
+        request.setPhone(FormatUtils.formatPhoneNumberToE164(phoneNumber));
+        request.setGroupSize(Integer.parseInt(groupSize));
+        request.setGender(gender);
+        request.setRemarks(remarks);
+        request.setTimestamp(currentDate);
+        request.setLat(currentLocation.getLatitude());
+        request.setLon(currentLocation.getLongitude());
+        request.setStatus(getString(R.string.request_ride_available));
+
+        return request;
     }
 
 

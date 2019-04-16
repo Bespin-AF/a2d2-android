@@ -10,6 +10,7 @@ import com.example.bespinaf.a2d2.controllers.RideRequests;
 import com.example.bespinaf.a2d2.models.Request;
 import com.example.bespinaf.a2d2.utilities.AuthorizationUtils;
 import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
+import com.example.bespinaf.a2d2.utilities.FormatUtils;
 
 import org.junit.After;
 import org.junit.Before;
@@ -36,7 +37,7 @@ public class test_driver_drops_off_rider {
     @Before
     public void setUp() {
         if (DataSourceUtils.getCurrentRequests().isEmpty()) {
-            DataSourceUtils.initializeDateFormatters();
+            FormatUtils.initializeDateFormatters();
             AuthorizationUtils.authorizeUser("cooldriver@realandroidemail.com", "SecurePassword", null);
             try {
                 //Required to load data before trying to perform actions/load page

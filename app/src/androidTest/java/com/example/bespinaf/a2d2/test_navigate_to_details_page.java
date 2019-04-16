@@ -8,6 +8,7 @@ import android.support.test.rule.ActivityTestRule;
 import com.example.bespinaf.a2d2.controllers.RideRequestDetails;
 import com.example.bespinaf.a2d2.controllers.RideRequests;
 import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
+import com.example.bespinaf.a2d2.utilities.FormatUtils;
 
 import org.junit.After;
 import org.junit.Before;
@@ -33,7 +34,7 @@ public class test_navigate_to_details_page {
     public void setUp() {
         //Sets request ID for the test
         if (DataSourceUtils.getCurrentRequests().isEmpty()) {
-            DataSourceUtils.initializeDateFormatters();
+            FormatUtils.initializeDateFormatters();
             try {
                 //Required to load data before trying to perform actions/load page
                 Thread.sleep(5000);
