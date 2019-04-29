@@ -10,13 +10,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.bespinaf.a2d2.R;
-import com.example.bespinaf.a2d2.controllers.RideRequestDetails;
+import com.example.bespinaf.a2d2.controllers.Driver_RideRequestDetails;
 import com.example.bespinaf.a2d2.models.Request;
 import com.example.bespinaf.a2d2.utilities.ActivityUtils;
 import com.example.bespinaf.a2d2.utilities.FormatUtils;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -33,13 +35,11 @@ public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.
         TextView timestampTextView;
         View.OnClickListener navigateToRideRequestDetails = (view) -> {
             int selectedIndex = ((RecyclerView) view.getParent()).getChildAdapterPosition(view);
-            String requestId = requestIds[selectedIndex];
-            Request request = requests.get(requestId);
+            Request request = requests[selectedIndex];
 
-            Pair<String, Serializable> requestIdData = new Pair<>("requestId", requestId);
             Pair<String, Serializable> requestData = new Pair<>("request", request);
 
-            ActivityUtils.navigateWithData(view.getContext(), RideRequestDetails.class, requestIdData, requestData);
+            ActivityUtils.navigateWithData(view.getContext(), Driver_RideRequestDetails.class, requestData);
         };
 
         RequestViewHolder(View itemView) {
@@ -60,26 +60,24 @@ public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.
     }
 
     // Data source
-    private String[] requestIds;
-    private HashMap<String, Request> requests;
 
-    public RideRequestAdapter(HashMap<String, Request> adapterRequests) {
-        requestIds = convertStringSetToSortedArray(adapterRequests.keySet());
-        requests = adapterRequests;
+    private Request[] requests;
+
+    public RideRequestAdapter(Request[] adapterRequests) {
+        requests = sortArray(adapterRequests);
     }
 
 
-    private String[] convertStringSetToSortedArray(Set<String> set){
-        List<String> intermediateList = new ArrayList<>(set);
-        Collections.sort(intermediateList, String::compareTo);
-
-        return intermediateList.toArray(new String[set.size()]);
+    private Request[] sortArray(Request[] arr){
+        List tempList = Arrays.asList(arr);
+        Collections.sort(tempList);
+        return (Request[]) tempList.toArray();
     }
 
 
     @Override
     public int getItemCount() {
-        return requests.size();
+        return requests.length;
     }
 
 
@@ -95,8 +93,8 @@ public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull RequestViewHolder requestViewHolder, int index) {
-        String requestId = requestIds[index];
-        Request request = requests.get(requestId);
+
+        Request request = requests[index];
 
         if(request == null){ return; }
 

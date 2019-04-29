@@ -1,6 +1,5 @@
 package com.example.bespinaf.a2d2.controllers;
 
-import android.app.Instrumentation;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.os.Bundle;
@@ -15,7 +14,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 
-public class DriverLogin extends ButterKnifeActivity {
+public class Driver_Login extends ButterKnifeActivity {
 
     @BindView(R.id.activity_driver_login_email_text_edit)
     TextInputEditText activityDriverLoginEmailTextEdit;
@@ -40,21 +39,10 @@ public class DriverLogin extends ButterKnifeActivity {
         validateInputs();
         if(!isDataValid()){ return; }
 
-        String  mEmail = ActivityUtils.getFieldText(activityDriverLoginEmailTextEdit),
-                mPassword = ActivityUtils.getFieldText(activityDriverLoginPasswordTextEdit);
+        String  email = ActivityUtils.getFieldText(activityDriverLoginEmailTextEdit),
+                password = ActivityUtils.getFieldText(activityDriverLoginPasswordTextEdit);
 
-        if(mEmail == null || mPassword == null){ return; }
-
-        AuthorizationUtils.authorizeUser(mEmail, mPassword, (wasLoginSuccessful) -> {
-            if(wasLoginSuccessful) { ActivityUtils.navigate(this, RideRequests.class); }
-            else {
-                Toast.makeText(
-                        this,
-                        "Invalid username or password",
-                        Toast.LENGTH_SHORT
-                ).show();
-            }
-        });
+        tryLogin(email, password);
     }
 
 
@@ -73,5 +61,21 @@ public class DriverLogin extends ButterKnifeActivity {
     private void validateField(TextInputEditText input, TextInputLayout layout){
         if(ActivityUtils.isFieldEmpty(input)) { layout.setError(getString(R.string.a2d2_field_required)); }
         else { layout.setError(""); }
+    }
+
+
+    private void tryLogin(String email, String password){
+        if(email == null || password == null){ return; }
+
+        AuthorizationUtils.authorizeUser(email, password, (wasLoginSuccessful) -> {
+            if(wasLoginSuccessful) { ActivityUtils.navigate(this, Driver_RideRequestList.class); }
+            else {
+                Toast.makeText(
+                        this,
+                        "Invalid username or password",
+                        Toast.LENGTH_SHORT
+                ).show();
+            }
+        });
     }
 }

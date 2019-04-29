@@ -6,55 +6,57 @@
     android:orientation="vertical"
     android:layout_height="match_parent"
     android:background="@color/driverBackgroundColor"
-    tools:context=".controllers.RideRequests">
+    tools:context=".controllers.Driver_RideRequestList">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/ride_requests_available_text_view"
-            android:textColor="@color/textColor"
-            android:background="#29323C"
-            android:text="@string/request_ride_available"
+        <android.support.design.widget.TabLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent">
+
+            <android.support.design.widget.TabItem
+                android:id="@+id/ride_requests_available_tab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/request_ride_available" />
+
+            <android.support.design.widget.TabItem
+                android:id="@+id/ride_requests_in_progress_tab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/request_ride_in_progress" />
+
+            <android.support.design.widget.TabItem
+                android:id="@+id/ride_requests_completed_tab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/request_ride_completed" />
+        </android.support.design.widget.TabLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/ride_requests_available_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:scrollbars="vertical">
 
         </android.support.v7.widget.RecyclerView>
-
-        <TextView
-            android:id="@+id/ride_requests_in_progress_text_view"
-            android:textColor="@color/textColor"
-            android:background="#29323C"
-            android:text="@string/request_ride_in_progress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/ride_requests_in_progress_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:scrollbars="vertical">
 
         </android.support.v7.widget.RecyclerView>
-
-        <TextView
-            android:id="@+id/ride_requests_completed_text_view"
-            android:textColor="@color/textColor"
-            android:background="#29323C"
-            android:text="@string/request_ride_completed"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/ride_requests_completed_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:scrollbars="vertical">
 
         </android.support.v7.widget.RecyclerView>
 

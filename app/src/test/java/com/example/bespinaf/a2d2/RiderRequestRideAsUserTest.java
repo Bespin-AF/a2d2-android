@@ -7,7 +7,7 @@ import org.junit.Rule;
 
 import static org.junit.Assert.*;
 
-public class RequestRideAsUserTest {
+public class RiderRequestRideAsUserTest {
     @Test
 
     public void addition_isCorrect() {

@@ -7,7 +7,7 @@
     android:background="@color/driverBackgroundColor"
     android:paddingTop="8dp"
     android:paddingBottom="16dp"
-    tools:context=".controllers.RideRequestDetails">
+    tools:context=".controllers.Driver_RideRequestDetails">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -1,90 +1,111 @@
 package com.example.bespinaf.a2d2.models;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import java.io.Serializable;
 
-public class Request implements Serializable {
+public class Request implements Comparable<Request>, Serializable {
 
-    private String driver;
-    private String status;
-    private int groupSize;
-    private String gender;
-    private String name;
-    private String phone;
-    private String remarks;
-    private String timestamp;
-    private double lat;
-    private double lon;
+    public String key;
+    private RequestData data;
+
 
     public Request(){
-
+        key = null;
+        data = new RequestData();
     }
 
-    public String getDriver() { return driver; }
-    public void setDriver(String driver) { this.driver = driver; }
 
-    public String getStatus() {
-        return status;
+    public Request(String key, RequestData data) {
+        this.key = key;
+        this.data = data;
     }
-    public void setStatus(String status) {
-        this.status = status;
+
+
+    public RequestData getData() {
+        return data;
+    }
+
+    public String getDriver() {
+        return data.driver;
+    }
+
+    public void setDriver(String driver) {
+        data.driver = driver;
+    }
+
+    public RequestStatus getStatus() {
+        return RequestStatus.getStatusFromString(data.status);
+    }
+
+    public void setStatus(RequestStatus status) {
+        data.status = RequestStatus.getStringFromStatus(status);
     }
 
     public int getGroupSize() {
-        return groupSize;
+        return data.groupSize;
     }
+    
     public void setGroupSize(int groupSize) {
-        this.groupSize = groupSize;
+        data.groupSize = groupSize;
     }
 
     public String getGender() {
-        return gender;
+        return data.gender;
     }
+
     public void setGender(String gender) {
-        this.gender = gender;
+        data.gender = gender;
     }
 
     public String getName() {
-        return name;
+        return data.name;
     }
+
     public void setName(String name) {
-        this.name = name;
+        data.name = name;
     }
 
     public String getPhone() {
-        return phone;
+        return data.phone;
     }
+
     public void setPhone(String phone) {
-        this.phone = phone;
+        data.phone = phone;
     }
 
     public String getRemarks() {
-        return remarks;
+        return data.remarks;
     }
+
     public void setRemarks(String remarks) {
-        this.remarks = remarks;
+        data.remarks = remarks;
     }
 
     public String getTimestamp() {
-        return timestamp;
+        return data.timestamp;
     }
+
     public void setTimestamp(String timestamp) {
-        this.timestamp = timestamp;
+        data.timestamp = timestamp;
     }
 
     public double getLat() {
-        return lat;
+        return data.lat;
     }
+
     public void setLat(double lat) {
-        this.lat = lat;
+        data.lat = lat;
     }
 
     public double getLon() {
-        return lon;
+        return data.lon;
     }
+
     public void setLon(double lon) {
-        this.lon = lon;
+        data.lon = lon;
+    }
+
+    @Override
+    public int compareTo(Request o) {
+        return this.key.compareTo(o.key);
     }
 }

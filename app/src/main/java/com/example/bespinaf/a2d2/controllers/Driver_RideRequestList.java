@@ -8,14 +8,18 @@ import android.support.v7.widget.RecyclerView;
 
 import com.example.bespinaf.a2d2.R;
 import com.example.bespinaf.a2d2.adapters.RideRequestAdapter;
+import com.example.bespinaf.a2d2.models.DataReceiver;
+import com.example.bespinaf.a2d2.models.DataSource;
+import com.example.bespinaf.a2d2.models.RequestStatus;
 import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
 import com.example.bespinaf.a2d2.models.Request;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import butterknife.BindView;
 
-public class RideRequests extends ButterKnifeActivity {
+public class Driver_RideRequestList extends ButterKnifeActivity implements DataReceiver {
 
     @BindView(R.id.ride_requests_available_recycler_view)
     RecyclerView rideRequestsAvailableRecyclerView;
@@ -23,7 +27,7 @@ public class RideRequests extends ButterKnifeActivity {
     RecyclerView rideRequestsInProgressRecyclerView;
     @BindView(R.id.ride_requests_completed_recycler_view)
     RecyclerView rideRequestsCompletedRecyclerView;
-
+    private Request[] rideRequests = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,26 +35,23 @@ public class RideRequests extends ButterKnifeActivity {
         bind(R.layout.activity_ride_requests);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        DataSourceUtils.requests.setReciever(this);
+    }
 
     @Override
-    protected void onResume(){
-        super.onResume();
-        DataSourceUtils.startRequestSync(this::refreshRecyclerViews);
+    public void onDataChanged(DataSource dataSource, HashMap<String, Object> data) {
+        rideRequests = DataSourceUtils.requestsFromData(data);
+        refreshRecyclerViews();
     }
 
 
-    @Override
-    protected void onPause(){
-        super.onPause();
-        DataSourceUtils.stopRequestSync();
-    }
-
-
-    //At this time, only available, in progress, or completed job requests will be displayed - 11Apr2019
     private void refreshRecyclerViews() {
-        HashMap<String, Request> listAvailable = DataSourceUtils.getRequestsWithStatus("Available");
-        HashMap<String, Request> listInProgress = DataSourceUtils.getRequestsWithStatus("In Progress");
-        HashMap<String, Request> listCompleted = DataSourceUtils.getRequestsWithStatus("Completed");
+        Request[] listAvailable = getRequestsWithStatus(RequestStatus.Available;
+        Request[] listInProgress = getRequestsWithStatus(RequestStatus.InProgress);
+        Request[] listCompleted = getRequestsWithStatus(RequestStatus.Completed);
 
         populateRecyclerView(rideRequestsAvailableRecyclerView, listAvailable);
         populateRecyclerView(rideRequestsInProgressRecyclerView, listInProgress);
@@ -58,8 +59,19 @@ public class RideRequests extends ButterKnifeActivity {
     }
 
 
+    private Request[] getRequestsWithStatus(RequestStatus status) {
+        ArrayList<Request> results = new ArrayList<>();
+        for (Request  currentRequest : rideRequests) {
+            if (currentRequest.getStatus() == status) {
+                results.add(currentRequest);
+            }
+        }
+        return (Request[]) results.toArray();
+    }
+
+
     //TODO: Do headers and data layout differently, using Tabs instead of one long list
-    public void populateRecyclerView(RecyclerView view, HashMap<String, Request> list){
+    public void populateRecyclerView(RecyclerView view, Request[] list){
         RideRequestAdapter adapter = new RideRequestAdapter(list);
 
         LinearLayoutManager llmRequestManager = new LinearLayoutManager(this);

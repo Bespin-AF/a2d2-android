@@ -2,16 +2,16 @@ package com.example.bespinaf.a2d2.controllers;
 
 import android.os.Bundle;
 import android.support.design.button.MaterialButton;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.example.bespinaf.a2d2.R;
+import com.example.bespinaf.a2d2.models.DataSource;
+import com.example.bespinaf.a2d2.models.DataSourceType;
 import com.example.bespinaf.a2d2.utilities.ActivityUtils;
 import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
 import com.example.bespinaf.a2d2.utilities.FormatUtils;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainActivity extends ButterKnifeActivity {
@@ -28,17 +28,15 @@ public class MainActivity extends ButterKnifeActivity {
 
         //Initialize application resources
         FormatUtils.initializeDateFormatters();
-        DataSourceUtils.loadA2D2_PhoneNumber(null);
-        DataSourceUtils.loadA2D2_BaseLocation(null);
     }
 
 
     @OnClick(R.id.button_navigate_to_rules)
     public void navigateToRulesPage(View view) {
-        ActivityUtils.navigate(this, Rules.class);
+        ActivityUtils.navigate(this, Rider_Rules.class);
     }
 
 
     @OnClick(R.id.button_main_driver_login)
-    public void navigateToDriverLogin(View view) { ActivityUtils.navigate(this, DriverLogin.class); }
+    public void navigateToDriverLogin(View view) { ActivityUtils.navigate(this, Driver_Login.class); }
 }

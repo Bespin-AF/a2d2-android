@@ -23,27 +23,27 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".controllers.Rules"
+            android:name=".controllers.Rider_Rules"
             android:label="@string/a2d2_rules_title"
             android:parentActivityName=".controllers.MainActivity" />
         <activity
-            android:name=".controllers.RequestRide"
+            android:name=".controllers.Rider_RequestRide"
             android:label="Pickup Request Options"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".controllers.RideStatus"
+        <activity android:name=".controllers.Rider_RideStatus"
             android:label="Ride Status"
             />
-        <activity android:name=".controllers.DriverLogin"
+        <activity android:name=".controllers.Driver_Login"
             android:label="Driver Login"
             android:parentActivityName=".controllers.MainActivity" />
         <!-- Driver Activities -->
-        <activity android:name=".controllers.RideRequests"
+        <activity android:name=".controllers.Driver_RideRequestList"
             android:label="Ride Requests"
             android:theme="@style/App.Theme.Driver"
             />
-        <activity android:name=".controllers.RideRequestDetails"
+        <activity android:name=".controllers.Driver_RideRequestDetails"
             android:label="Ride Request Details"
-            android:parentActivityName=".controllers.RideRequests"
+            android:parentActivityName=".controllers.Driver_RideRequestList"
             android:theme="@style/App.Theme.Driver"
             />
     </application>

@@ -7,8 +7,8 @@ import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.rule.GrantPermissionRule;
 
-import com.example.bespinaf.a2d2.controllers.RequestRide;
-import com.example.bespinaf.a2d2.controllers.Rules;
+import com.example.bespinaf.a2d2.controllers.Rider_RequestRide;
+import com.example.bespinaf.a2d2.controllers.Rider_Rules;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -24,22 +24,22 @@ import static android.support.test.espresso.Espresso.onView;
 public class test_previously_accepted_permissions
 {
     @Rule
-    public ActivityTestRule<Rules> mRuleActivity = new ActivityTestRule<>(Rules.class);
+    public ActivityTestRule<Rider_Rules> mRuleActivity = new ActivityTestRule<>(Rider_Rules.class);
     @Rule //Assuming that permissions are granted; turns on the permissions if they are turned off
     public GrantPermissionRule mRuntimePermissionsRule = GrantPermissionRule.grant(Manifest.permission.ACCESS_FINE_LOCATION);
 
-    private Rules mActivity;
+    private Rider_Rules mActivity;
     private Instrumentation mInstrumentation;
     private Instrumentation.ActivityMonitor mRulesMonitor;
 
 
     /**
-     *  Creates monitor for RequestRide page and creates Rule Activity
+     *  Creates monitor for Rider_RequestRide page and creates Rule Activity
      */
     @Before
     public void setUp(){
         mInstrumentation = getInstrumentation();
-        mRulesMonitor = mInstrumentation.addMonitor(RequestRide.class.getName(),null,false);
+        mRulesMonitor = mInstrumentation.addMonitor(Rider_RequestRide.class.getName(),null,false);
         mActivity = mRuleActivity.getActivity();
     }
 

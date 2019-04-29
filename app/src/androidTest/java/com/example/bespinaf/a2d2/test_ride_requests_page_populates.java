@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 
-import com.example.bespinaf.a2d2.controllers.RideRequests;
+import com.example.bespinaf.a2d2.controllers.Driver_RideRequestList;
 import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
 import com.example.bespinaf.a2d2.utilities.FormatUtils;
 
@@ -20,7 +20,7 @@ import static org.hamcrest.core.AllOf.allOf;
 
 public class test_ride_requests_page_populates {
     @Rule
-    public ActivityTestRule<RideRequests> mRideRequestsTestRule = new ActivityTestRule<>(RideRequests.class);
+    public ActivityTestRule<Driver_RideRequestList> mRideRequestsTestRule = new ActivityTestRule<>(Driver_RideRequestList.class);
     Activity mRideRequestsActivity;
 
     @Before

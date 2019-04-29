@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/app_theme_gradient"
-    tools:context=".controllers.RequestRide">
+    tools:context=".controllers.Rider_RequestRide">
 
     <!-- Rider name -->
     <android.support.design.widget.TextInputLayout

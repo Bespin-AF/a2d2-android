@@ -10,7 +10,7 @@
     android:orientation="vertical"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    tools:context=".controllers.RideStatus">
+    tools:context=".controllers.Rider_RideStatus">
 
     <ImageView
         android:id="@+id/a2d2logo_ridestatus"
