@@ -62,9 +62,7 @@ public class Driver_RideRequestList extends ButterKnifeActivity implements DataR
 
     private Request[] getRequestsWithStatus(RequestStatus status) {
         ArrayList<Request> results = new ArrayList<>();
-        Log.d("BEARz ","I have " + rideRequests.length + " Items ");
         for (Request  currentRequest : rideRequests) {
-            Log.d("BEARz ","I am " + currentRequest.getData());
             if (currentRequest.getStatus() == status) {
                 results.add(currentRequest);
             }

@@ -25,7 +25,6 @@ public class DataSourceUtils {
 
 
     public static Request[] requestsFromData(HashMap<String, Object> data){
-        Log.d("BEAR ","Converting " + data.size() + " Items");
         Request[] requests = new Request[data.size()];
         int index = 0;
         for (Map.Entry<String, Object> row : data.entrySet()) {
@@ -33,8 +32,6 @@ public class DataSourceUtils {
             Request newRequest = new Request(row.getKey(), (Map<String, Object>) requestData);
             requests[index++] = newRequest;
         }
-        Log.d("BEAR ","Converted " + requests.length + " Items ");
-        Log.d("BEAR ","See: " + requests[0].getData());
         return requests;
     }
 

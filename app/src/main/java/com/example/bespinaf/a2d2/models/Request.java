@@ -1,5 +1,7 @@
 package com.example.bespinaf.a2d2.models;
 
+import android.util.Log;
+
 import java.io.Serializable;
 import java.util.Map;
 
@@ -33,11 +35,12 @@ public class Request implements Comparable<Request>, Serializable {
             data.status = (String) rawData.get("status");
             data.remarks = (String) rawData.get("remarks");
             data.timestamp = (String) rawData.get("timestamp");
-            data.groupSize = (int) rawData.get("groupSize");
-            data.lat = Double.valueOf((String) rawData.get("lat"));
-            data.lon = Double.valueOf((String) rawData.get("lon"));
+            data.groupSize = ((Long) rawData.get("groupSize")).intValue();
+            data.lat = ((Double) rawData.get("lat"));
+            data.lon = ((Double) rawData.get("lon"));
         } catch (Exception e) {
-            //TODO Handle this, future me
+            //TODO Proper logging
+            Log.e("REQUEST CONSTRUCTOR", "SOMETHING FUCKED UP: " + e.getMessage());
         }
     }
 

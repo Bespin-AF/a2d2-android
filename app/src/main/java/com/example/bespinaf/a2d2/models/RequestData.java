@@ -1,6 +1,8 @@
 package com.example.bespinaf.a2d2.models;
 
-public class RequestData {
+import java.io.Serializable;
+
+public class RequestData implements Serializable {
 
     public String driver;
     public String status;

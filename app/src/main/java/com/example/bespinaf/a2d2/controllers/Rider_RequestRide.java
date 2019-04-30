@@ -116,7 +116,7 @@ public class Rider_RequestRide extends ButterKnifeActivity {
     private void submitRequest() {
         LocationUtils.getCurrentGPSLocationAsync(this, (location) -> {
             Request rideRequest = buildRideRequest(location);
-            String requestId = DataSourceUtils.requests.sendData(rideRequest);
+            String requestId = DataSourceUtils.requests.sendData(rideRequest.getData());
             rideRequest.key = requestId;
         	Pair<String, Serializable> requestData = new Pair<>("request", rideRequest);
         	ActivityUtils.navigateWithData(this, Rider_RideStatus.class, requestData );
