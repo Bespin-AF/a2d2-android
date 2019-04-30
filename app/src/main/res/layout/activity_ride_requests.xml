@@ -13,28 +13,35 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <android.support.design.widget.TabLayout
+        <android.support.v4.view.ViewPager
+            android:id="@+id/ride_requests_view_pager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
-            <android.support.design.widget.TabItem
-                android:id="@+id/ride_requests_available_tab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/request_ride_available" />
+            <android.support.design.widget.TabLayout
+                android:id="@+id/ride_requests_tab_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <android.support.design.widget.TabItem
-                android:id="@+id/ride_requests_in_progress_tab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/request_ride_in_progress" />
+                <android.support.design.widget.TabItem
+                    android:id="@+id/ride_requests_available_tab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/request_ride_available" />
 
-            <android.support.design.widget.TabItem
-                android:id="@+id/ride_requests_completed_tab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/request_ride_completed" />
-        </android.support.design.widget.TabLayout>
+                <android.support.design.widget.TabItem
+                    android:id="@+id/ride_requests_in_progress_tab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/request_ride_in_progress" />
+
+                <android.support.design.widget.TabItem
+                    android:id="@+id/ride_requests_completed_tab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/request_ride_completed" />
+            </android.support.design.widget.TabLayout>
+        </android.support.v4.view.ViewPager>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/ride_requests_available_recycler_view"

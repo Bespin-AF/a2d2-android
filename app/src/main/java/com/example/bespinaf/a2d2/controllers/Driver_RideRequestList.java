@@ -2,6 +2,8 @@ package com.example.bespinaf.a2d2.controllers;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +11,7 @@ import android.util.Log;
 
 import com.example.bespinaf.a2d2.R;
 import com.example.bespinaf.a2d2.adapters.RideRequestAdapter;
+import com.example.bespinaf.a2d2.adapters.RideRequestListFragmentAdapter;
 import com.example.bespinaf.a2d2.models.DataReceiver;
 import com.example.bespinaf.a2d2.models.DataSource;
 import com.example.bespinaf.a2d2.models.RequestStatus;
@@ -28,12 +31,22 @@ public class Driver_RideRequestList extends ButterKnifeActivity implements DataR
     RecyclerView rideRequestsInProgressRecyclerView;
     @BindView(R.id.ride_requests_completed_recycler_view)
     RecyclerView rideRequestsCompletedRecyclerView;
+    @BindView(R.id.ride_requests_view_pager)
+    ViewPager mViewPager;
+    @BindView(R.id.ride_requests_tab_layout)
+    TabLayout mTabLayout;
+
     private Request[] rideRequests = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bind(R.layout.activity_ride_requests);
+
+        RideRequestListFragmentAdapter requestListFragmentAdapter = new RideRequestListFragmentAdapter(getSupportFragmentManager());
+        mViewPager.setAdapter(requestListFragmentAdapter);
+
+        mTabLayout.setupWithViewPager(mViewPager, true);
     }
 
     @Override
@@ -45,50 +58,17 @@ public class Driver_RideRequestList extends ButterKnifeActivity implements DataR
     @Override
     public void onDataChanged(DataSource dataSource, HashMap<String, Object> data) {
         rideRequests = DataSourceUtils.requestsFromData(data);
-        refreshRecyclerViews();
+        //refreshRecyclerViews();
     }
 
 
-    private void refreshRecyclerViews() {
+    /*private void refreshRecyclerViews() {
         Request[] listAvailable = getRequestsWithStatus(RequestStatus.Available);
         Request[] listInProgress = getRequestsWithStatus(RequestStatus.InProgress);
         Request[] listCompleted = getRequestsWithStatus(RequestStatus.Completed);
-
-        populateRecyclerView(rideRequestsAvailableRecyclerView, listAvailable);
-        populateRecyclerView(rideRequestsInProgressRecyclerView, listInProgress);
-        populateRecyclerView(rideRequestsCompletedRecyclerView, listCompleted);
-    }
+    }*/
 
 
-    private Request[] getRequestsWithStatus(RequestStatus status) {
-        ArrayList<Request> results = new ArrayList<>();
-        for (Request  currentRequest : rideRequests) {
-            if (currentRequest.getStatus() == status) {
-                results.add(currentRequest);
-            }
-        }
-        return results.toArray(new Request[results.size()]);
-    }
 
 
-    //TODO: Do headers and data layout differently, using Tabs instead of one long list
-    public void populateRecyclerView(RecyclerView view, Request[] list){
-        RideRequestAdapter adapter = new RideRequestAdapter(list);
-
-        LinearLayoutManager llmRequestManager = new LinearLayoutManager(this);
-        view.setLayoutManager(llmRequestManager);
-        view.setHasFixedSize(true);
-
-        //Divider line between items in recycler view
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(
-                view.getContext(),
-                llmRequestManager.getOrientation()
-        );
-
-        Drawable listItemDivider = getDrawable(R.drawable.ride_requests_divideritemdecoration);
-        if(listItemDivider != null){ dividerItemDecoration.setDrawable(listItemDivider); }
-
-        view.addItemDecoration(dividerItemDecoration);
-        view.setAdapter(adapter);
-    }
 }

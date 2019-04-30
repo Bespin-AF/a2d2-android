@@ -2,6 +2,7 @@ package com.example.bespinaf.a2d2.models;
 
 import android.support.annotation.NonNull;
 
+import com.example.bespinaf.a2d2.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -9,15 +10,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
+import java.util.ResourceBundle;
 
 public class DataSource {
     private DatabaseReference databaseRef;
     private DataReceiver receiver;
     private ValueEventListener dataSyncEvent;
+    final String BASE = "maxwell_afb";
 
     public DataSource(DataSourceType type){
-    	String table = getTableNameFromType(type);
-    	databaseRef = FirebaseDatabase.getInstance().getReference().child(table);
+        databaseRef = FirebaseDatabase.getInstance().getReference();
+    	databaseRef = getTableFromType(type);
     	dataSyncEvent = createDataSyncEvent();
     }
 
@@ -51,16 +54,16 @@ public class DataSource {
     }
 
 
-    private String getTableNameFromType(DataSourceType type){
+    private DatabaseReference getTableFromType(DataSourceType type){
         switch (type){
-            case Resource:
-                return "Resources";
+            case BaseInfo:
+                return databaseRef.child("base_info").child(BASE);
             case Requests:
-                return "requests";
+                return databaseRef.child("requests");
             case TestRequests:
-                return "test_requests";
+                return databaseRef.child("test_requests");
         }
-        return "";
+        return null;
     }
 
 

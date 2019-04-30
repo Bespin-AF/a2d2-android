@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 
 public class DataSourceUtils {
     public static DataSource requests = new DataSource(DataSourceType.Requests);
-    public static DataSource resources = new DataSource(DataSourceType.Resource);
+    public static DataSource resources = new DataSource(DataSourceType.BaseInfo);
 
     public static String getCurrentDateString(){
         Date currentDate = Calendar.getInstance().getTime();

@@ -54,9 +54,9 @@ public class Rider_Rules extends ButterKnifeActivity implements ActivityCompat.O
 
     @Override
     public void onDataChanged(DataSource dataSource, HashMap<String, Object> data) {
-        String baseLocationString = (String) data.get("maxwell_afb_location");
+        String baseLocationString = (String) data.get("base_location");
         a2d2BaseLocation = DataSourceUtils.getLocationFromString(baseLocationString);//TODO add to 'R'
-        a2d2PhoneNumber = (String) data.get("a2d2phonenumber");//TODO add to 'R'
+        a2d2PhoneNumber = (String) data.get("phone_number");//TODO add to 'R'
         buttonRulesAgree.setEnabled(true);
     }
 

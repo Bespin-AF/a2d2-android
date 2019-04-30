@@ -69,7 +69,7 @@ public class Rider_RideStatus extends ButterKnifeActivity implements ActivityCom
 
     @Override
     public void onDataChanged(DataSource dataSource, HashMap<String, Object> data) {
-        a2d2Number = (String)data.get("a2d2phonenumber");//TODO Put this key somewhere, maybe in 'R'
+        a2d2Number = (String)data.get("phone_number");//TODO Put this key somewhere, maybe in 'R'
         displayA2D2PhoneNumber();
         buttonCallA2d2.setEnabled(true);
     }
