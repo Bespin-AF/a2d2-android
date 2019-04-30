@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import com.example.bespinaf.a2d2.R;
 import com.example.bespinaf.a2d2.adapters.RideRequestAdapter;
@@ -49,7 +50,7 @@ public class Driver_RideRequestList extends ButterKnifeActivity implements DataR
 
 
     private void refreshRecyclerViews() {
-        Request[] listAvailable = getRequestsWithStatus(RequestStatus.Available;
+        Request[] listAvailable = getRequestsWithStatus(RequestStatus.Available);
         Request[] listInProgress = getRequestsWithStatus(RequestStatus.InProgress);
         Request[] listCompleted = getRequestsWithStatus(RequestStatus.Completed);
 
@@ -61,12 +62,14 @@ public class Driver_RideRequestList extends ButterKnifeActivity implements DataR
 
     private Request[] getRequestsWithStatus(RequestStatus status) {
         ArrayList<Request> results = new ArrayList<>();
+        Log.d("BEARz ","I have " + rideRequests.length + " Items ");
         for (Request  currentRequest : rideRequests) {
+            Log.d("BEARz ","I am " + currentRequest.getData());
             if (currentRequest.getStatus() == status) {
                 results.add(currentRequest);
             }
         }
-        return (Request[]) results.toArray();
+        return results.toArray(new Request[results.size()]);
     }
 
 

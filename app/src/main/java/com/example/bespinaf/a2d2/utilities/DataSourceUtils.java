@@ -6,7 +6,6 @@ import android.util.Log;
 import com.example.bespinaf.a2d2.models.DataSource;
 import com.example.bespinaf.a2d2.models.DataSourceType;
 import com.example.bespinaf.a2d2.models.Request;
-import com.google.firebase.database.DataSnapshot;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -16,7 +15,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DataSourceUtils {
-    private static String PHONE_NUMBER_FORMAT = "(%1$s) %2$s-%3$s";
     public static DataSource requests = new DataSource(DataSourceType.Requests);
     public static DataSource resources = new DataSource(DataSourceType.Resource);
 
@@ -27,12 +25,16 @@ public class DataSourceUtils {
 
 
     public static Request[] requestsFromData(HashMap<String, Object> data){
+        Log.d("BEAR ","Converting " + data.size() + " Items");
         Request[] requests = new Request[data.size()];
         int index = 0;
         for (Map.Entry<String, Object> row : data.entrySet()) {
-            DataSnapshot snapshotData = (DataSnapshot)row.getValue();
-            requests[index++] = snapshotData.getValue(Request.class);
+            Object requestData = row.getValue();
+            Request newRequest = new Request(row.getKey(), (Map<String, Object>) requestData);
+            requests[index++] = newRequest;
         }
+        Log.d("BEAR ","Converted " + requests.length + " Items ");
+        Log.d("BEAR ","See: " + requests[0].getData());
         return requests;
     }
 

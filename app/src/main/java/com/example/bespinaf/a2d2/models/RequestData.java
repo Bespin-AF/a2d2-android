@@ -14,5 +14,15 @@ public class RequestData {
     public double lon;
 
     public RequestData(){
+        driver = "";
+        status = "";
+        gender = "";
+        name = "";
+        phone = "";
+        remarks = "";
+        timestamp = "";
+        groupSize = -1;
+        lat = 0;
+        lon = 0;
     }
 }

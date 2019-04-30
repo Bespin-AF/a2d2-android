@@ -1,6 +1,7 @@
 package com.example.bespinaf.a2d2.models;
 
 import java.io.Serializable;
+import java.util.Map;
 
 public class Request implements Comparable<Request>, Serializable {
 
@@ -17,6 +18,27 @@ public class Request implements Comparable<Request>, Serializable {
     public Request(String key, RequestData data) {
         this.key = key;
         this.data = data;
+    }
+
+
+    public Request(String key, Map<String, Object> rawData){
+        this.key = key;
+        this.data = new RequestData();
+
+        try {
+            data.name = (String) rawData.get("name");
+            data.phone = (String) rawData.get("phone");
+            data.driver = (String) rawData.get("driver");
+            data.gender = (String) rawData.get("gender");
+            data.status = (String) rawData.get("status");
+            data.remarks = (String) rawData.get("remarks");
+            data.timestamp = (String) rawData.get("timestamp");
+            data.groupSize = (int) rawData.get("groupSize");
+            data.lat = Double.valueOf((String) rawData.get("lat"));
+            data.lon = Double.valueOf((String) rawData.get("lon"));
+        } catch (Exception e) {
+            //TODO Handle this, future me
+        }
     }
 
 
