@@ -1,7 +1,9 @@
 package com.example.bespinaf.a2d2.adapters;
 
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,38 +28,6 @@ import java.util.Set;
 
 //Adapts request objects for use in a recycler view
 public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.RequestViewHolder> {
-
-    //RecyclerView Cell Template
-    public class RequestViewHolder extends RecyclerView.ViewHolder {
-        RelativeLayout viewLayout;
-        TextView groupSizeTextView;
-        TextView genderTextView;
-        TextView timestampTextView;
-        View.OnClickListener navigateToRideRequestDetails = (view) -> {
-            int selectedIndex = ((RecyclerView) view.getParent()).getChildAdapterPosition(view);
-            Request request = requests[selectedIndex];
-
-            Pair<String, Serializable> requestData = new Pair<>("request", request);
-
-            ActivityUtils.navigateWithData(view.getContext(), Driver_RideRequestDetails.class, requestData);
-        };
-
-        RequestViewHolder(View itemView) {
-            super(itemView);
-            viewLayout = itemView.findViewById(R.id.request_card_view_layout);
-            genderTextView = itemView.findViewById(R.id.card_view_gender_text_view);
-            timestampTextView = itemView.findViewById(R.id.card_view_timestamp_text_view);
-            groupSizeTextView = itemView.findViewById(R.id.card_view_group_size_text_view);
-
-            viewLayout.setOnClickListener(navigateToRideRequestDetails);
-        }
-
-        private void populateFields(String groupSize, String timeStamp, String gender){
-            groupSizeTextView.setText(groupSize);
-            timestampTextView.setText(timeStamp);
-            genderTextView.setText(gender);
-        }
-    }
 
     // Data source
 
@@ -87,13 +57,13 @@ public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.
         View view = LayoutInflater.from(viewGroup.getContext())
                                   .inflate(R.layout.card_view_requests, viewGroup, false);
 
+
         return new RequestViewHolder(view);
     }
 
 
     @Override
     public void onBindViewHolder(@NonNull RequestViewHolder requestViewHolder, int index) {
-
         Request request = requests[index];
 
         if(request == null){ return; }
@@ -103,5 +73,37 @@ public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.
         String gender = request.getGender();
 
         requestViewHolder.populateFields(groupText, timestamp, gender);
+    }
+
+    //RecyclerView Cell Template
+    public class RequestViewHolder extends RecyclerView.ViewHolder {
+        ConstraintLayout viewLayout;
+        TextView groupSizeTextView;
+        TextView genderTextView;
+        TextView timestampTextView;
+        View.OnClickListener navigateToRideRequestDetails = (view) -> {
+            int selectedIndex = ((RecyclerView) view.getParent()).getChildAdapterPosition(view);
+            Request request = requests[selectedIndex];
+
+            Pair<String, Serializable> requestData = new Pair<>("request", request);
+
+            ActivityUtils.navigateWithData(view.getContext(), Driver_RideRequestDetails.class, requestData);
+        };
+
+        RequestViewHolder(View itemView) {
+            super(itemView);
+            viewLayout = itemView.findViewById(R.id.request_card_view_layout);
+            genderTextView = itemView.findViewById(R.id.card_view_gender_text_view);
+            timestampTextView = itemView.findViewById(R.id.card_view_timestamp_text_view);
+            groupSizeTextView = itemView.findViewById(R.id.card_view_group_size_text_view);
+
+            viewLayout.setOnClickListener(navigateToRideRequestDetails);
+        }
+
+        private void populateFields(String groupSize, String timeStamp, String gender){
+            groupSizeTextView.setText(groupSize);
+            timestampTextView.setText(timeStamp);
+            genderTextView.setText(gender);
+        }
     }
 }

@@ -11,14 +11,17 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.bespinaf.a2d2.R;
 import com.example.bespinaf.a2d2.adapters.RideRequestAdapter;
+import com.example.bespinaf.a2d2.adapters.RideRequestListFragmentAdapter;
 import com.example.bespinaf.a2d2.controllers.Driver_RideRequestList;
 import com.example.bespinaf.a2d2.models.Request;
+import com.example.bespinaf.a2d2.models.RequestStatus;
 
 import butterknife.BindView;
 
@@ -28,22 +31,34 @@ public class Driver_RideRequestListFragment extends Fragment {
     RecyclerView requestList;
 
     public Driver_RideRequestListFragment(){
+
     }
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
 
+
         View recyclerview_tab = inflater.inflate(R.layout.fragment_ride_request_list, container, false);
-        context = recyclerview_tab.getContext();
+        context = container.getContext();
         requestList = recyclerview_tab.findViewById(R.id.ride_requests_recyclerview);
 
         return recyclerview_tab;
     }
 
-    public void populateRecyclerView(Request[] list){
-        RideRequestAdapter adapter = new RideRequestAdapter(list);
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        if(getArguments() != null){
+            requests = (Request[]) getArguments().getSerializable("requests");
+        }
+
+        populateRecyclerView();
+    }
+
+    public void populateRecyclerView() {
+        RideRequestAdapter adapter = new RideRequestAdapter(requests);
 
         LinearLayoutManager llmRequestManager = new LinearLayoutManager(context);
         requestList.setLayoutManager(llmRequestManager);
@@ -56,10 +71,11 @@ public class Driver_RideRequestListFragment extends Fragment {
         );
 
         Drawable listItemDivider = context.getDrawable(R.drawable.ride_requests_divideritemdecoration);
-        if(listItemDivider != null){ dividerItemDecoration.setDrawable(listItemDivider); }
+        if (listItemDivider != null) {
+            dividerItemDecoration.setDrawable(listItemDivider);
+        }
 
         requestList.addItemDecoration(dividerItemDecoration);
         requestList.setAdapter(adapter);
     }
-
 }

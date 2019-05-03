@@ -25,28 +25,20 @@ import butterknife.BindView;
 
 public class Driver_RideRequestList extends ButterKnifeActivity implements DataReceiver {
 
-    @BindView(R.id.ride_requests_available_recycler_view)
-    RecyclerView rideRequestsAvailableRecyclerView;
-    @BindView(R.id.ride_requests_in_progress_recycler_view)
-    RecyclerView rideRequestsInProgressRecyclerView;
-    @BindView(R.id.ride_requests_completed_recycler_view)
-    RecyclerView rideRequestsCompletedRecyclerView;
     @BindView(R.id.ride_requests_view_pager)
     ViewPager mViewPager;
     @BindView(R.id.ride_requests_tab_layout)
     TabLayout mTabLayout;
 
-    private Request[] rideRequests = null;
+    RideRequestListFragmentAdapter requestListFragmentAdapter;
+    private Request[] rideRequests = new Request[0];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bind(R.layout.activity_ride_requests);
 
-        RideRequestListFragmentAdapter requestListFragmentAdapter = new RideRequestListFragmentAdapter(getSupportFragmentManager());
-        mViewPager.setAdapter(requestListFragmentAdapter);
-
-        mTabLayout.setupWithViewPager(mViewPager, true);
+        requestListFragmentAdapter = new RideRequestListFragmentAdapter(this, getSupportFragmentManager());
     }
 
     @Override
@@ -58,15 +50,15 @@ public class Driver_RideRequestList extends ButterKnifeActivity implements DataR
     @Override
     public void onDataChanged(DataSource dataSource, HashMap<String, Object> data) {
         rideRequests = DataSourceUtils.requestsFromData(data);
-        //refreshRecyclerViews();
+        refreshRecyclerViews();
     }
 
 
-    /*private void refreshRecyclerViews() {
-        Request[] listAvailable = getRequestsWithStatus(RequestStatus.Available);
-        Request[] listInProgress = getRequestsWithStatus(RequestStatus.InProgress);
-        Request[] listCompleted = getRequestsWithStatus(RequestStatus.Completed);
-    }*/
+    private void refreshRecyclerViews() {
+        requestListFragmentAdapter.updateRequests(rideRequests);
+        mViewPager.setAdapter(requestListFragmentAdapter);
+        mTabLayout.setupWithViewPager(mViewPager);
+    }
 
 
 
