@@ -5,8 +5,8 @@ import android.app.Instrumentation;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.rule.ActivityTestRule;
 
-import com.example.bespinaf.a2d2.controllers.RideRequestDetails;
-import com.example.bespinaf.a2d2.controllers.RideRequests;
+import com.example.bespinaf.a2d2.controllers.Driver_RideRequestDetails;
+import com.example.bespinaf.a2d2.controllers.Driver_RideRequestList;
 import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
 import com.example.bespinaf.a2d2.utilities.FormatUtils;
 
@@ -23,9 +23,9 @@ import static org.junit.Assert.assertNotNull;
 
 public class test_navigate_to_details_page {
     @Rule
-    public ActivityTestRule<RideRequests> mRideRequestsActivity = new ActivityTestRule<>(RideRequests.class);
+    public ActivityTestRule<Driver_RideRequestList> mRideRequestsActivity = new ActivityTestRule<>(Driver_RideRequestList.class);
 
-    private RideRequests mActivity;
+    private Driver_RideRequestList mActivity;
     private Instrumentation mInstrumentation;
     private Instrumentation.ActivityMonitor mRequestDetailsMonitor;
 
@@ -43,7 +43,7 @@ public class test_navigate_to_details_page {
 
         mActivity = mRideRequestsActivity.getActivity();
         mInstrumentation = getInstrumentation();
-        mRequestDetailsMonitor = mInstrumentation.addMonitor(RideRequestDetails.class.getName(), null, false);
+        mRequestDetailsMonitor = mInstrumentation.addMonitor(Driver_RideRequestDetails.class.getName(), null, false);
     }
 
 

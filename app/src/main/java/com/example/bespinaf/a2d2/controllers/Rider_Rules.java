@@ -1,37 +1,39 @@
 package com.example.bespinaf.a2d2.controllers;
 
 import android.Manifest;
-import android.content.Context;
 import android.location.Location;
-import android.location.LocationManager;
-import android.provider.ContactsContract;
 import android.support.v7.app.AlertDialog;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import com.example.bespinaf.a2d2.R;
+import com.example.bespinaf.a2d2.models.DataReceiver;
+import com.example.bespinaf.a2d2.models.DataSource;
 import com.example.bespinaf.a2d2.utilities.ActivityUtils;
 import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
 import com.example.bespinaf.a2d2.utilities.FormatUtils;
 import com.example.bespinaf.a2d2.utilities.LocationUtils;
 import com.example.bespinaf.a2d2.utilities.Permissions;
 
+import java.util.HashMap;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
 
-public class Rules extends ButterKnifeActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
+public class Rider_Rules extends ButterKnifeActivity implements ActivityCompat.OnRequestPermissionsResultCallback, DataReceiver {
 
     private final int MY_PERMISSIONS_REQUEST_LOCATION = 0;
     @BindView(R.id.button_rules_agree)
     Button buttonRulesAgree;
     private AlertDialog.Builder mDialogBuilder;
     private String userOutOfRangeMessageFormat = "You are outside of the 25 mile range defined by the A2D2 program rules. If you still require a ride, please call A2D2 Dispatch at %s";
+    private String a2d2PhoneNumber = null;
+    private Location a2d2BaseLocation = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +41,23 @@ public class Rules extends ButterKnifeActivity implements ActivityCompat.OnReque
         bind(R.layout.activity_rules);
 
         mDialogBuilder = ActivityUtils.newNotifyDialogBuilder(this);
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        DataSourceUtils.resources.setReciever(this);
+        buttonRulesAgree.setEnabled(false);
+    }
+
+
+    @Override
+    public void onDataChanged(DataSource dataSource, HashMap<String, Object> data) {
+        String baseLocationString = (String) data.get("base_location");
+        a2d2BaseLocation = DataSourceUtils.getLocationFromString(baseLocationString);//TODO add to 'R'
+        a2d2PhoneNumber = (String) data.get("phone_number");//TODO add to 'R'
+        buttonRulesAgree.setEnabled(true);
     }
 
 
@@ -67,12 +86,12 @@ public class Rules extends ButterKnifeActivity implements ActivityCompat.OnReque
         }
 
         LocationUtils.getCurrentGPSLocationAsync(this, (currentLocation) -> {
-            if(!LocationUtils.isInRange(currentLocation, DataSourceUtils.a2d2BaseLocation)){
+            if(!LocationUtils.isInRange(currentLocation, a2d2BaseLocation)){
                 displayOutOfRangeMessage();
                 return;
             }
 
-            ActivityUtils.navigate(this, RequestRide.class);
+            ActivityUtils.navigate(this, Rider_RequestRide.class);
         });
     }
 
@@ -80,7 +99,7 @@ public class Rules extends ButterKnifeActivity implements ActivityCompat.OnReque
     private void displayOutOfRangeMessage(){
         String outOfRangeMessage = FormatUtils.formatString(
                 userOutOfRangeMessageFormat,
-                FormatUtils.formatPhoneNumber(DataSourceUtils.a2d2PhoneNumber)
+                FormatUtils.formatPhoneNumber(a2d2PhoneNumber)
         );
 
         ActivityUtils.showDialog(

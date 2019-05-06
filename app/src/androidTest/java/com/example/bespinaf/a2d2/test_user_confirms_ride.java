@@ -3,21 +3,16 @@ package com.example.bespinaf.a2d2;
 
 import android.app.Activity;
 import android.app.Instrumentation;
-import android.content.Context;
-import android.location.Location;
-import android.location.LocationManager;
-import android.location.LocationProvider;
 import android.support.annotation.Nullable;
 import android.support.design.button.MaterialButton;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.test.rule.ActivityTestRule;
-import android.support.test.rule.GrantPermissionRule;
 import android.support.test.uiautomator.UiDevice;
 import android.widget.Button;
 
-import com.example.bespinaf.a2d2.controllers.RequestRide;
-import com.example.bespinaf.a2d2.controllers.RideStatus;
+import com.example.bespinaf.a2d2.controllers.Rider_RequestRide;
+import com.example.bespinaf.a2d2.controllers.Rider_RideStatus;
 
 import org.hamcrest.core.IsNot;
 import org.junit.Before;
@@ -28,21 +23,19 @@ import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.RootMatchers.isDialog;
 import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.TestCase.assertNotNull;
 import static org.hamcrest.CoreMatchers.is;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
 
 public class test_user_confirms_ride {
     @Rule
-    public ActivityTestRule<RequestRide> mRequestRideActivity = new ActivityTestRule<>(RequestRide.class);
+    public ActivityTestRule<Rider_RequestRide> mRequestRideActivity = new ActivityTestRule<>(Rider_RequestRide.class);
 
 
-    private RequestRide mActivity;
+    private Rider_RequestRide mActivity;
     private UiDevice mDevice;
     private Instrumentation mInstrumentation;
     private Instrumentation.ActivityMonitor mRulesMonitor;
@@ -63,7 +56,7 @@ public class test_user_confirms_ride {
         mPhoneNumberInputLayout = (TextInputLayout) mActivity.findViewById(R.id.activity_request_ride_phone_number_text_input_layout);
         mPhoneNumberEditText = (TextInputEditText) mActivity.findViewById(R.id.activity_ride_request_phone_number_text_edit);
         mNameEditText = (TextInputEditText) mActivity.findViewById(R.id.activity_ride_request_name_text_edit);
-        mRideStatusMonitor = mInstrumentation.addMonitor(RideStatus.class.getName(), null, false);
+        mRideStatusMonitor = mInstrumentation.addMonitor(Rider_RideStatus.class.getName(), null, false);
     }
 
     //ensures the request button exists

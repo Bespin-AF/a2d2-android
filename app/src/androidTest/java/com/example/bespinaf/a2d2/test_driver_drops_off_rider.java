@@ -5,8 +5,8 @@ import android.app.Instrumentation;
 import android.content.Intent;
 import android.support.test.rule.ActivityTestRule;
 
-import com.example.bespinaf.a2d2.controllers.RideRequestDetails;
-import com.example.bespinaf.a2d2.controllers.RideRequests;
+import com.example.bespinaf.a2d2.controllers.Driver_RideRequestDetails;
+import com.example.bespinaf.a2d2.controllers.Driver_RideRequestList;
 import com.example.bespinaf.a2d2.models.Request;
 import com.example.bespinaf.a2d2.utilities.AuthorizationUtils;
 import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
@@ -27,9 +27,9 @@ import static org.junit.Assert.assertNotNull;
 
 public class test_driver_drops_off_rider {
     @Rule
-    public ActivityTestRule<RideRequestDetails> mRideRequestsActivity = new ActivityTestRule<>(RideRequestDetails.class, false, false);
+    public ActivityTestRule<Driver_RideRequestDetails> mRideRequestsActivity = new ActivityTestRule<>(Driver_RideRequestDetails.class, false, false);
 
-    private RideRequestDetails mActivity;
+    private Driver_RideRequestDetails mActivity;
     private Instrumentation mInstrumentation;
     private Instrumentation.ActivityMonitor mRideRequestsMonitor;
 
@@ -51,7 +51,7 @@ public class test_driver_drops_off_rider {
 
         mActivity = mRideRequestsActivity.launchActivity(initialData);
         mInstrumentation = getInstrumentation();
-        mRideRequestsMonitor = mInstrumentation.addMonitor(RideRequests.class.getName(), null, false);
+        mRideRequestsMonitor = mInstrumentation.addMonitor(Driver_RideRequestList.class.getName(), null, false);
     }
 
 
@@ -103,6 +103,6 @@ public class test_driver_drops_off_rider {
                 .inRoot(isDialog())
                 .perform(click());
 
-        //Due to how activity stacks work, this test cannot expect the RideRequests activity since it was directly launched
+        //Due to how activity stacks work, this test cannot expect the Driver_RideRequestList activity since it was directly launched
     }
 }

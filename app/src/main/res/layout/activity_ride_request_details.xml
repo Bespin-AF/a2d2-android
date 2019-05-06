@@ -7,13 +7,14 @@
     android:background="@color/driverBackgroundColor"
     android:paddingTop="8dp"
     android:paddingBottom="16dp"
-    tools:context=".controllers.RideRequestDetails">
+    tools:context=".controllers.Driver_RideRequestDetails">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingStart="16dp"
         android:paddingTop="8dp"
         android:paddingEnd="16dp"
+        android:fillViewport="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -26,7 +27,7 @@
                 android:id="@+id/recyclerview_riderequestdetails_detaillist"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@+id/materialbutton_riderequestdetails_contactrider"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 tools:layout_editor_absoluteX="8dp"
                 tools:layout_editor_absoluteY="8dp" />
@@ -36,20 +37,27 @@
                 style="@style/App.MaterialButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="0px"
-                android:layout_marginEnd="0px"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:text="Contact Rider"
-                app:layout_constraintBottom_toTopOf="@+id/materialbutton_riderequestdetails_jobaction" />
+                app:layout_constraintBottom_toTopOf="@+id/materialbutton_riderequestdetails_jobaction"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/recyclerview_riderequestdetails_detaillist"
+                app:layout_constraintVertical_bias="0.965" />
 
             <android.support.design.button.MaterialButton
                 android:id="@+id/materialbutton_riderequestdetails_jobaction"
                 style="@style/App.MaterialButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="0px"
-                android:layout_marginEnd="0px"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:text="Take Job"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
 </android.support.constraint.ConstraintLayout>

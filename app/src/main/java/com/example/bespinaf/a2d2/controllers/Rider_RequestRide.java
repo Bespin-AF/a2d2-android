@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Spinner;
 
 import com.example.bespinaf.a2d2.R;
+import com.example.bespinaf.a2d2.models.RequestStatus;
 import com.example.bespinaf.a2d2.utilities.ActivityUtils;
 import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
 import com.example.bespinaf.a2d2.models.Request;
@@ -30,7 +31,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 
-public class RequestRide extends ButterKnifeActivity {
+public class Rider_RequestRide extends ButterKnifeActivity {
 
     @BindView(R.id.activity_ride_request_name_text_edit)
     TextInputEditText mNameEditText;
@@ -115,18 +116,11 @@ public class RequestRide extends ButterKnifeActivity {
     private void submitRequest() {
         LocationUtils.getCurrentGPSLocationAsync(this, (location) -> {
             Request rideRequest = buildRideRequest(location);
-            String requestId = DataSourceUtils.addRequest(rideRequest);
-
-            Pair<String, Serializable> requestIdData = new Pair<>("requestId", requestId);
+            String requestId = DataSourceUtils.requests.sendData(rideRequest.getData());
+            rideRequest.key = requestId;
         	Pair<String, Serializable> requestData = new Pair<>("request", rideRequest);
-
-        	ActivityUtils.navigateWithData(this, RideStatus.class, requestIdData, requestData );
+        	ActivityUtils.navigateWithData(this, Rider_RideStatus.class, requestData );
         });
-    }
-
-
-    private Request buildRideRequest(){
-        return buildRideRequest(LocationUtils.getLastKnownGPSLocation(this));
     }
 
 
@@ -147,7 +141,7 @@ public class RequestRide extends ButterKnifeActivity {
         request.setTimestamp(currentDate);
         request.setLat(currentLocation.getLatitude());
         request.setLon(currentLocation.getLongitude());
-        request.setStatus(getString(R.string.request_ride_available));
+        request.setStatus(RequestStatus.Available);
 
         return request;
     }

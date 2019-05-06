@@ -5,9 +5,9 @@ import android.app.Instrumentation;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 
-import com.example.bespinaf.a2d2.controllers.DriverLogin;
+import com.example.bespinaf.a2d2.controllers.Driver_Login;
 import com.example.bespinaf.a2d2.controllers.MainActivity;
-import com.example.bespinaf.a2d2.controllers.Rules;
+import com.example.bespinaf.a2d2.controllers.Rider_Rules;
 
 import org.junit.After;
 import org.junit.Before;
@@ -29,14 +29,14 @@ public class test_main_page_navigation {
     private Instrumentation.ActivityMonitor mLoginMonitor;
 
     /**
-     *  Creates monitor for Rules page and creates Main Activity
+     *  Creates monitor for Rider_Rules page and creates Main Activity
      */
     @Before
     public void setUp(){
         mActivity = mMainActivityTestRule.getActivity();
         mInstrumentation = getInstrumentation();
-        mRulesMonitor = mInstrumentation.addMonitor(Rules.class.getName(),null,false);
-        mLoginMonitor = mInstrumentation.addMonitor(DriverLogin.class.getName(), null, false);
+        mRulesMonitor = mInstrumentation.addMonitor(Rider_Rules.class.getName(),null,false);
+        mLoginMonitor = mInstrumentation.addMonitor(Driver_Login.class.getName(), null, false);
     }
 
 

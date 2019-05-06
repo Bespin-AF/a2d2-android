@@ -5,15 +5,9 @@ import android.content.Context;
 import android.location.Location;
 import android.location.LocationManager;
 import android.location.LocationProvider;
-import android.support.design.button.MaterialButton;
-import android.support.design.widget.TextInputEditText;
-import android.support.design.widget.TextInputLayout;
-import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
-import android.support.test.uiautomator.UiDevice;
 
-import com.example.bespinaf.a2d2.controllers.RequestRide;
-import com.example.bespinaf.a2d2.controllers.Rules;
+import com.example.bespinaf.a2d2.controllers.Rider_Rules;
 import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
 
 import org.junit.After;
@@ -24,7 +18,6 @@ import org.junit.Test;
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.RootMatchers.isDialog;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -33,10 +26,10 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 public class test_user_outside_of_service_area {
     @Rule
-    public ActivityTestRule<Rules> mRuleActivityRule = new ActivityTestRule<>(Rules.class);
+    public ActivityTestRule<Rider_Rules> mRuleActivityRule = new ActivityTestRule<>(Rider_Rules.class);
 
 
-    private Rules mActivity;
+    private Rider_Rules mActivity;
     private Instrumentation mInstrumentation;
     LocationManager lm;
 

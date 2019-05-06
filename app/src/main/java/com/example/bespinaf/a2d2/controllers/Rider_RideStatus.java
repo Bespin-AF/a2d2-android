@@ -14,17 +14,22 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.example.bespinaf.a2d2.R;
+import com.example.bespinaf.a2d2.models.DataReceiver;
+import com.example.bespinaf.a2d2.models.DataSource;
 import com.example.bespinaf.a2d2.models.Request;
+import com.example.bespinaf.a2d2.models.RequestStatus;
 import com.example.bespinaf.a2d2.utilities.ActivityUtils;
 import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
 import com.example.bespinaf.a2d2.utilities.FormatUtils;
 import com.example.bespinaf.a2d2.utilities.Permissions;
 
+import java.util.HashMap;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class RideStatus extends ButterKnifeActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
+public class Rider_RideStatus extends ButterKnifeActivity implements ActivityCompat.OnRequestPermissionsResultCallback, DataReceiver {
 
     @BindView(R.id.button_call_a2d2)
     MaterialButton buttonCallA2d2;
@@ -35,7 +40,6 @@ public class RideStatus extends ButterKnifeActivity implements ActivityCompat.On
 
     final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1;
     private String a2d2Number;
-    private String requestId;
     private Request request;
 
     AlertDialog.Builder mDialogBuilder;
@@ -46,16 +50,28 @@ public class RideStatus extends ButterKnifeActivity implements ActivityCompat.On
         super.onCreate(savedInstanceState);
         bind(R.layout.activity_ride_status);
         loadIntentData();
-
         mDialogBuilder = ActivityUtils.newNotifyDialogBuilder(this);
-        a2d2Number = DataSourceUtils.a2d2PhoneNumber;
-        displayA2D2PhoneNumber();
+        buttonCallA2d2.setEnabled(false);
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        DataSourceUtils.resources.setReciever(this);
     }
 
 
     private void loadIntentData(){
-        requestId = (String) getIntent().getSerializableExtra("requestId");
         request = (Request) getIntent().getSerializableExtra("request");
+    }
+
+
+    @Override
+    public void onDataChanged(DataSource dataSource, HashMap<String, Object> data) {
+        a2d2Number = (String)data.get("phone_number");//TODO Put this key somewhere, maybe in 'R'
+        displayA2D2PhoneNumber();
+        buttonCallA2d2.setEnabled(true);
     }
 
 
@@ -77,7 +93,7 @@ public class RideStatus extends ButterKnifeActivity implements ActivityCompat.On
 
     @OnClick(R.id.button_cancel_ride)
     public void cancelButtonClicked_ConfirmCancellation(){
-        if(request == null || requestId == null){
+        if(request == null){
             String message = FormatUtils.formatString(
                     "An error occurred trying to cancel your request. Please try again later or contact %s for further assistance.", a2d2Number
             );
@@ -94,8 +110,8 @@ public class RideStatus extends ButterKnifeActivity implements ActivityCompat.On
     }
 
     private void cancelRideRequest(){
-        request.setStatus("Cancelled");
-        DataSourceUtils.updateRequest(requestId, request);
+        request.setStatus(RequestStatus.Cancelled);
+        DataSourceUtils.requests.updateData(request.key, request);
 
         AlertDialog.Builder redirectDialog = ActivityUtils.newNotifyDialogBuilder(this);
 

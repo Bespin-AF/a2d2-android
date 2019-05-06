@@ -8,8 +8,8 @@ import android.support.test.espresso.Espresso;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 
-import com.example.bespinaf.a2d2.controllers.RequestRide;
-import com.example.bespinaf.a2d2.controllers.RideStatus;
+import com.example.bespinaf.a2d2.controllers.Rider_RequestRide;
+import com.example.bespinaf.a2d2.controllers.Rider_RideStatus;
 import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
 import com.example.bespinaf.a2d2.utilities.FormatUtils;
 
@@ -45,9 +45,9 @@ import static org.junit.Assert.fail;
 
 public class test_user_populates_request_form {
     @Rule
-    public ActivityTestRule<RequestRide> mRequestRideActivity= new ActivityTestRule<>(RequestRide.class);
+    public ActivityTestRule<Rider_RequestRide> mRequestRideActivity= new ActivityTestRule<>(Rider_RequestRide.class);
 
-    private RequestRide mActivity;
+    private Rider_RequestRide mActivity;
     private Instrumentation mInstrumentation;
     private Instrumentation.ActivityMonitor mRideStatusMonitor;
     private TextInputLayout mNameInputLayout;
@@ -68,7 +68,7 @@ public class test_user_populates_request_form {
     public void setUp(){
         mActivity = mRequestRideActivity.getActivity();
         mInstrumentation = getInstrumentation();
-        mRideStatusMonitor = mInstrumentation.addMonitor(RideStatus.class.getName(), null, false);
+        mRideStatusMonitor = mInstrumentation.addMonitor(Rider_RideStatus.class.getName(), null, false);
         FormatUtils.initializeDateFormatters();
         DataSourceUtils.loadA2D2_PhoneNumber(null);
         DataSourceUtils.loadA2D2_BaseLocation(null);

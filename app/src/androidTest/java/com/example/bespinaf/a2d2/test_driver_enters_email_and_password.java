@@ -9,8 +9,8 @@ import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.text.InputType;
 
-import com.example.bespinaf.a2d2.controllers.DriverLogin;
-import com.example.bespinaf.a2d2.controllers.RideRequests;
+import com.example.bespinaf.a2d2.controllers.Driver_Login;
+import com.example.bespinaf.a2d2.controllers.Driver_RideRequestList;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -26,9 +26,9 @@ import static android.support.test.espresso.action.ViewActions.replaceText;
 
 public class test_driver_enters_email_and_password {
     @Rule
-    public ActivityTestRule<DriverLogin> mDriverLoginActivity = new ActivityTestRule<>(DriverLogin.class);
+    public ActivityTestRule<Driver_Login> mDriverLoginActivity = new ActivityTestRule<>(Driver_Login.class);
 
-    private DriverLogin mActivity;
+    private Driver_Login mActivity;
     private Instrumentation mInstrumentation;
     private Instrumentation.ActivityMonitor mRideRequestsMonitor;
     private String email;
@@ -38,7 +38,7 @@ public class test_driver_enters_email_and_password {
     public void setUp(){
         mActivity = mDriverLoginActivity.getActivity();
         mInstrumentation = getInstrumentation();
-        mRideRequestsMonitor = mInstrumentation.addMonitor(RideRequests.class.getName(),null,false);
+        mRideRequestsMonitor = mInstrumentation.addMonitor(Driver_RideRequestList.class.getName(),null,false);
 
         email = mActivity.getString(R.string.TEST_DRIVER_EMAIL);
         password = mActivity.getString(R.string.TEST_DRIVER_PASSWORD);

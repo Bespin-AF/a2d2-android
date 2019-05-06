@@ -3,7 +3,7 @@ package com.example.bespinaf.a2d2;
 import android.content.Intent;
 import android.support.test.rule.ActivityTestRule;
 
-import com.example.bespinaf.a2d2.controllers.RideRequestDetails;
+import com.example.bespinaf.a2d2.controllers.Driver_RideRequestDetails;
 import com.example.bespinaf.a2d2.models.Request;
 import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
 import com.example.bespinaf.a2d2.utilities.FormatUtils;
@@ -24,9 +24,9 @@ public class test_driver_takes_job {
 
 
     @Rule
-    public ActivityTestRule<RideRequestDetails> mRideRequestDetailsActivity = new ActivityTestRule<>(RideRequestDetails.class,false,false);
+    public ActivityTestRule<Driver_RideRequestDetails> mRideRequestDetailsActivity = new ActivityTestRule<>(Driver_RideRequestDetails.class,false,false);
 
-    private RideRequestDetails mActivity;
+    private Driver_RideRequestDetails mActivity;
     private Request request;
 
 

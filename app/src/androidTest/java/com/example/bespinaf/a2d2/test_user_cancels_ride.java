@@ -4,21 +4,14 @@ import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Intent;
 import android.support.annotation.Nullable;
-import android.support.design.button.MaterialButton;
-import android.support.design.widget.TextInputEditText;
-import android.support.design.widget.TextInputLayout;
 import android.support.test.rule.ActivityTestRule;
-import android.support.test.uiautomator.UiDevice;
-import android.widget.Button;
 
 import com.example.bespinaf.a2d2.controllers.MainActivity;
-import com.example.bespinaf.a2d2.controllers.RequestRide;
-import com.example.bespinaf.a2d2.controllers.RideStatus;
+import com.example.bespinaf.a2d2.controllers.Rider_RideStatus;
 import com.example.bespinaf.a2d2.models.Request;
 import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
 import com.example.bespinaf.a2d2.utilities.FormatUtils;
 
-import org.hamcrest.core.IsNot;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -29,7 +22,6 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.RootMatchers.isDialog;
-import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -39,9 +31,9 @@ import static org.hamcrest.CoreMatchers.is;
 
 public class test_user_cancels_ride {
     @Rule
-    public ActivityTestRule<RideStatus> mRideStatusRule = new ActivityTestRule<>(RideStatus.class, false, false);
+    public ActivityTestRule<Rider_RideStatus> mRideStatusRule = new ActivityTestRule<>(Rider_RideStatus.class, false, false);
 
-    private RideStatus mActivity;
+    private Rider_RideStatus mActivity;
     private Instrumentation mInstrumentation;
     private Instrumentation.ActivityMonitor mHomeActivityMonitor;
 
