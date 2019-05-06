@@ -40,7 +40,7 @@ public class Request implements Comparable<Request>, Serializable {
             data.lon = ((Double) rawData.get("lon"));
         } catch (Exception e) {
             //TODO Proper logging
-            Log.e("REQUEST CONSTRUCTOR", "SOMETHING FUCKED UP: " + e.getMessage());
+            Log.e("REQUEST CONSTRUCTOR", "SOMETHING MESSED UP: " + e.getMessage());
         }
     }
 

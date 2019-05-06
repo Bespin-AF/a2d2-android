@@ -38,8 +38,6 @@ public class Driver_RideRequestListFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
-
-
         View recyclerview_tab = inflater.inflate(R.layout.fragment_ride_request_list, container, false);
         context = container.getContext();
         requestList = recyclerview_tab.findViewById(R.id.ride_requests_recyclerview);
