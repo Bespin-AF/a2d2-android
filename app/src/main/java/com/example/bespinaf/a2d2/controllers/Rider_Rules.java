@@ -48,16 +48,23 @@ public class Rider_Rules extends ButterKnifeActivity implements ActivityCompat.O
     protected void onStart() {
         super.onStart();
         DataSourceUtils.resources.setReciever(this);
+        DataSourceUtils.locations.setReciever(this);
         buttonRulesAgree.setEnabled(false);
     }
 
 
     @Override
     public void onDataChanged(DataSource dataSource, HashMap<String, Object> data) {
-        String baseLocationString = (String) data.get("base_location");
-        a2d2BaseLocation = DataSourceUtils.getLocationFromString(baseLocationString);//TODO add to 'R'
-        a2d2PhoneNumber = (String) data.get("phone_number");//TODO add to 'R'
-        buttonRulesAgree.setEnabled(true);
+        if(dataSource.databaseRef.getKey().equals("base_info")){
+            a2d2PhoneNumber = (String) data.get("phone_number");//TODO add to 'R'
+        } else if (dataSource.databaseRef.getKey() != null && dataSource.databaseRef.getKey().equals("locations")){
+            String location = (String) data.get("maxwell_afb");
+            a2d2BaseLocation = DataSourceUtils.getLocationFromString(location);
+        }
+
+        if(a2d2PhoneNumber != null && a2d2BaseLocation != null){
+            buttonRulesAgree.setEnabled(true);
+        }
     }
 
 
