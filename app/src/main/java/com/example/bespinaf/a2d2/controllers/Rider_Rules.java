@@ -31,6 +31,7 @@ public class Rider_Rules extends ButterKnifeActivity implements ActivityCompat.O
     @BindView(R.id.button_rules_agree)
     Button buttonRulesAgree;
     private AlertDialog.Builder mDialogBuilder;
+    //TODO: extract into R.string
     private String userOutOfRangeMessageFormat = "You are outside of the 25 mile range defined by the A2D2 program rules. If you still require a ride, please call A2D2 Dispatch at %s";
     private String a2d2PhoneNumber = null;
     private Location a2d2BaseLocation = null;
@@ -92,6 +93,7 @@ public class Rider_Rules extends ButterKnifeActivity implements ActivityCompat.O
 
     private void navigateToRideRequest(){
         if(!LocationUtils.isGPSEnabled(this)){
+            //TODO: Find android utility to request GPS permission
             ActivityUtils.showDialog(mDialogBuilder, "GPS Unavailable", "Please enable GPS and try again.");
             return;
         }
