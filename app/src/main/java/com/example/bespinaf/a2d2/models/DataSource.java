@@ -13,13 +13,13 @@ import java.util.HashMap;
 import java.util.ResourceBundle;
 
 public class DataSource {
-    private DatabaseReference databaseRef;
+    public DatabaseReference databaseRef;
     private DataReceiver receiver;
     private ValueEventListener dataSyncEvent;
     final String BASE = "maxwell_afb";
 
     public DataSource(DataSourceType type){
-        databaseRef = FirebaseDatabase.getInstance().getReference();
+        databaseRef = FirebaseDatabase.getInstance().getReference().child("bases").child(BASE);
     	databaseRef = getTableFromType(type);
     	dataSyncEvent = createDataSyncEvent();
     }
@@ -57,11 +57,13 @@ public class DataSource {
     private DatabaseReference getTableFromType(DataSourceType type){
         switch (type){
             case BaseInfo:
-                return databaseRef.child("base_info").child(BASE);
+                return databaseRef.child("base_info");
             case Requests:
                 return databaseRef.child("requests");
             case TestRequests:
                 return databaseRef.child("test_requests");
+            case Locations:
+                return FirebaseDatabase.getInstance().getReference().child("locations");
         }
         return null;
     }
