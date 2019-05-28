@@ -2,6 +2,7 @@ package com.example.bespinaf.a2d2;
 
 import android.app.Activity;
 import android.app.Instrumentation;
+import android.support.test.espresso.assertion.ViewAssertions;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.rule.ActivityTestRule;
 
@@ -18,7 +19,10 @@ import org.junit.Test;
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static org.hamcrest.core.AllOf.allOf;
 import static org.junit.Assert.assertNotNull;
 
 public class test_navigate_to_details_page {
@@ -33,13 +37,16 @@ public class test_navigate_to_details_page {
     @Before
     public void setUp() {
         //Sets request ID for the test
-        if (DataSourceUtils.getCurrentRequests().isEmpty()) {
-            FormatUtils.initializeDateFormatters();
-            try {
-                //Required to load data before trying to perform actions/load page
-                Thread.sleep(5000);
-            } catch (InterruptedException exception) {  }
+
+        //Required to load data before trying to perform actions/load page
+        FormatUtils.initializeDateFormatters();
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e){
+
         }
+
 
         mActivity = mRideRequestsActivity.getActivity();
         mInstrumentation = getInstrumentation();
@@ -52,7 +59,6 @@ public class test_navigate_to_details_page {
         mActivity = null;
         mInstrumentation = null;
         mRequestDetailsMonitor = null;
-        DataSourceUtils.stopRequestSync();
     }
 
 
@@ -64,7 +70,7 @@ public class test_navigate_to_details_page {
 
     @Test
     public void navigateToDetails() throws InterruptedException{
-        onView(withId(R.id.ride_requests_available_recycler_view)).perform(
+        onView(  allOf(withId(R.id.ride_requests_recyclerview),isCompletelyDisplayed()) ).check( ViewAssertions.matches(isDisplayed())).perform(
                 RecyclerViewActions.actionOnItemAtPosition(0, click()));
 
 

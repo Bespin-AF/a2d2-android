@@ -37,6 +37,7 @@ public class DataSource {
     }
 
 
+    //When submitting requests, you need to pass it request.getData() rather than the request itself
     public String sendData(Object data) {
         DatabaseReference newChild = databaseRef.push();
         newChild.setValue(data);

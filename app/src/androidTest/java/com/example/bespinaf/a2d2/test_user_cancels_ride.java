@@ -9,6 +9,7 @@ import android.support.test.rule.ActivityTestRule;
 import com.example.bespinaf.a2d2.controllers.MainActivity;
 import com.example.bespinaf.a2d2.controllers.Rider_RideStatus;
 import com.example.bespinaf.a2d2.models.Request;
+import com.example.bespinaf.a2d2.models.RequestStatus;
 import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
 import com.example.bespinaf.a2d2.utilities.FormatUtils;
 
@@ -47,11 +48,11 @@ public class test_user_cancels_ride {
         mHomeActivityMonitor = mInstrumentation.addMonitor(MainActivity.class.getName(), null, false);
 
         Intent data = new Intent();
-        data.putExtra("request", buildRideRequest());
+        Request request = buildRideRequest();
+        String requestId = DataSourceUtils.requests.sendData(buildRideRequest());
+        request.key = requestId;
 
-        String requestId = DataSourceUtils.addRequest(buildRideRequest());
-
-        data.putExtra("requestId", requestId);
+        data.putExtra("request", request);
 
         mRideStatusRule.launchActivity(data);
     }
@@ -70,7 +71,7 @@ public class test_user_cancels_ride {
         rideRequest.setName("John Doe");
         rideRequest.setPhone("1234554321");
         rideRequest.setRemarks("Test Remarks");
-        rideRequest.setStatus("Available");
+        rideRequest.setStatus(RequestStatus.Available);
         rideRequest.setLat(32.368824);
         rideRequest.setLon(-86.270966);
 

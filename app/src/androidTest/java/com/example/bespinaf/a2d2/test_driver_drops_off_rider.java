@@ -8,6 +8,7 @@ import android.support.test.rule.ActivityTestRule;
 import com.example.bespinaf.a2d2.controllers.Driver_RideRequestDetails;
 import com.example.bespinaf.a2d2.controllers.Driver_RideRequestList;
 import com.example.bespinaf.a2d2.models.Request;
+import com.example.bespinaf.a2d2.models.RequestStatus;
 import com.example.bespinaf.a2d2.utilities.AuthorizationUtils;
 import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
 import com.example.bespinaf.a2d2.utilities.FormatUtils;
@@ -36,14 +37,12 @@ public class test_driver_drops_off_rider {
 
     @Before
     public void setUp() {
-        if (DataSourceUtils.getCurrentRequests().isEmpty()) {
-            FormatUtils.initializeDateFormatters();
-            AuthorizationUtils.authorizeUser("cooldriver@realandroidemail.com", "SecurePassword", null);
-            try {
-                //Required to load data before trying to perform actions/load page
-                Thread.sleep(5000);
-            } catch (InterruptedException exception) {  }
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+
         }
+        FormatUtils.initializeDateFormatters();
 
         Intent initialData = new Intent();
         initialData.putExtra("requestId", "test-request");
@@ -61,7 +60,6 @@ public class test_driver_drops_off_rider {
         mInstrumentation.removeMonitor(mRideRequestsMonitor);
         mInstrumentation = null;
         mRideRequestsMonitor = null;
-        DataSourceUtils.stopRequestSync();
     }
 
     
@@ -74,7 +72,7 @@ public class test_driver_drops_off_rider {
         rideRequest.setName("Jane Doe");
         rideRequest.setPhone("0123456789");
         rideRequest.setRemarks("Test remarks");
-        rideRequest.setStatus("In Progress");
+        rideRequest.setStatus(RequestStatus.InProgress);
         rideRequest.setLat(32.411823);
         rideRequest.setLon(-86.243357);
         rideRequest.setDriver("zqu4XosYhgTn5oZy9djN6LL5RUj1");//Corresponds to cooldriver@realandroidemail.com

@@ -35,8 +35,6 @@ public class test_user_outside_of_service_area {
 
     @Before
     public void setUp() throws InterruptedException {
-        DataSourceUtils.loadA2D2_BaseLocation(null);
-        DataSourceUtils.loadA2D2_PhoneNumber(null);
         Thread.sleep(1000);
         mActivity = mRuleActivityRule.getActivity();
         mInstrumentation = getInstrumentation();
