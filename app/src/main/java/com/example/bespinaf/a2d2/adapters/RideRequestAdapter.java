@@ -3,12 +3,10 @@ package com.example.bespinaf.a2d2.adapters;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.bespinaf.a2d2.R;
@@ -18,13 +16,10 @@ import com.example.bespinaf.a2d2.utilities.ActivityUtils;
 import com.example.bespinaf.a2d2.utilities.FormatUtils;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
 
 //Adapts request objects for use in a recycler view
 public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.RequestViewHolder> {
@@ -75,6 +70,12 @@ public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.
         requestViewHolder.populateFields(groupText, timestamp, gender);
     }
 
+    public void SortByDate(){
+        List<Request> temp = Arrays.asList(requests);
+        Collections.sort(temp, (first, second)-> first.getTimestamp().compareTo(second.getTimestamp()));
+        requests = temp.toArray(new Request[temp.size()]);
+    }
+
     //RecyclerView Cell Template
     public class RequestViewHolder extends RecyclerView.ViewHolder {
         ConstraintLayout viewLayout;
@@ -106,4 +107,5 @@ public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.
             genderTextView.setText(gender);
         }
     }
+
 }

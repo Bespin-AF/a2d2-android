@@ -70,8 +70,6 @@ public class test_user_populates_request_form {
         mInstrumentation = getInstrumentation();
         mRideStatusMonitor = mInstrumentation.addMonitor(Rider_RideStatus.class.getName(), null, false);
         FormatUtils.initializeDateFormatters();
-        DataSourceUtils.loadA2D2_PhoneNumber(null);
-        DataSourceUtils.loadA2D2_BaseLocation(null);
 
         mNameInputLayout = mActivity.findViewById(R.id.activity_request_ride_name_text_input_layout);
         mPhoneNumberInputLayout = mActivity.findViewById(R.id.activity_request_ride_phone_number_text_input_layout);
