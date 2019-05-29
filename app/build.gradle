@@ -33,9 +33,10 @@ dependencies {
     implementation 'com.google.android.gms:play-services-location:16.0.0'
 
     //Firebase dependencies
-    implementation 'com.google.firebase:firebase-core:16.0.8'
-    implementation 'com.google.firebase:firebase-database:16.1.0'
-    implementation 'com.google.firebase:firebase-auth:16.2.0'
+    implementation 'com.google.firebase:firebase-core:16.0.9'
+    implementation 'com.google.firebase:firebase-database:17.0.0'
+    implementation 'com.google.firebase:firebase-auth:17.0.0'
+    implementation 'com.google.firebase:firebase-functions:17.0.0'
 
     // ButterKnife dependencies
     implementation 'com.jakewharton:butterknife:9.0.0-rc2'
