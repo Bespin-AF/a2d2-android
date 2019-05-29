@@ -19,7 +19,7 @@ import com.example.bespinaf.a2d2.models.RequestStatus;
 
 import java.util.ArrayList;
 
-public class RideRequestListFragmentAdapter extends FragmentPagerAdapter {
+public class RideRequestListFragmentAdapter extends FragmentStatePagerAdapter {
     //It appears that FragmentStatePagerAdapter works, and is meant for each page to be recreated
     //whereas FragmentPagerAdapter is meant for unchanging data
     //When using it, you can removec notifydatasetchanged and getitemposition since it automatically recreates fragments

@@ -39,6 +39,7 @@ public class Driver_RideRequestList extends ButterKnifeActivity implements DataR
         bind(R.layout.activity_ride_requests);
 
         requestListFragmentAdapter = new RideRequestListFragmentAdapter(this, getSupportFragmentManager());
+
     }
 
     @Override

@@ -7,6 +7,7 @@ import android.support.test.espresso.assertion.ViewAssertions;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
+import android.support.v4.view.ViewPager;
 
 import com.example.bespinaf.a2d2.controllers.Driver_RideRequestDetails;
 import com.example.bespinaf.a2d2.controllers.Driver_RideRequestList;
@@ -25,6 +26,7 @@ import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.RootMatchers.isDialog;
 import static android.support.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -87,36 +89,59 @@ public class test_ride_requests_page_populates {
     }
 
     @Test
-    public void completedRideRequest_RequestListIsUpdated(){
-        TabLayout tabLayout = mRideRequestsActivity.findViewById(R.id.ride_requests_tab_layout);
-
+    public void completedRideRequest_RequestListIsUpdated() throws InterruptedException {
         //Match details: Group Size, Date, Gender
         Request request = buildRideRequest();
         DataSourceUtils.requests.sendData(request.getData());
 
-        mInstrumentation.runOnMainSync(()->{ tabLayout.getTabAt(1).select(); });
+        onView(withText((RequestStatus.InProgress.toString())))
+                .perform(click());
+
         onView(  allOf(withId(R.id.ride_requests_recyclerview), isCompletelyDisplayed()) )
                 .check(matches(isCompletelyDisplayed()))
                 .perform( RecyclerViewActions.actionOnItemAtPosition(0, click()));
-        try {
-            Thread.sleep(1000);
-        } catch (Exception e){
 
-        }
 
         Activity rideRequestDetailsActivity = mRideRequestDetailsMonitor.waitForActivityWithTimeout(1000);
             if(rideRequestDetailsActivity != null){
-            onView(
-                    allOf(
-                            withText(request.getStatus().toString()),
-                            withText(request.getName()),
-                            withText(request.getGender()),
-                            withText(request.getPhone()),
-                            withText(request.getRemarks())
-                    )
-            ).check(matches(isDisplayed()));
+                onView(withText(request.getStatus().toString()));
+                onView(withText(request.getName()));
+                onView(withText(request.getGender()));
+                onView(withText(request.getGroupSize()));
+                onView(withText(request.getPhone()));
+                onView(withText(request.getRemarks()));
+        } else {
+                assert(false);
         }
 
+
+            onView(withText("Complete Job"))
+                    .perform(click());
+
+
+            onView(withText("CONFIRM"))
+                    .perform(click());
+
+
+            onView(withText(RequestStatus.Completed.toString()))
+                    .perform(click());
+
+
+        onView(  allOf(withId(R.id.ride_requests_recyclerview), isCompletelyDisplayed()) )
+                .check(matches(isCompletelyDisplayed()))
+                .perform( RecyclerViewActions.actionOnItemAtPosition(0, click()));
+
+
+        if(rideRequestDetailsActivity != null){
+            onView(withText(request.getStatus().toString()));
+            onView(withText(request.getName()));
+            onView(withText(request.getGender()));
+            onView(withText(request.getGroupSize()));
+            onView(withText(request.getPhone()));
+            onView(withText(request.getRemarks()));
+        } else {
+            assert(false);
+        }
     }
 
     private Request buildRideRequest() {
