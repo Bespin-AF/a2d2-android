@@ -10,16 +10,68 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.functions.FirebaseFunctions;
+import com.google.firebase.functions.FirebaseFunctionsException;
+import com.google.firebase.functions.HttpsCallableResult;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class LocationUtils {
     private static float MAX_DISTANCE_IN_MILES = 25f;
     private static float MI_TO_KM_RATIO = 1.609344f;
     private static float KM_TO_MI_RATIO = 0.62137f;
     private static Location lastKnownLocation;
+    public static HashMap<String, Location> a2d2Locations = new HashMap<>();
 
     public interface onLocationChanged {
         void then(Location location);
     }
 
+    public static void updateA2D2Locations(HashMap<String, Object> locations){
+        a2d2Locations.clear();
+
+        for(Map.Entry<String, Object> location : locations.entrySet()){
+            if(location.getValue() == null){
+                continue;
+            }
+
+            String[] latitude_longitude = location.getValue().toString().split(",");
+            Location coordinates = new Location(""){{
+                setLatitude(Double.valueOf(latitude_longitude[0]));
+                setLongitude(Double.valueOf(latitude_longitude[1]));
+            }};
+
+            a2d2Locations.put(location.getKey(), coordinates);
+        }
+    }
+
+    //TODO: Add firebase function functionality
+    /**
+    * Uses the stored Firebase function in order to find the base closest to the given location
+    * @param location The location to be queried against; must be in the form of "{latitude},{longitude}"
+     * @return task<result> returns the name of the closest base, or "FAILURE" if an error occurs
+    */
+    public static Task<String> getClosestA2D2Location(String location) {
+        //Reference: https://stackoverflow.com/questions/42872743/calling-a-cloud-function-from-android-through-firebase
+        //Source code: https://console.cloud.google.com/functions/details/us-central1/closest?project=a2d2-22ec0&authuser=1&folder&organizationId&supportedpurview=project&tab=source&duration=PT1H
+        return FirebaseFunctions.getInstance().getHttpsCallable("closest").call(location).continueWith(task -> (String) task.getResult().getData());
+    }
+
+    public void test(){
+        getClosestA2D2Location("30.23423,-86.3423").addOnCompleteListener((task)->{
+            if(!task.isSuccessful()){
+                //The IDE has issues interpreting firebase code
+                FirebaseFunctionsException fbException = (FirebaseFunctionsException) task.getException();
+                FirebaseFunctionsException.Code fbExceptionCode = fbException.getCode();
+                Object details = fbException.getDetails();
+            }
+        });
+    }
 
     private static Location getMostRecentLocation(Location first, Location second){
         return (first.getTime() > second.getTime()) ? first : second;

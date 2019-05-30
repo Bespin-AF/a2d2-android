@@ -63,11 +63,10 @@ public class Rider_Rules extends ButterKnifeActivity implements ActivityCompat.O
         if(dataSource.databaseRef.getKey().equals("base_info")){
             a2d2PhoneNumber = (String) data.get("phone_number");//TODO add to 'R'
         } else if (dataSource.databaseRef.getKey().equals("locations")){
-            String location = (String) data.get("maxwell_afb");
-            a2d2BaseLocation = DataSourceUtils.getLocationFromString(location);
+            LocationUtils.updateA2D2Locations(data);
         }
 
-        if(a2d2PhoneNumber != null && a2d2BaseLocation != null){
+        if(a2d2PhoneNumber != null && !LocationUtils.a2d2Locations.isEmpty()){
             buttonRulesAgree.setEnabled(true);
         }
     }
@@ -91,14 +90,23 @@ public class Rider_Rules extends ButterKnifeActivity implements ActivityCompat.O
     }
 
 
+    //TODO: Find android utility to request GPS permission
     private void navigateToRideRequest(){
         if(!LocationUtils.isGPSEnabled(this)){
-            //TODO: Find android utility to request GPS permission
             ActivityUtils.showDialog(mDialogBuilder, "GPS Unavailable", "Please enable GPS and try again.");
             return;
         }
 
         LocationUtils.getCurrentGPSLocationAsync(this, (currentLocation) -> {
+            String locationString = FormatUtils.formatString("%d,%d",
+                    currentLocation.getLatitude(),
+                    currentLocation.getLongitude());
+
+            LocationUtils.getClosestA2D2Location(locationString).addOnCompleteListener((task) -> {
+                if(!task.isSuccessful()){}
+                String closestA2D2Location = task.getResult();
+            });
+
             if(!LocationUtils.isInRange(currentLocation, a2d2BaseLocation)){
                 displayOutOfRangeMessage();
                 return;
@@ -107,6 +115,8 @@ public class Rider_Rules extends ButterKnifeActivity implements ActivityCompat.O
             ActivityUtils.navigate(this, Rider_RequestRide.class);
         });
     }
+
+
 
 
     private void displayOutOfRangeMessage(){

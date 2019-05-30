@@ -9,6 +9,7 @@ import com.example.bespinaf.a2d2.models.DataSourceType;
 import com.example.bespinaf.a2d2.models.Request;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.functions.FirebaseFunctions;
 import com.google.firebase.functions.HttpsCallableResult;
 
@@ -29,23 +30,6 @@ public class DataSourceUtils {
         return FormatUtils.dateToDatabaseFormat(currentDate);
     }
 
-    //TODO: Add firebase function functionality
-    public void test() {
-        //Reference: https://stackoverflow.com/questions/42872743/calling-a-cloud-function-from-android-through-firebase
-        FirebaseFunctions.getInstance().getHttpsCallable("closest").call()
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.wtf("FF", "test");
-                    }
-                })
-                .addOnSuccessListener(new OnSuccessListener<HttpsCallableResult>() {
-                    @Override
-                    public void onSuccess(HttpsCallableResult httpsCallableResult) {
-
-                    }
-                });
-    }
 
     public static Request[] requestsFromData(HashMap<String, Object> data){
         Request[] requests = new Request[data.size()];
