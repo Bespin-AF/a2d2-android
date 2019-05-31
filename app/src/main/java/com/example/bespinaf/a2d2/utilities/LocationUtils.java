@@ -50,6 +50,13 @@ public class LocationUtils {
         }
     }
 
+    public static Task<String> getClosestA2D2Location(Location location){
+        String locationFormat = "%d,%d";
+        String locationString = FormatUtils.formatString(locationFormat, location.getLatitude(), location.getLongitude());
+
+        return getClosestA2D2Location(locationString);
+    }
+
     //TODO: Add firebase function functionality
     /**
     * Uses the stored Firebase function in order to find the base closest to the given location

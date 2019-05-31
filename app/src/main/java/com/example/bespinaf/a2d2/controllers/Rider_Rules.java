@@ -18,6 +18,8 @@ import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
 import com.example.bespinaf.a2d2.utilities.FormatUtils;
 import com.example.bespinaf.a2d2.utilities.LocationUtils;
 import com.example.bespinaf.a2d2.utilities.Permissions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import java.util.HashMap;
 
@@ -34,7 +36,22 @@ public class Rider_Rules extends ButterKnifeActivity implements ActivityCompat.O
     //TODO: extract into R.string
     private String userOutOfRangeMessageFormat = "You are outside of the 25 mile range defined by the A2D2 program rules. If you still require a ride, please call A2D2 Dispatch at %s";
     private String a2d2PhoneNumber = null;
-    private Location a2d2BaseLocation = null;
+    private Location currentLocation;
+
+    OnCompleteListener<String> checkCurrentLocationIsWithinA2D2ServiceArea = (task) -> {
+        if(!task.isSuccessful()){
+            return;
+        }
+
+        String baseName = task.getResult();
+        Location closestA2D2Location = LocationUtils.a2d2Locations.get(baseName);
+
+        if(!LocationUtils.isInRange(currentLocation, closestA2D2Location)){
+            return;
+        }
+
+        ActivityUtils.navigate(this, Rider_RequestRide.class);
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,22 +114,15 @@ public class Rider_Rules extends ButterKnifeActivity implements ActivityCompat.O
             return;
         }
 
-        LocationUtils.getCurrentGPSLocationAsync(this, (currentLocation) -> {
-            String locationString = FormatUtils.formatString("%d,%d",
-                    currentLocation.getLatitude(),
-                    currentLocation.getLongitude());
+        checkUserIsWIthinA2D2PickupRange();
+    }
 
-            LocationUtils.getClosestA2D2Location(locationString).addOnCompleteListener((task) -> {
-                if(!task.isSuccessful()){}
-                String closestA2D2Location = task.getResult();
-            });
+    private void checkUserIsWIthinA2D2PickupRange(){
+        LocationUtils.getCurrentGPSLocationAsync(this, (location) -> {
+            currentLocation = location; //Used in range check callback
 
-            if(!LocationUtils.isInRange(currentLocation, a2d2BaseLocation)){
-                displayOutOfRangeMessage();
-                return;
-            }
-
-            ActivityUtils.navigate(this, Rider_RequestRide.class);
+            LocationUtils.getClosestA2D2Location(location)
+                    .addOnCompleteListener(checkCurrentLocationIsWithinA2D2ServiceArea);
         });
     }
 
