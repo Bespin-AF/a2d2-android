@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".controllers.MainActivity">
+        <activity android:name=".controllers.MainActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
@@ -24,26 +24,39 @@
         <activity
             android:name=".controllers.Rider_Rules"
             android:label="@string/a2d2_rules_title"
-            android:parentActivityName=".controllers.MainActivity" />
+            android:parentActivityName=".controllers.MainActivity"
+            android:screenOrientation="portrait"
+            />
         <activity
             android:name=".controllers.Rider_RequestRide"
             android:label="Pickup Request Options"
-            android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".controllers.Rider_RideStatus"
-            android:label="Ride Status"
+            android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="portrait"
             />
-        <activity android:name=".controllers.Driver_Login"
+        <activity
+            android:name=".controllers.Rider_RideStatus"
+            android:label="Ride Status"
+            android:screenOrientation="portrait"
+            />
+        <activity
+            android:name=".controllers.Driver_Login"
             android:label="Driver Login"
-            android:parentActivityName=".controllers.MainActivity" />
+            android:parentActivityName=".controllers.MainActivity"
+            android:screenOrientation="portrait"
+            />
         <!-- Driver Activities -->
-        <activity android:name=".controllers.Driver_RideRequestList"
+        <activity
+            android:name=".controllers.Driver_RideRequestList"
             android:label="Ride Requests"
             android:theme="@style/App.Theme.Driver"
+            android:screenOrientation="portrait"
             />
-        <activity android:name=".controllers.Driver_RideRequestDetails"
+        <activity
+            android:name=".controllers.Driver_RideRequestDetails"
             android:label="Ride Request Details"
             android:parentActivityName=".controllers.Driver_RideRequestList"
             android:theme="@style/App.Theme.Driver"
+            android:screenOrientation="portrait"
             />
     </application>
 
