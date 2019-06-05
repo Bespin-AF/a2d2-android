@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<network_security_config xmlns:android="http://schemas.android.com/apk/res/android">
+<network-security-config xmlns:android="http://schemas.android.com/apk/res/android">
 
     <base-config cleartextTrafficPermitted="false">
         <trust-anchors>
@@ -7,4 +7,4 @@
         </trust-anchors>
     </base-config>
 
-</network_security_config>
+</network-security-config>
