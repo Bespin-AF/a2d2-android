@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 import com.example.bespinaf.a2d2.R;
 import com.example.bespinaf.a2d2.models.DataReceiver;
@@ -30,6 +31,8 @@ public class Rider_Rules extends ButterKnifeActivity implements ActivityCompat.O
     private final int MY_PERMISSIONS_REQUEST_LOCATION = 0;
     @BindView(R.id.button_rules_agree)
     Button buttonRulesAgree;
+    @BindView(R.id.rules_progress_bar)
+    ProgressBar rulesProgressBar;
     private AlertDialog.Builder mDialogBuilder;
     //TODO: extract into R.string
     private String userOutOfRangeMessageFormat = "You are outside of the 25 mile range defined by the A2D2 program rules. If you still require a ride, please call A2D2 Dispatch at %s";
@@ -69,6 +72,7 @@ public class Rider_Rules extends ButterKnifeActivity implements ActivityCompat.O
 
         if(a2d2PhoneNumber != null && a2d2BaseLocation != null){
             buttonRulesAgree.setEnabled(true);
+            rulesProgressBar.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -79,7 +83,7 @@ public class Rider_Rules extends ButterKnifeActivity implements ActivityCompat.O
             requestLocationPermissions();
             return;
         }
-
+        rulesProgressBar.setVisibility(View.VISIBLE);
         navigateToRideRequest();
     }
 
@@ -103,9 +107,10 @@ public class Rider_Rules extends ButterKnifeActivity implements ActivityCompat.O
                 displayOutOfRangeMessage();
                 return;
             }
-
+            rulesProgressBar.setVisibility(View.INVISIBLE);
             ActivityUtils.navigate(this, Rider_RequestRide.class);
         });
+        rulesProgressBar.setVisibility(View.INVISIBLE);
     }
 
 
@@ -137,7 +142,6 @@ public class Rider_Rules extends ButterKnifeActivity implements ActivityCompat.O
             ActivityUtils.showLocationPermissionDeniedDialog(mDialogBuilder);
         }
     }
-
 
     private boolean hasGrantedPermissions(@NonNull int[] grantResults){
         return grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED;

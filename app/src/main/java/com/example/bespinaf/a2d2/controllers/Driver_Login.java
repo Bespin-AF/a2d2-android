@@ -4,6 +4,8 @@ import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.os.Bundle;
 import android.support.design.button.MaterialButton;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.bespinaf.a2d2.R;
@@ -26,6 +28,8 @@ public class Driver_Login extends ButterKnifeActivity {
     TextInputLayout activityDriverLoginPasswordInputLayout;
     @BindView(R.id.button_driver_login)
     MaterialButton buttonDriverLogin;
+    @BindView(R.id.driver_login_progress_bar)
+    ProgressBar driverLoginProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +72,10 @@ public class Driver_Login extends ButterKnifeActivity {
         if(email == null || password == null){ return; }
 
         AuthorizationUtils.authorizeUser(email, password, (wasLoginSuccessful) -> {
-            if(wasLoginSuccessful) { ActivityUtils.navigate(this, Driver_RideRequestList.class); }
+            if(wasLoginSuccessful) {
+                driverLoginProgressBar.setVisibility(View.VISIBLE);
+                ActivityUtils.navigate(this, Driver_RideRequestList.class);
+            }
             else {
                 Toast.makeText(
                         this,
@@ -76,6 +83,7 @@ public class Driver_Login extends ButterKnifeActivity {
                         Toast.LENGTH_SHORT
                 ).show();
             }
+            driverLoginProgressBar.setVisibility(View.INVISIBLE);
         });
     }
 }

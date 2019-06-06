@@ -1,24 +1,18 @@
 package com.example.bespinaf.a2d2.controllers;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.example.bespinaf.a2d2.R;
-import com.example.bespinaf.a2d2.adapters.RideRequestAdapter;
 import com.example.bespinaf.a2d2.adapters.RideRequestListFragmentAdapter;
 import com.example.bespinaf.a2d2.models.DataReceiver;
 import com.example.bespinaf.a2d2.models.DataSource;
-import com.example.bespinaf.a2d2.models.RequestStatus;
 import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
 import com.example.bespinaf.a2d2.models.Request;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -29,6 +23,8 @@ public class Driver_RideRequestList extends ButterKnifeActivity implements DataR
     ViewPager mViewPager;
     @BindView(R.id.ride_requests_tab_layout)
     TabLayout mTabLayout;
+    @BindView(R.id.request_tabs_loading_bar)
+    ProgressBar mLoadingBar;
 
     RideRequestListFragmentAdapter requestListFragmentAdapter;
     private Request[] rideRequests = new Request[0];
@@ -45,13 +41,16 @@ public class Driver_RideRequestList extends ButterKnifeActivity implements DataR
     @Override
     protected void onStart() {
         super.onStart();
+        mLoadingBar.setVisibility(View.VISIBLE);
         DataSourceUtils.requests.setReciever(this);
     }
 
     @Override
     public void onDataChanged(DataSource dataSource, HashMap<String, Object> data) {
+        mLoadingBar.setVisibility(View.VISIBLE);
         rideRequests = DataSourceUtils.requestsFromData(data);
         refreshRecyclerViews();
+        mLoadingBar.setVisibility(View.INVISIBLE);
     }
 
 
@@ -60,8 +59,4 @@ public class Driver_RideRequestList extends ButterKnifeActivity implements DataR
         mViewPager.setAdapter(requestListFragmentAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
     }
-
-
-
-
 }
