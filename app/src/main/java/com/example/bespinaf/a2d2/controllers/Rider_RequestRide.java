@@ -14,6 +14,7 @@ import android.text.TextWatcher;
 
 import android.util.Pair;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 
 import com.example.bespinaf.a2d2.R;
@@ -49,6 +50,8 @@ public class Rider_RequestRide extends ButterKnifeActivity {
     TextInputEditText mRemarksEditText;
     @BindView(R.id.button_request_driver)
     MaterialButton buttonRequestDriver;
+    @BindView(R.id.ride_request_progress_bar)
+    ProgressBar rideRequestProgressBar;
 
     private AlertDialog.Builder mErrorDialog;
 
@@ -84,6 +87,7 @@ public class Rider_RequestRide extends ButterKnifeActivity {
         }
 
         confirmRideRequest();
+        rideRequestProgressBar.setVisibility(View.VISIBLE);
     }
 
 
@@ -143,6 +147,7 @@ public class Rider_RequestRide extends ButterKnifeActivity {
         request.setLon(currentLocation.getLongitude());
         request.setStatus(RequestStatus.Available);
 
+        rideRequestProgressBar.setVisibility(View.INVISIBLE);
         return request;
     }
 
