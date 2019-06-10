@@ -46,6 +46,12 @@ public class Driver_RideRequestList extends ButterKnifeActivity implements DataR
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        DataSourceUtils.requests.removeReceiver(this);
+    }
+
+    @Override
     public void onDataChanged(DataSource dataSource, HashMap<String, Object> data) {
         mLoadingBar.setVisibility(View.VISIBLE);
         rideRequests = DataSourceUtils.requestsFromData(data);

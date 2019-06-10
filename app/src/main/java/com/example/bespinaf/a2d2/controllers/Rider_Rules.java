@@ -79,11 +79,11 @@ public class Rider_Rules extends ButterKnifeActivity implements ActivityCompat.O
 
     @OnClick(R.id.button_rules_agree)
     public void btnRulesAgree_Clicked(View sender) {
+        rulesProgressBar.setVisibility(View.VISIBLE);
         if(!Permissions.hasLocationPermission(this)){
             requestLocationPermissions();
             return;
         }
-        rulesProgressBar.setVisibility(View.VISIBLE);
         navigateToRideRequest();
     }
 
@@ -92,12 +92,14 @@ public class Rider_Rules extends ButterKnifeActivity implements ActivityCompat.O
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                 0);
+
     }
 
 
     private void navigateToRideRequest(){
         if(!LocationUtils.isGPSEnabled(this)){
             //TODO: Find android utility to request GPS permission
+            rulesProgressBar.setVisibility(View.INVISIBLE);
             ActivityUtils.showDialog(mDialogBuilder, "GPS Unavailable", "Please enable GPS and try again.");
             return;
         }
@@ -110,7 +112,7 @@ public class Rider_Rules extends ButterKnifeActivity implements ActivityCompat.O
             rulesProgressBar.setVisibility(View.INVISIBLE);
             ActivityUtils.navigate(this, Rider_RequestRide.class);
         });
-        rulesProgressBar.setVisibility(View.INVISIBLE);
+        //rulesProgressBar.setVisibility(View.INVISIBLE);
     }
 
 

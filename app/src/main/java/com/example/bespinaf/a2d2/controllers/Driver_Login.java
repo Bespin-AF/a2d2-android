@@ -69,11 +69,13 @@ public class Driver_Login extends ButterKnifeActivity {
 
 
     private void tryLogin(String email, String password){
+
+        driverLoginProgressBar.setVisibility(View.VISIBLE);
         if(email == null || password == null){ return; }
 
         AuthorizationUtils.authorizeUser(email, password, (wasLoginSuccessful) -> {
             if(wasLoginSuccessful) {
-                driverLoginProgressBar.setVisibility(View.VISIBLE);
+
                 ActivityUtils.navigate(this, Driver_RideRequestList.class);
             }
             else {
