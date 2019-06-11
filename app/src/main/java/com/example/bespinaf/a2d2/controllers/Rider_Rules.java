@@ -81,10 +81,8 @@ public class Rider_Rules extends ButterKnifeActivity implements ActivityCompat.O
     @OnClick(R.id.button_rules_agree)
     public void btnRulesAgree_Clicked(View sender) {
         rulesProgressBar.setVisibility(View.VISIBLE);
-        Log.d("debug", "btnRulesAgree_Clicked: still enabled");
         buttonRulesAgree.setEnabled(false);
         if(!Permissions.hasLocationPermission(this)){
-            Log.d("debug", "btnRulesAgree_Clicked: didn't have location permissions");
             requestLocationPermissions();
             buttonRulesAgree.setEnabled(true);
             return;
