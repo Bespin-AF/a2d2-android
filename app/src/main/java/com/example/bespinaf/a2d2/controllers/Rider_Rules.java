@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -80,8 +81,12 @@ public class Rider_Rules extends ButterKnifeActivity implements ActivityCompat.O
     @OnClick(R.id.button_rules_agree)
     public void btnRulesAgree_Clicked(View sender) {
         rulesProgressBar.setVisibility(View.VISIBLE);
+        Log.d("debug", "btnRulesAgree_Clicked: still enabled");
+        buttonRulesAgree.setEnabled(false);
         if(!Permissions.hasLocationPermission(this)){
+            Log.d("debug", "btnRulesAgree_Clicked: didn't have location permissions");
             requestLocationPermissions();
+            buttonRulesAgree.setEnabled(true);
             return;
         }
         navigateToRideRequest();
@@ -110,9 +115,9 @@ public class Rider_Rules extends ButterKnifeActivity implements ActivityCompat.O
                 return;
             }
             rulesProgressBar.setVisibility(View.INVISIBLE);
+            buttonRulesAgree.setEnabled(true);
             ActivityUtils.navigate(this, Rider_RequestRide.class);
         });
-        //rulesProgressBar.setVisibility(View.INVISIBLE);
     }
 
 
