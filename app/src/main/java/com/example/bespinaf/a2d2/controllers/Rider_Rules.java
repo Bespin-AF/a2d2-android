@@ -103,6 +103,7 @@ public class Rider_Rules extends ButterKnifeActivity implements ActivityCompat.O
         if(!LocationUtils.isGPSEnabled(this)){
             //TODO: Find android utility to request GPS permission
             rulesProgressBar.setVisibility(View.INVISIBLE);
+            buttonRulesAgree.setEnabled(true);
             ActivityUtils.showDialog(mDialogBuilder, "GPS Unavailable", "Please enable GPS and try again.");
             return;
         }
