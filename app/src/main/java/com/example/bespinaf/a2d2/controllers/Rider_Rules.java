@@ -1,7 +1,10 @@
 package com.example.bespinaf.a2d2.controllers;
 
 import android.Manifest;
+import android.content.Context;
 import android.location.Location;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AlertDialog;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -111,6 +114,8 @@ public class Rider_Rules extends ButterKnifeActivity implements ActivityCompat.O
         LocationUtils.getCurrentGPSLocationAsync(this, (currentLocation) -> {
             if(!LocationUtils.isInRange(currentLocation, a2d2BaseLocation)){
                 displayOutOfRangeMessage();
+                rulesProgressBar.setVisibility(View.INVISIBLE);
+                buttonRulesAgree.setEnabled(true);
                 return;
             }
             rulesProgressBar.setVisibility(View.INVISIBLE);

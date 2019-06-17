@@ -1,5 +1,9 @@
 package com.example.bespinaf.a2d2.utilities;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 import com.example.bespinaf.a2d2.LoginCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.FirebaseAuth;
