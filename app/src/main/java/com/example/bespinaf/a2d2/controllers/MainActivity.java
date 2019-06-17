@@ -1,8 +1,12 @@
 package com.example.bespinaf.a2d2.controllers;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.button.MaterialButton;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.bespinaf.a2d2.R;
 import com.example.bespinaf.a2d2.models.DataSource;
@@ -10,6 +14,7 @@ import com.example.bespinaf.a2d2.models.DataSourceType;
 import com.example.bespinaf.a2d2.utilities.ActivityUtils;
 import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
 import com.example.bespinaf.a2d2.utilities.FormatUtils;
+import com.example.bespinaf.a2d2.utilities.NetworkUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -33,10 +38,22 @@ public class MainActivity extends ButterKnifeActivity {
 
     @OnClick(R.id.button_navigate_to_rules)
     public void navigateToRulesPage(View view) {
-        ActivityUtils.navigate(this, Rider_Rules.class);
+        if (NetworkUtils.checkInternetConnectivity(getApplicationContext())) {
+            ActivityUtils.navigate(this, Rider_Rules.class);
+        }
+        else {
+            NetworkUtils.displayNetworkError(this);
+        }
     }
 
 
     @OnClick(R.id.button_main_driver_login)
-    public void navigateToDriverLogin(View view) { ActivityUtils.navigate(this, Driver_Login.class); }
+    public void navigateToDriverLogin(View view) {
+        if (NetworkUtils.checkInternetConnectivity(getApplicationContext())) {
+            ActivityUtils.navigate(this, Driver_Login.class);
+        }
+        else {
+            NetworkUtils.displayNetworkError(this);
+        }
+    }
 }

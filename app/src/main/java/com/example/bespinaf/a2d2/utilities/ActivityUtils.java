@@ -1,6 +1,8 @@
 package com.example.bespinaf.a2d2.utilities;
 
 import android.content.ComponentName;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -15,6 +17,7 @@ import com.example.bespinaf.a2d2.R;
 import java.io.Serializable;
 
 public class ActivityUtils {
+
 
     public static void navigate(Context from, Class to) {
         Intent pageIntent = new Intent(from, to);
@@ -96,5 +99,7 @@ public class ActivityUtils {
     public static void showLocationPermissionDeniedDialog(Builder builder){
         showDialog(builder, R.string.dialog_title_LocationPermissionDenied, R.string.error_LocationPermissionDenied);
     }
+
+
 
 }

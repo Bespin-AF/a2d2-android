@@ -1,5 +1,8 @@
 package com.example.bespinaf.a2d2.controllers;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.os.Bundle;
@@ -11,6 +14,7 @@ import android.widget.Toast;
 import com.example.bespinaf.a2d2.R;
 import com.example.bespinaf.a2d2.utilities.ActivityUtils;
 import com.example.bespinaf.a2d2.utilities.AuthorizationUtils;
+import com.example.bespinaf.a2d2.utilities.NetworkUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -74,7 +78,10 @@ public class Driver_Login extends ButterKnifeActivity {
         if(email == null || password == null){ return; }
 
         AuthorizationUtils.authorizeUser(email, password, (wasLoginSuccessful) -> {
-            if(wasLoginSuccessful) {
+            if(!(NetworkUtils.checkInternetConnectivity(getApplicationContext()))){
+                NetworkUtils.displayNetworkError(this);
+            }
+            else if(wasLoginSuccessful) {
 
                 ActivityUtils.navigate(this, Driver_RideRequestList.class);
             }

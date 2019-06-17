@@ -1,8 +1,11 @@
 package com.example.bespinaf.a2d2.controllers;
 
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.location.Location;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.button.MaterialButton;
 import android.support.design.widget.TextInputEditText;
@@ -16,6 +19,7 @@ import android.util.Pair;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.bespinaf.a2d2.R;
 import com.example.bespinaf.a2d2.models.RequestStatus;
@@ -24,6 +28,7 @@ import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
 import com.example.bespinaf.a2d2.models.Request;
 import com.example.bespinaf.a2d2.utilities.FormatUtils;
 import com.example.bespinaf.a2d2.utilities.LocationUtils;
+import com.example.bespinaf.a2d2.utilities.NetworkUtils;
 import com.example.bespinaf.a2d2.utilities.Permissions;
 
 import java.io.Serializable;
@@ -79,10 +84,13 @@ public class Rider_RequestRide extends ButterKnifeActivity {
 
     @OnClick(R.id.button_request_driver)
     public void btnRequestDriver_Clicked(View view) {
+        //rideRequestProgressBar.setVisibility(View.VISIBLE);
         if(!isValidData()){
+            //rideRequestProgressBar.setVisibility(View.INVISIBLE);
             return;
         } else if(!Permissions.hasLocationPermission(this)) {
             ActivityUtils.showLocationPermissionDeniedDialog(mErrorDialog);
+            //rideRequestProgressBar.setVisibility(View.INVISIBLE);
             return;
         }
 
@@ -107,17 +115,28 @@ public class Rider_RequestRide extends ButterKnifeActivity {
         AlertDialog.Builder dialogBuilder = ActivityUtils.newNotifyDialogBuilder(this);
 
         DialogInterface.OnClickListener confirmEvent = (dialog, which) -> submitRequest();
+        DialogInterface.OnClickListener cancelEvent = (dialog, which) -> rideRequestProgressBar.
+                setVisibility(View.INVISIBLE);
 
-        dialogBuilder.setTitle(R.string.confirm_driver_request_title)
-                .setMessage(R.string.confirm_driver_request_body)
-                .setPositiveButton(R.string.dialog_okay, confirmEvent)
-                .setNegativeButton(R.string.cancel, null);
-        return dialogBuilder;
+        if (NetworkUtils.checkInternetConnectivity(getApplicationContext())) {
+            dialogBuilder.setTitle(R.string.confirm_driver_request_title)
+                    .setMessage(R.string.confirm_driver_request_body)
+                    .setPositiveButton(R.string.dialog_okay, confirmEvent)
+                    .setNegativeButton(R.string.cancel, cancelEvent);
+            return dialogBuilder;
+        }
+        else {
+            dialogBuilder.setTitle(R.string.connection_error_title)
+                    .setMessage(R.string.connection_error)
+                    .setPositiveButton(R.string.dialog_okay, cancelEvent);
+            return dialogBuilder;
+        }
     }
 
 
     //Performs a location sync in order to maximize accuracy vs getLastKnownLocation
     private void submitRequest() {
+        rideRequestProgressBar.setVisibility(View.VISIBLE);
         LocationUtils.getCurrentGPSLocationAsync(this, (location) -> {
             Request rideRequest = buildRideRequest(location);
             String requestId = DataSourceUtils.requests.sendData(rideRequest.getData());

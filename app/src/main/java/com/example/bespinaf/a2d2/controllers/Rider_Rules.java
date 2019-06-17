@@ -1,12 +1,16 @@
 package com.example.bespinaf.a2d2.controllers;
 
 import android.Manifest;
+import android.content.Context;
 import android.location.Location;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AlertDialog;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -80,8 +84,10 @@ public class Rider_Rules extends ButterKnifeActivity implements ActivityCompat.O
     @OnClick(R.id.button_rules_agree)
     public void btnRulesAgree_Clicked(View sender) {
         rulesProgressBar.setVisibility(View.VISIBLE);
+        buttonRulesAgree.setEnabled(false);
         if(!Permissions.hasLocationPermission(this)){
             requestLocationPermissions();
+            buttonRulesAgree.setEnabled(true);
             return;
         }
         navigateToRideRequest();
@@ -100,6 +106,7 @@ public class Rider_Rules extends ButterKnifeActivity implements ActivityCompat.O
         if(!LocationUtils.isGPSEnabled(this)){
             //TODO: Find android utility to request GPS permission
             rulesProgressBar.setVisibility(View.INVISIBLE);
+            buttonRulesAgree.setEnabled(true);
             ActivityUtils.showDialog(mDialogBuilder, "GPS Unavailable", "Please enable GPS and try again.");
             return;
         }
@@ -107,12 +114,14 @@ public class Rider_Rules extends ButterKnifeActivity implements ActivityCompat.O
         LocationUtils.getCurrentGPSLocationAsync(this, (currentLocation) -> {
             if(!LocationUtils.isInRange(currentLocation, a2d2BaseLocation)){
                 displayOutOfRangeMessage();
+                rulesProgressBar.setVisibility(View.INVISIBLE);
+                buttonRulesAgree.setEnabled(true);
                 return;
             }
             rulesProgressBar.setVisibility(View.INVISIBLE);
+            buttonRulesAgree.setEnabled(true);
             ActivityUtils.navigate(this, Rider_RequestRide.class);
         });
-        //rulesProgressBar.setVisibility(View.INVISIBLE);
     }
 
 
