@@ -11,10 +11,7 @@ public class NetworkUtils {
     public static boolean checkInternetConnectivity(Context context){
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        if (activeNetwork != null) {
-            return true;
-        }
-        else return false;
+        return (activeNetwork != null);
     }
     public static void displayNetworkError(Context context){
         Toast.makeText(
