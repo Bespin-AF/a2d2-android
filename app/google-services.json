@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:169143997488:android:dda13c8b1afc747e",
         "android_client_info": {
-          "package_name": "com.example.bespinaf.a2d2"
+          "package_name": "af.bespin.a2d2"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "169143997488-hvhh6hkeljvpfhhs0gngrgbmrtre87kr.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.bespinaf.a2d2",
+            "package_name": "af.bespin.a2d2",
             "certificate_hash": "8bebe2c46b1612b3c3cab6538c3c6292da841a91"
           }
         },
