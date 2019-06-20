@@ -21,17 +21,7 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-<<<<<<< HEAD:app/src/main/java/com/example/bespinaf/a2d2/controllers/Rider_RequestRide.java
-import com.example.bespinaf.a2d2.R;
-import com.example.bespinaf.a2d2.models.RequestStatus;
-import com.example.bespinaf.a2d2.utilities.ActivityUtils;
-import com.example.bespinaf.a2d2.utilities.DataSourceUtils;
-import com.example.bespinaf.a2d2.models.Request;
-import com.example.bespinaf.a2d2.utilities.FormatUtils;
-import com.example.bespinaf.a2d2.utilities.LocationUtils;
-import com.example.bespinaf.a2d2.utilities.NetworkUtils;
-import com.example.bespinaf.a2d2.utilities.Permissions;
-=======
+
 import af.bespin.a2d2.R;
 import af.bespin.a2d2.models.RequestStatus;
 import af.bespin.a2d2.utilities.ActivityUtils;
@@ -39,8 +29,8 @@ import af.bespin.a2d2.utilities.DataSourceUtils;
 import af.bespin.a2d2.models.Request;
 import af.bespin.a2d2.utilities.FormatUtils;
 import af.bespin.a2d2.utilities.LocationUtils;
+import af.bespin.a2d2.utilities.NetworkUtils;
 import af.bespin.a2d2.utilities.Permissions;
->>>>>>> release/1.0:app/src/main/java/af/bespin/a2d2/controllers/Rider_RequestRide.java
 
 import java.io.Serializable;
 

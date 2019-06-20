@@ -11,17 +11,12 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-<<<<<<< HEAD:app/src/main/java/com/example/bespinaf/a2d2/controllers/Driver_Login.java
-import com.example.bespinaf.a2d2.R;
-import com.example.bespinaf.a2d2.utilities.ActivityUtils;
-import com.example.bespinaf.a2d2.utilities.AuthorizationUtils;
-import com.example.bespinaf.a2d2.utilities.NetworkUtils;
-=======
+
 import af.bespin.a2d2.R;
 import af.bespin.a2d2.utilities.ActivityUtils;
 import af.bespin.a2d2.utilities.AuthorizationUtils;
->>>>>>> release/1.0:app/src/main/java/af/bespin/a2d2/controllers/Driver_Login.java
 
+import af.bespin.a2d2.utilities.NetworkUtils;
 import butterknife.BindView;
 import butterknife.OnClick;
 

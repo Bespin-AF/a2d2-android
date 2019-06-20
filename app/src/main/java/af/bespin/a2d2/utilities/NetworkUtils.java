@@ -1,11 +1,11 @@
-package com.example.bespinaf.a2d2.utilities;
+package af.bespin.a2d2.utilities;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.widget.Toast;
 
-import com.example.bespinaf.a2d2.R;
+import af.bespin.a2d2.R;
 
 public class NetworkUtils {
     public static boolean checkInternetConnectivity(Context context){
