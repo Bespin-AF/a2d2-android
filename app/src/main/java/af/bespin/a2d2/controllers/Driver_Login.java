@@ -1,8 +1,5 @@
 package af.bespin.a2d2.controllers;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.os.Bundle;
@@ -23,18 +20,18 @@ import butterknife.OnClick;
 
 public class Driver_Login extends ButterKnifeActivity {
 
-    @BindView(R.id.activity_driver_login_email_text_edit)
-    TextInputEditText activityDriverLoginEmailTextEdit;
-    @BindView(R.id.activity_driver_login_email_input_layout)
-    TextInputLayout activityDriverLoginEmailInputLayout;
-    @BindView(R.id.activity_driver_login_password_text_edit)
-    TextInputEditText activityDriverLoginPasswordTextEdit;
-    @BindView(R.id.activity_driver_login_password_input_layout)
-    TextInputLayout activityDriverLoginPasswordInputLayout;
-    @BindView(R.id.button_driver_login)
-    MaterialButton buttonDriverLogin;
-    @BindView(R.id.driver_login_progress_bar)
-    ProgressBar driverLoginProgressBar;
+    @BindView(R.id.textInputEditText_driverLogin_emailInput)
+    TextInputEditText mEmailEditText;
+    @BindView(R.id.textInputLayout_driverLogin_emailInput)
+    TextInputLayout mEmailInputLayout;
+    @BindView(R.id.textInputEditText_driverLogin_passwordInput)
+    TextInputEditText mPasswordEditText;
+    @BindView(R.id.textInputLayout_driverLogin_passwordLayout)
+    TextInputLayout mPasswordInputLayout;
+    @BindView(R.id.materialButton_driverLogin_loginButton)
+    MaterialButton mDriverLoginButton;
+    @BindView(R.id.progressBar_driverLogin_loadingIndicator)
+    ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,27 +40,27 @@ public class Driver_Login extends ButterKnifeActivity {
     }
 
 
-    @OnClick(R.id.button_driver_login)
+    @OnClick(R.id.materialButton_driverLogin_loginButton)
     public void driverLogin() {
         validateInputs();
         if(!isDataValid()){ return; }
 
-        String  email = ActivityUtils.getFieldText(activityDriverLoginEmailTextEdit),
-                password = ActivityUtils.getFieldText(activityDriverLoginPasswordTextEdit);
+        String  email = ActivityUtils.getFieldText(mEmailEditText),
+                password = ActivityUtils.getFieldText(mPasswordEditText);
 
         tryLogin(email, password);
     }
 
 
     private boolean isDataValid(){
-        return (activityDriverLoginEmailInputLayout.getError() == null &&
-                activityDriverLoginPasswordInputLayout.getError() == null);
+        return (mEmailInputLayout.getError() == null &&
+                mPasswordInputLayout.getError() == null);
     }
 
 
     private void validateInputs(){
-        validateField(activityDriverLoginEmailTextEdit, activityDriverLoginEmailInputLayout);
-        validateField(activityDriverLoginPasswordTextEdit, activityDriverLoginPasswordInputLayout);
+        validateField(mEmailEditText, mEmailInputLayout);
+        validateField(mPasswordEditText, mPasswordInputLayout);
     }
 
 
@@ -75,7 +72,7 @@ public class Driver_Login extends ButterKnifeActivity {
 
     private void tryLogin(String email, String password){
 
-        driverLoginProgressBar.setVisibility(View.VISIBLE);
+        mProgressBar.setVisibility(View.VISIBLE);
         if(email == null || password == null){ return; }
 
         AuthorizationUtils.authorizeUser(email, password, (wasLoginSuccessful) -> {
@@ -93,7 +90,7 @@ public class Driver_Login extends ButterKnifeActivity {
                         Toast.LENGTH_SHORT
                 ).show();
             }
-            driverLoginProgressBar.setVisibility(View.INVISIBLE);
+            mProgressBar.setVisibility(View.INVISIBLE);
         });
     }
 }

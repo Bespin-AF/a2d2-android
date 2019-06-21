@@ -18,7 +18,6 @@ import af.bespin.a2d2.utilities.FormatUtils;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 //Adapts request objects for use in a recycler view
@@ -26,23 +25,16 @@ public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.
 
     // Data source
 
-    private Request[] requests;
+    private Request[] mRequests;
 
     public RideRequestAdapter(Request[] adapterRequests) {
-        requests = sortArray(adapterRequests);
-    }
-
-
-    private Request[] sortArray(Request[] arr){
-        List tempList = Arrays.asList(arr);
-        Collections.sort(tempList);
-        return (Request[]) tempList.toArray();
+        mRequests = adapterRequests;
     }
 
 
     @Override
     public int getItemCount() {
-        return requests.length;
+        return mRequests.length;
     }
 
 
@@ -59,7 +51,7 @@ public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull RequestViewHolder requestViewHolder, int index) {
-        Request request = requests[index];
+        Request request = mRequests[index];
 
         if(request == null){ return; }
 
@@ -71,9 +63,9 @@ public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.
     }
 
     public void SortByDate(){
-        List<Request> temp = Arrays.asList(requests);
+        List<Request> temp = Arrays.asList(mRequests);
         Collections.sort(temp, (first, second)-> first.getTimestamp().compareTo(second.getTimestamp()));
-        requests = temp.toArray(new Request[temp.size()]);
+        mRequests = temp.toArray(new Request[temp.size()]);
     }
 
     //RecyclerView Cell Template
@@ -83,13 +75,15 @@ public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.
         TextView genderTextView;
         TextView timestampTextView;
         View.OnClickListener navigateToRideRequestDetails = (view) -> {
-            int selectedIndex = ((RecyclerView) view.getParent()).getChildAdapterPosition(view);
-            Request request = requests[selectedIndex];
-
-            Pair<String, Serializable> requestData = new Pair<>("request", request);
-
-            ActivityUtils.navigateWithData(view.getContext(), Driver_RideRequestDetails.class, requestData);
+            ActivityUtils.navigateWithData(view.getContext(), Driver_RideRequestDetails.class, getRequestData(view));
         };
+
+        private Pair<String, Serializable> getRequestData(View view){
+            int selectedIndex = ((RecyclerView) view.getParent()).getChildAdapterPosition(view);
+            Request request = mRequests[selectedIndex];
+            return new Pair<>("request", request);
+        }
+
 
         RequestViewHolder(View itemView) {
             super(itemView);

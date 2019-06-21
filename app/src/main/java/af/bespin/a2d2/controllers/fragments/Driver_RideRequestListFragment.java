@@ -15,15 +15,12 @@ import android.view.ViewGroup;
 
 import af.bespin.a2d2.R;
 import af.bespin.a2d2.adapters.RideRequestAdapter;
-import af.bespin.a2d2.adapters.RideRequestListFragmentAdapter;
-import af.bespin.a2d2.controllers.Driver_RideRequestList;
 import af.bespin.a2d2.models.Request;
-import af.bespin.a2d2.models.RequestStatus;
 
 public class Driver_RideRequestListFragment extends Fragment {
-    Context context;
-    Request[] requests;
-    RecyclerView requestList;
+    Context mContext;
+    Request[] mRequests;
+    RecyclerView mRequestList;
 
     public Driver_RideRequestListFragment(){
 
@@ -33,43 +30,43 @@ public class Driver_RideRequestListFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
-        View recyclerview_tab = inflater.inflate(R.layout.fragment_ride_request_list, container, false);
-        context = container.getContext();
-        requestList = recyclerview_tab.findViewById(R.id.ride_requests_recyclerview);
+        View recyclerViewTab = inflater.inflate(R.layout.fragment_ride_request_list, container, false);
+        mContext = container.getContext();
+        mRequestList = recyclerViewTab.findViewById(R.id.ride_requests_recyclerview);
 
-        return recyclerview_tab;
+        return recyclerViewTab;
     }
 
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         if(getArguments() != null){
-            requests = (Request[]) getArguments().getSerializable("requests");
+            mRequests = (Request[]) getArguments().getSerializable("requests");
         }
 
         populateRecyclerView();
     }
 
     public void populateRecyclerView() {
-        RideRequestAdapter adapter = new RideRequestAdapter(requests);
+        RideRequestAdapter adapter = new RideRequestAdapter(mRequests);
         adapter.SortByDate();
 
-        LinearLayoutManager llmRequestManager = new LinearLayoutManager(context);
-        requestList.setLayoutManager(llmRequestManager);
-        requestList.setHasFixedSize(true);
+        LinearLayoutManager llmRequestManager = new LinearLayoutManager(mContext);
+        mRequestList.setLayoutManager(llmRequestManager);
+        mRequestList.setHasFixedSize(true);
 
         //Divider line between items in recycler view
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(
-                context,
+                mContext,
                 llmRequestManager.getOrientation()
         );
 
-        Drawable listItemDivider = context.getDrawable(R.drawable.ride_requests_divideritemdecoration);
+        Drawable listItemDivider = mContext.getDrawable(R.drawable.ride_requests_divideritemdecoration);
         if (listItemDivider != null) {
             dividerItemDecoration.setDrawable(listItemDivider);
         }
 
-        requestList.addItemDecoration(dividerItemDecoration);
-        requestList.setAdapter(adapter);
+        mRequestList.addItemDecoration(dividerItemDecoration);
+        mRequestList.setAdapter(adapter);
     }
 }

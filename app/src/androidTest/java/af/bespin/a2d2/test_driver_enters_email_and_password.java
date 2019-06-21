@@ -57,13 +57,13 @@ public class test_driver_enters_email_and_password {
 
     @Test
     public void hasEmailField(){
-        Espresso.onView(ViewMatchers.withId(R.id.activity_driver_login_email_text_edit));
+        Espresso.onView(ViewMatchers.withId(R.id.textInputEditText_driverLogin_emailInput));
     }
 
 
     @Test
     public void isEmailField_EmailInput(){
-        TextInputEditText mEmailInput = mActivity.findViewById(R.id.activity_driver_login_email_text_edit);
+        TextInputEditText mEmailInput = mActivity.findViewById(R.id.textInputEditText_driverLogin_emailInput);
 
         /*
         * Getting type of email address field returns 33; email type is 32 per:
@@ -77,26 +77,26 @@ public class test_driver_enters_email_and_password {
 
     @Test
     public void hasPasswordField(){
-        Espresso.onView(ViewMatchers.withId(R.id.activity_driver_login_password_text_edit));
+        Espresso.onView(ViewMatchers.withId(R.id.textInputEditText_driverLogin_passwordInput));
     }
 
 
     @Test
     public void isPasswordField_PasswordInput(){
-        TextInputEditText mPasswordInput = mActivity.findViewById(R.id.activity_driver_login_password_text_edit);
+        TextInputEditText mPasswordInput = mActivity.findViewById(R.id.textInputEditText_driverLogin_passwordInput);
         Assert.assertEquals(mPasswordInput.getInputType(), (InputType.TYPE_TEXT_VARIATION_PASSWORD | InputType.TYPE_CLASS_TEXT));
     }
 
 
     @Test
     public void hasLoginButton(){
-        Espresso.onView(ViewMatchers.withId(R.id.button_driver_login));
+        Espresso.onView(ViewMatchers.withId(R.id.materialButton_driverLogin_loginButton));
     }
 
 
     @Test
     public void canEnterEmailIntoTextField(){
-        Espresso.onView(withId(R.id.activity_driver_login_email_text_edit))
+        Espresso.onView(withId(R.id.textInputEditText_driverLogin_emailInput))
                 .perform(replaceText(email))
                 .check(matches(withText(email)));
     }
@@ -104,7 +104,7 @@ public class test_driver_enters_email_and_password {
 
     @Test
     public void canEnterPasswordIntoTextField(){
-        Espresso.onView(withId(R.id.activity_driver_login_password_text_edit))
+        Espresso.onView(withId(R.id.textInputEditText_driverLogin_passwordInput))
                 .perform(replaceText(password))
                 .check(matches(withText(password)));
     }
@@ -112,18 +112,18 @@ public class test_driver_enters_email_and_password {
 
     @Test
     public void doesDriverLoginButtonExist(){
-        Espresso.onView(ViewMatchers.withId(R.id.button_driver_login));
+        Espresso.onView(ViewMatchers.withId(R.id.materialButton_driverLogin_loginButton));
     }
 
 
     @Test
     public void doesDriverLoginButtonNavigateToJobRequests(){
-        Espresso.onView(withId(R.id.activity_driver_login_email_text_edit))
+        Espresso.onView(withId(R.id.textInputEditText_driverLogin_emailInput))
                 .perform(replaceText(email));
-        Espresso.onView(withId(R.id.activity_driver_login_password_text_edit))
+        Espresso.onView(withId(R.id.textInputEditText_driverLogin_passwordInput))
                 .perform(replaceText(password));
 
-        Espresso.onView(ViewMatchers.withId(R.id.button_driver_login)).perform(ViewActions.click());
+        Espresso.onView(ViewMatchers.withId(R.id.materialButton_driverLogin_loginButton)).perform(ViewActions.click());
 
         Activity RideRequests = mInstrumentation.waitForMonitorWithTimeout(mRideRequestsMonitor, 10000);
         Assert.assertNotNull(RideRequests);

@@ -7,7 +7,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <TextView
-        android:id="@+id/textview_driverlogin_welcome"
+        android:id="@+id/textview_driver_login_welcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/textColor"
@@ -22,7 +22,7 @@
 
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/activity_driver_login_email_input_layout"
+        android:id="@+id/textInputLayout_driverLogin_emailInput"
         app:errorEnabled="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -33,11 +33,11 @@
         android:hint="@string/driver_login_email_hint"
         android:textColorHint="@color/textColor"
         style="@style/activity_a2d2_text_input_layout"
-        app:layout_constraintTop_toBottomOf="@+id/textview_driverlogin_welcome"
+        app:layout_constraintTop_toBottomOf="@+id/textview_driver_login_welcome"
         >
 
         <android.support.design.widget.TextInputEditText
-            android:id="@+id/activity_driver_login_email_text_edit"
+            android:id="@+id/textInputEditText_driverLogin_emailInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLength="100"
@@ -49,8 +49,8 @@
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/activity_driver_login_password_input_layout"
-        app:layout_constraintTop_toBottomOf="@+id/activity_driver_login_email_input_layout"
+        android:id="@+id/textInputLayout_driverLogin_passwordLayout"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout_driverLogin_emailInput"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         app:errorEnabled="true"
@@ -63,7 +63,7 @@
         style="@style/activity_a2d2_text_input_layout">
 
         <android.support.design.widget.TextInputEditText
-            android:id="@+id/activity_driver_login_password_text_edit"
+            android:id="@+id/textInputEditText_driverLogin_passwordInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLength="100"
@@ -75,7 +75,7 @@
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.button.MaterialButton
-        android:id="@+id/button_driver_login"
+        android:id="@+id/materialButton_driverLogin_loginButton"
         style="@style/App.MaterialButton"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="16dp"
@@ -86,7 +86,7 @@
         app:layout_constraintBottom_toBottomOf="parent" />
 
     <ProgressBar
-        android:id="@+id/driver_login_progress_bar"
+        android:id="@+id/progressBar_driverLogin_loadingIndicator"
         android:layout_width="118dp"
         android:layout_height="110dp"
         android:visibility="invisible"

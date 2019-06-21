@@ -5,19 +5,15 @@ import android.app.Instrumentation;
 import android.support.test.espresso.action.ViewActions;
 import android.support.test.espresso.assertion.ViewAssertions;
 import android.support.test.rule.ActivityTestRule;
-import android.util.Log;
 
-import af.bespin.a2d2.controllers.Driver_Login;
 import af.bespin.a2d2.controllers.Driver_RideRequestList;
 import af.bespin.a2d2.controllers.MainActivity;
 import af.bespin.a2d2.controllers.Rider_RequestRide;
-import af.bespin.a2d2.controllers.Rider_Rules;
 import af.bespin.a2d2.utilities.FormatUtils;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.typeTextIntoFocusedView;
 import static android.support.test.espresso.matcher.RootMatchers.isDialog;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -69,13 +65,13 @@ public class loading_bar_test {
        mMainActivity = mMainActivityActivityTestRule.getActivity();
        onView(withId(R.id.button_main_driver_login)).perform(ViewActions.click());
        //Entering in login info
-       onView(withId(R.id.activity_driver_login_email_text_edit)).perform(ViewActions.replaceText("1@2.3"));
-       onView(withId(R.id.activity_driver_login_password_text_edit)).perform(ViewActions.replaceText("123456"));
+       onView(withId(R.id.textInputEditText_driverLogin_emailInput)).perform(ViewActions.replaceText("1@2.3"));
+       onView(withId(R.id.textInputEditText_driverLogin_passwordInput)).perform(ViewActions.replaceText("123456"));
        //try{Thread.sleep(5000);}catch (Exception e) {}
        //attempting login
-       onView(withId(R.id.button_driver_login)).perform(ViewActions.click());
+       onView(withId(R.id.materialButton_driverLogin_loginButton)).perform(ViewActions.click());
 
-       onView(withId(R.id.driver_login_progress_bar)).check(ViewAssertions.matches(isDisplayed()));
+       onView(withId(R.id.progressBar_driverLogin_loadingIndicator)).check(ViewAssertions.matches(isDisplayed()));
     }
 
     @Test
@@ -83,11 +79,11 @@ public class loading_bar_test {
         mMainActivity = mMainActivityActivityTestRule.getActivity();
         onView(withId(R.id.button_main_driver_login)).perform(ViewActions.click());
         //Entering in login info
-        onView(withId(R.id.activity_driver_login_email_text_edit)).perform(ViewActions.replaceText("1@2.3"));
-        onView(withId(R.id.activity_driver_login_password_text_edit)).perform(ViewActions.replaceText("123456"));
+        onView(withId(R.id.textInputEditText_driverLogin_emailInput)).perform(ViewActions.replaceText("1@2.3"));
+        onView(withId(R.id.textInputEditText_driverLogin_passwordInput)).perform(ViewActions.replaceText("123456"));
         //try{Thread.sleep(5000);}catch (Exception e) {}
         //attempting login
-        onView(withId(R.id.button_driver_login)).perform(ViewActions.click());
+        onView(withId(R.id.materialButton_driverLogin_loginButton)).perform(ViewActions.click());
         Activity driverRideRequestList = mRideRequestListActivityMonitor.waitForActivity();
         assertNotNull(driverRideRequestList);
         /*WHY DOES BREAK*/onView(withId(R.id.request_tabs_loading_bar)).check(ViewAssertions.matches(isDisplayed()));
