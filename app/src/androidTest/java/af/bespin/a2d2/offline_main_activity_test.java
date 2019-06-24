@@ -1,8 +1,8 @@
-package com.example.bespinaf.a2d2;
+package af.bespin.a2d2;
 
 import android.support.test.espresso.action.ViewActions;
 import android.support.test.rule.ActivityTestRule;
-import com.example.bespinaf.a2d2.controllers.MainActivity;
+import af.bespin.a2d2.controllers.MainActivity;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;

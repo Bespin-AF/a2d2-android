@@ -42,13 +42,13 @@ public class Driver_RideRequestList extends ButterKnifeActivity implements DataR
     protected void onStart() {
         super.onStart();
         mLoadingBar.setVisibility(View.VISIBLE);
-        DataSourceUtils.requests.setReciever(this);
+        DataSourceUtils.testRequests.setReciever(this);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        DataSourceUtils.requests.removeReceiver(this);
+        DataSourceUtils.testRequests.removeReceiver(this);
     }
 
     @Override

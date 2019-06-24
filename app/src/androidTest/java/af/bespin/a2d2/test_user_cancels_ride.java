@@ -49,7 +49,7 @@ public class test_user_cancels_ride {
 
         Intent data = new Intent();
         Request request = buildRideRequest();
-        String requestId = DataSourceUtils.requests.sendData(buildRideRequest());
+        String requestId = DataSourceUtils.testRequests.sendData(buildRideRequest());
         request.key = requestId;
 
         data.putExtra("request", request);

@@ -18,6 +18,7 @@ public class DataSourceUtils {
     public static DataSource requests = new DataSource(DataSourceType.Requests);
     public static DataSource resources = new DataSource(DataSourceType.BaseInfo);
     public static DataSource locations = new DataSource(DataSourceType.Locations);
+    public static DataSource testRequests = new DataSource(DataSourceType.TestRequests);
 
     public static String getCurrentDateString(){
         Date currentDate = Calendar.getInstance().getTime();
