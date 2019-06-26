@@ -74,7 +74,7 @@ public class Driver_RideRequestDetails extends ButterKnifeActivity {
 
 
     private void populateDetails(){
-        List<Pair<String, String>> details = getDetailPairs(request);
+        List<Pair<String, String>> details = getDetails(request);
         RideRequestDetailAdapter detailAdapter = new RideRequestDetailAdapter(details);
         LinearLayoutManager llmRequestManager = new LinearLayoutManager(this);
 
@@ -84,7 +84,7 @@ public class Driver_RideRequestDetails extends ButterKnifeActivity {
     }
 
 
-    private ArrayList<Pair<String, String>> getDetailPairs(Request request){
+    private ArrayList<Pair<String, String>> getDetails(Request request){
         ArrayList<Pair<String, String>> details = new ArrayList<>();
 
         details.add(new Pair<>("Status", request.getStatus().toString()));

@@ -1,5 +1,6 @@
 package af.bespin.a2d2.controllers;
 
+import android.net.Network;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.os.Bundle;
@@ -45,10 +46,7 @@ public class Driver_Login extends ButterKnifeActivity {
         validateInputs();
         if(!isDataValid()){ return; }
 
-        String  email = ActivityUtils.getFieldText(mEmailEditText),
-                password = ActivityUtils.getFieldText(mPasswordEditText);
-
-        tryLogin(email, password);
+        login();
     }
 
 
@@ -70,27 +68,34 @@ public class Driver_Login extends ButterKnifeActivity {
     }
 
 
-    private void tryLogin(String email, String password){
+    private void login(){
+        if(!NetworkUtils.checkInternetConnectivity(this)){
+            NetworkUtils.displayNetworkError(this);
+            return;
+        }
+        if (!isDataValid()){
+            return;
+        }
+
+        String  email = ActivityUtils.getFieldText(mEmailEditText),
+                password = ActivityUtils.getFieldText(mPasswordEditText);
+
 
         mProgressBar.setVisibility(View.VISIBLE);
-        if(email == null || password == null){ return; }
 
-        AuthorizationUtils.authorizeUser(email, password, (wasLoginSuccessful) -> {
-            if(!(NetworkUtils.checkInternetConnectivity(getApplicationContext()))){
-                NetworkUtils.displayNetworkError(this);
-            }
-            else if(wasLoginSuccessful) {
-
-                ActivityUtils.navigate(this, Driver_RideRequestList.class);
-            }
-            else {
-                Toast.makeText(
-                        this,
-                        "Invalid username or password",
-                        Toast.LENGTH_SHORT
-                ).show();
-            }
+        AuthorizationUtils.authorizeUser(email, password, (isLoginSuccessful -> {
             mProgressBar.setVisibility(View.INVISIBLE);
-        });
+            if(!isLoginSuccessful){ displayInvalidLoginMessage(); return; }
+
+            ActivityUtils.navigate(this, Driver_RideRequestList.class);
+        }));
+    }
+
+    private void displayInvalidLoginMessage(){
+        Toast.makeText(
+                this,
+                "Invalid username or password",
+                Toast.LENGTH_SHORT
+        ).show();
     }
 }
