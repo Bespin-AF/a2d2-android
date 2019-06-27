@@ -140,7 +140,7 @@ public class Rider_RequestRide extends ButterKnifeActivity {
         rideRequestProgressBar.setVisibility(View.VISIBLE);
         LocationUtils.getCurrentGPSLocationAsync(this, (location) -> {
             Request rideRequest = buildRideRequest(location);
-            String requestId = DataSourceUtils.requests.sendData(rideRequest.getData());
+            String requestId = DataSourceUtils.testRequests.sendData(rideRequest.getData());
             rideRequest.key = requestId;
         	Pair<String, Serializable> requestData = new Pair<>("request", rideRequest);
         	ActivityUtils.navigateWithData(this, Rider_RideStatus.class, requestData );
