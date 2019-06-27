@@ -108,7 +108,8 @@ public class Driver_RideRequestDetails extends ButterKnifeActivity {
         }
     }
 
-
+    //need to make this easier to read
+    //if map crashes, navigation route is lost
     private void configureJobActionDialog(){
         DialogInterface.OnClickListener jobAction = (dialog, which) -> {
             if(request.getStatus() == RequestStatus.Available){
@@ -125,13 +126,15 @@ public class Driver_RideRequestDetails extends ButterKnifeActivity {
         jobActionDialog.setNegativeButton(R.string.cancel, null);
     }
 
-
+    //these names kinda suck. maybe make jobAction -> complete_or_take_job
+    //jobStatusDialog
+    //getJobStatusDialogTitle
     private String getJobActionDialogTitle(){
         if(request.getStatus() == RequestStatus.Available ||
                 (request.getStatus() == RequestStatus.InProgress && !isCurrentUserDriver())){
             return "Confirm Pickup?";
         } else if (request.getStatus() == RequestStatus.InProgress && isCurrentUserDriver()){
-            return "Confirm Dropoff?";
+            return "Confirm Drop-off?";
         }
         return "Something went wrong!";
     }
@@ -153,7 +156,7 @@ public class Driver_RideRequestDetails extends ButterKnifeActivity {
         request.setDriver(currentDriver);
         request.setStatus(RequestStatus.InProgress);
         updateRideRequest();
-        configureJobActionDialog();
+        configureJobActionDialog(); //what does this do
         startNavigationToRequester();
     }
 
@@ -177,7 +180,7 @@ public class Driver_RideRequestDetails extends ButterKnifeActivity {
     // Updates the displayed information and sends the current request data to the datasource
     private void updateRideRequest(){
         populateDetails(); // Update The screen for instant gratification
-        DataSourceUtils.requests.updateData(request.key, request.getData());
+        DataSourceUtils.testRequests.updateData(request.key, request.getData());
     }
 
 

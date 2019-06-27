@@ -49,7 +49,7 @@ public class Driver_RideRequestListFragment extends Fragment {
 
     public void populateRecyclerView() {
         RideRequestAdapter adapter = new RideRequestAdapter(mRequests);
-        adapter.SortByDate();
+        adapter.SortByDateOldToNew();
 
         LinearLayoutManager llmRequestManager = new LinearLayoutManager(mContext);
         mRequestList.setLayoutManager(llmRequestManager);

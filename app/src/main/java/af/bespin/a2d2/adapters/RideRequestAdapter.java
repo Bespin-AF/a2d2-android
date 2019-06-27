@@ -18,6 +18,7 @@ import af.bespin.a2d2.utilities.FormatUtils;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 //Adapts request objects for use in a recycler view
@@ -44,7 +45,6 @@ public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.
         View view = LayoutInflater.from(viewGroup.getContext())
                                   .inflate(R.layout.card_view_requests, viewGroup, false);
 
-
         return new RequestViewHolder(view);
     }
 
@@ -62,10 +62,24 @@ public class RideRequestAdapter extends RecyclerView.Adapter<RideRequestAdapter.
         requestViewHolder.populateFields(groupText, timestamp, gender);
     }
 
-    public void SortByDate(){
+    public void SortByDateOldToNew(){
         List<Request> temp = Arrays.asList(mRequests);
         Collections.sort(temp, (first, second)-> first.getTimestamp().compareTo(second.getTimestamp()));
         mRequests = temp.toArray(new Request[temp.size()]);
+    }
+
+    public void sortByDate(List<Request> requests, boolean sortByOldest){
+        Comparator<Request> oldestToNewest = (first, second) ->
+           first.getTimestamp().compareTo(second.getTimestamp());
+
+        Comparator<Request> newestToOldest = (first, second) ->
+           second.getTimestamp().compareTo(first.getTimestamp());
+
+        if(sortByOldest) {
+            Collections.sort(requests, oldestToNewest);
+        } else {
+            Collections.sort(requests, newestToOldest);
+        }
     }
 
     //RecyclerView Cell Template

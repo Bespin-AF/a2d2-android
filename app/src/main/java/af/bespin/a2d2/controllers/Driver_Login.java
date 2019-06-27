@@ -1,6 +1,5 @@
 package af.bespin.a2d2.controllers;
 
-import android.net.Network;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.os.Bundle;
@@ -42,12 +41,7 @@ public class Driver_Login extends ButterKnifeActivity {
 
 
     @OnClick(R.id.materialButton_driverLogin_loginButton)
-    public void driverLogin() {
-        validateInputs();
-        if(!isDataValid()){ return; }
-
-        login();
-    }
+    public void driverLogin() { attemptLogin(); }
 
 
     private boolean isDataValid(){
@@ -68,27 +62,26 @@ public class Driver_Login extends ButterKnifeActivity {
     }
 
 
-    private void login(){
+    private void attemptLogin(){
+        validateInputs();
+        if (!isDataValid()){ return; }
+
         if(!NetworkUtils.checkInternetConnectivity(this)){
             NetworkUtils.displayNetworkError(this);
-            return;
-        }
-        if (!isDataValid()){
             return;
         }
 
         String  email = ActivityUtils.getFieldText(mEmailEditText),
                 password = ActivityUtils.getFieldText(mPasswordEditText);
 
-
         mProgressBar.setVisibility(View.VISIBLE);
 
-        AuthorizationUtils.authorizeUser(email, password, (isLoginSuccessful -> {
+        AuthorizationUtils.authorizeUser(email, password, (isLoginSuccessful) -> {
             mProgressBar.setVisibility(View.INVISIBLE);
             if(!isLoginSuccessful){ displayInvalidLoginMessage(); return; }
 
             ActivityUtils.navigate(this, Driver_RideRequestList.class);
-        }));
+        });
     }
 
     private void displayInvalidLoginMessage(){
